@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_notes/models/movie.dart';
@@ -15,6 +16,7 @@ class Movies extends StatefulWidget {
 
 class _MoviesState extends State<Movies> {
   final accessToken = dotenv.get('ACCESS_TOKEN');
+  bool isLoading = true;
 
   List<Movie> movies = [];
 
@@ -43,21 +45,27 @@ class _MoviesState extends State<Movies> {
 
       setState(() {
         movies = results.map((movie) => Movie.fromJson(movie)).toList();
-        print(movies);
+        isLoading = false;
       });
     } else {
-      print('Ошибка: ${response.statusCode}');
+      isLoading = false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: movies.length,
-      itemBuilder: (context, index) {
-        final movie = movies[index];
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-        return MovieCard(movie: movie);
+    if (movies.isEmpty) {
+      return const Center(child: Text('Фильмы не найдены'));
+    }
+
+    return CardSwiper(
+      cardsCount: movies.length,
+      cardBuilder: (context, index, _, _) {
+        return MovieCard(movie: movies[index]);
       },
     );
   }
