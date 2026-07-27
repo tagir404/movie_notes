@@ -34,7 +34,7 @@ class MovieApiService {
         .toList();
   }
 
-  Future<List<Movie>> fetchMovies() async {
+  Future<List<Movie>> fetchPopularMovies() async {
     final uri = Uri.https(ApiConstants.baseUrl, '/3/movie/popular', {
       'language': ApiConstants.language,
     });

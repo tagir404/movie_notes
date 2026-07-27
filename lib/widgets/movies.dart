@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/services/movie_api_service.dart';
+import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
 
 class Movies extends StatefulWidget {
@@ -15,40 +13,35 @@ class Movies extends StatefulWidget {
 }
 
 class _MoviesState extends State<Movies> {
-  final accessToken = dotenv.get('ACCESS_TOKEN');
-  bool isLoading = true;
+  late final MovieApiService movieApiService;
 
+  bool isLoading = true;
   List<Movie> movies = [];
 
   @override
   void initState() {
     super.initState();
-    fetchMovies();
+
+    movieApiService = AppScope.read(context).movieApiService;
+    _loadMovies();
   }
 
-  Future<void> fetchMovies() async {
-    final uri = Uri.https('api.themoviedb.org', '/3/movie/popular', {
-      'language': 'ru-RU',
-    });
+  Future<void> _loadMovies() async {
+    try {
+      final loadedMovies = await movieApiService.fetchPopularMovies();
 
-    final response = await http.get(
-      uri,
-      headers: {
-        'Authorization': 'Bearer $accessToken',
-        'accept': 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final results = json['results'] as List<dynamic>;
+      if (!mounted) return;
 
       setState(() {
-        movies = results.map((movie) => Movie.fromJson(movie)).toList();
+        movies = loadedMovies;
         isLoading = false;
       });
-    } else {
-      isLoading = false;
+    } catch (_) {
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
