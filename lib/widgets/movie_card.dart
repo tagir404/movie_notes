@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 
 class MovieCard extends StatelessWidget {
-  const MovieCard({required this.movie, super.key});
+  const MovieCard({required this.movie, required this.genreNames, super.key});
 
   final Movie movie;
+  final List<String> genreNames;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +20,31 @@ class MovieCard extends StatelessWidget {
         borderRadius: const .all(.circular(12)),
       ),
       child: DefaultTextStyle(
-        style: const TextStyle(color: Colors.white),
+        style: theme.textTheme.bodyMedium!.copyWith(
+          color: theme.colorScheme.onPrimary,
+        ),
         child: IconTheme(
           data: IconThemeData(color: theme.colorScheme.onPrimary),
           child: Column(
-            crossAxisAlignment: .start,
             children: [
-              Image.network(posterUrl, fit: .cover),
-              Text(movie.overview, maxLines: 4, overflow: .ellipsis),
+              Image.network(
+                posterUrl,
+                fit: .cover,
+                height: MediaQuery.sizeOf(context).height * 0.5,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'Жанры: ${genreNames.join(', ')}',
+                style: theme.textTheme.bodyLarge,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                movie.overview,
+                maxLines: 4,
+                overflow: .ellipsis,
+                textAlign: .justify,
+              ),
+              const SizedBox(height: 16),
               Row(
                 spacing: 4,
                 children: [
@@ -34,6 +52,7 @@ class MovieCard extends StatelessWidget {
                   Text('Год выхода: $movieYear'),
                 ],
               ),
+              const SizedBox(height: 4),
               Row(
                 spacing: 4,
                 children: [

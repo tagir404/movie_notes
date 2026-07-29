@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/repositories/movie_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
@@ -14,15 +15,21 @@ class Movies extends StatefulWidget {
 
 class _MoviesState extends State<Movies> {
   late final MovieApiService movieApiService;
+  late final MovieRepository movieRepository;
 
   bool isLoading = true;
+  bool _initialized = false;
   List<Movie> movies = [];
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_initialized) return;
+    _initialized = true;
 
-    movieApiService = AppScope.read(context).movieApiService;
+    movieApiService = AppScope.of(context).movieApiService;
+    movieRepository = AppScope.of(context).movieRepository;
+
     _loadMovies();
   }
 
@@ -58,7 +65,15 @@ class _MoviesState extends State<Movies> {
     return CardSwiper(
       cardsCount: movies.length,
       cardBuilder: (context, index, _, _) {
-        return MovieCard(movie: movies[index]);
+        final movieGenres = movies[index].genreIds
+            .map(
+              (id) => movieRepository.genres
+                  .firstWhere((genre) => genre.id == id)
+                  .name,
+            )
+            .toList();
+
+        return MovieCard(movie: movies[index], genreNames: movieGenres);
       },
     );
   }

@@ -1,19 +1,26 @@
 import 'package:flutter/widgets.dart';
-import 'package:http/http.dart' as http;
+import 'package:movie_notes/repositories/movie_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 
 class AppScope extends InheritedWidget {
-  AppScope({required super.child, super.key})
-    : movieApiService = MovieApiService(http.Client());
+  const AppScope({
+    super.key,
+    required this.movieApiService,
+    required this.movieRepository,
+    required super.child,
+  });
 
   final MovieApiService movieApiService;
+  final MovieRepository movieRepository;
 
-  static AppScope read(BuildContext context) {
-    final element = context.getElementForInheritedWidgetOfExactType<AppScope>();
+  static AppScope? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<AppScope>();
+  }
 
-    assert(element != null, 'AppScope not found');
-
-    return element!.widget as AppScope;
+  static AppScope of(BuildContext context) {
+    final result = maybeOf(context);
+    assert(result != null, 'AppScope not found');
+    return result!;
   }
 
   @override
