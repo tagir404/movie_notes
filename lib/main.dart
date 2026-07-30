@@ -33,7 +33,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const Scaffold(body: Movies()),
+      home: const Scaffold(
+        body: Padding(padding: .all(25), child: Movies()),
+      ),
       theme: ThemeData(textTheme: GoogleFonts.nunitoTextTheme()),
     );
   }

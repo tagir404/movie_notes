@@ -42,9 +42,24 @@ class MovieApiService {
     }
   }
 
-  Future<dynamic> _get(String path) async {
+  Future<List<Movie>> fetchMoviesByGenres(List<int> genreIds) async {
+    final json = await _get(
+      '/3/discover/movie',
+      queryParameters: {'with_genres': genreIds.join(',')},
+    );
+
+    return (json['results'] as List)
+        .map((movie) => Movie.fromJson(movie))
+        .toList();
+  }
+
+  Future<dynamic> _get(
+    String path, {
+    Map<String, String>? queryParameters,
+  }) async {
     final uri = Uri.https(ApiConstants.baseUrl, path, {
       'language': ApiConstants.language,
+      ...?queryParameters,
     });
 
     final response = await client.get(
