@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/repositories/movie_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
@@ -17,6 +18,7 @@ class _MoviesState extends State<Movies> {
   late final MovieApiService movieApiService;
   late final MovieRepository movieRepository;
 
+  final Map<int, MovieDetails> _movieDetails = {};
   bool isLoading = true;
   bool _initialized = false;
   List<Movie> movies = [];
@@ -43,6 +45,10 @@ class _MoviesState extends State<Movies> {
         movies = loadedMovies;
         isLoading = false;
       });
+
+      if (movies.isNotEmpty) {
+        _loadMovieDetails(movies.first.id);
+      }
     } catch (_) {
       if (!mounted) return;
 
@@ -50,6 +56,18 @@ class _MoviesState extends State<Movies> {
         isLoading = false;
       });
     }
+  }
+
+  Future<void> _loadMovieDetails(int movieId) async {
+    if (_movieDetails.containsKey(movieId)) return;
+
+    final details = await movieRepository.getMovieDetails(movieId);
+
+    if (!mounted) return;
+
+    setState(() {
+      _movieDetails[movieId] = details;
+    });
   }
 
   @override
@@ -73,7 +91,24 @@ class _MoviesState extends State<Movies> {
             )
             .toList();
 
-        return MovieCard(movie: movies[index], genreNames: movieGenres);
+        final movie = movies[index];
+
+        return MovieCard(
+          movie: movie,
+          genreNames: movieGenres,
+          movieDetails: _movieDetails[movie.id],
+        );
+      },
+      onSwipe: (previousIndex, currentIndex, direction) {
+        if (currentIndex == null) return true;
+
+        _loadMovieDetails(movies[currentIndex].id);
+
+        if (currentIndex + 1 < movies.length) {
+          _loadMovieDetails(movies[currentIndex + 1].id);
+        }
+
+        return true;
       },
     );
   }

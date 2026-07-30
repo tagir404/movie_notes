@@ -4,10 +4,10 @@ import 'package:movie_notes/services/movie_api_service.dart';
 
 class AppScope extends InheritedWidget {
   const AppScope({
-    super.key,
     required this.movieApiService,
     required this.movieRepository,
     required super.child,
+    super.key,
   });
 
   final MovieApiService movieApiService;

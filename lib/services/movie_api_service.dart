@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_notes/constants/api_constants.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/models/movie_details.dart';
 
 class MovieApiService {
   final http.Client client;
@@ -14,20 +15,7 @@ class MovieApiService {
   final accessToken = dotenv.get('ACCESS_TOKEN');
 
   Future<List<Genre>> fetchGenres() async {
-    final uri = Uri.https(ApiConstants.baseUrl, '/3/genre/movie/list', {
-      'language': ApiConstants.language,
-    });
-
-    final response = await client.get(
-      uri,
-      headers: {'Authorization': 'Bearer $accessToken'},
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load genres');
-    }
-
-    final json = jsonDecode(response.body);
+    final json = await _get('/3/genre/movie/list');
 
     return (json['genres'] as List)
         .map((genre) => Genre.fromJson(genre))
@@ -35,7 +23,27 @@ class MovieApiService {
   }
 
   Future<List<Movie>> fetchPopularMovies() async {
-    final uri = Uri.https(ApiConstants.baseUrl, '/3/movie/popular', {
+    final json = await _get('/3/movie/popular');
+
+    return (json['results'] as List)
+        .map((movie) => Movie.fromJson(movie))
+        .toList();
+  }
+
+  Future<MovieDetails> fetchMovieDetails(int movieId) async {
+    final json = await _get('/3/movie/$movieId');
+
+    return MovieDetails.fromJson(json);
+  }
+
+  void _checkResponse(http.Response response) {
+    if (response.statusCode != 200) {
+      throw Exception('Request failed: ${response.statusCode}');
+    }
+  }
+
+  Future<dynamic> _get(String path) async {
+    final uri = Uri.https(ApiConstants.baseUrl, path, {
       'language': ApiConstants.language,
     });
 
@@ -44,14 +52,8 @@ class MovieApiService {
       headers: {'Authorization': 'Bearer $accessToken'},
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Failed to load genres');
-    }
+    _checkResponse(response);
 
-    final json = jsonDecode(response.body);
-
-    return (json['results'] as List)
-        .map((movie) => Movie.fromJson(movie))
-        .toList();
+    return jsonDecode(response.body);
   }
 }
