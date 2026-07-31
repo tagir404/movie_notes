@@ -103,6 +103,10 @@ class _MoviesState extends State<Movies> {
         Expanded(
           child: CardSwiper(
             controller: _cardSwiperController,
+            allowedSwipeDirection: const .symmetric(
+              horizontal: true,
+              vertical: false,
+            ),
             padding: const .all(0),
             cardsCount: movies.length,
             cardBuilder: (context, index, _, _) {
@@ -144,7 +148,7 @@ class _MoviesState extends State<Movies> {
               shape: const CircleBorder(),
               child: IconButton(
                 onPressed: () => _cardSwiperController.swipe(.left),
-                icon: const Icon(Icons.block, size: 48, color: Colors.red),
+                icon: const Icon(Icons.block, size: 44, color: Colors.red),
               ),
             ),
             Pill(
@@ -153,7 +157,7 @@ class _MoviesState extends State<Movies> {
                 onPressed: () => _cardSwiperController.swipe(.right),
                 icon: const Icon(
                   Icons.bookmark_add,
-                  size: 48,
+                  size: 44,
                   color: Colors.green,
                 ),
               ),

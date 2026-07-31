@@ -25,7 +25,7 @@ class Pill extends StatelessWidget {
       shape: shape,
       borderRadius: borderRadius,
       child: Padding(
-        padding: padding ?? const .symmetric(vertical: 4, horizontal: 8),
+        padding: padding ?? const .symmetric(vertical: 4, horizontal: 12),
         child: child,
       ),
     );

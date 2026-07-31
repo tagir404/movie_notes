@@ -29,20 +29,6 @@ class MovieCard extends StatelessWidget {
         children: [
           Image.network(posterUrl, fit: .cover),
 
-          Positioned(
-            top: 12,
-            left: 12,
-            child: Pill(
-              borderRadius: .circular(20),
-              child: Text(
-                movieDetails == null || movieDetails!.runtime == null
-                    ? '...'
-                    : formatRuntime(movieDetails!.runtime!),
-                style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
-              ),
-            ),
-          ),
-
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
@@ -65,7 +51,47 @@ class MovieCard extends StatelessWidget {
                   crossAxisAlignment: .start,
                   children: [
                     Row(
-                      spacing: 4,
+                      mainAxisAlignment: .spaceBetween,
+                      children: [
+                        Pill(
+                          borderRadius: .circular(20),
+                          child: Row(
+                            spacing: 6,
+                            children: [
+                              const Icon(Icons.access_time, size: 18),
+                              Text(
+                                movieDetails == null ||
+                                        movieDetails!.runtime == null
+                                    ? '...'
+                                    : formatRuntime(movieDetails!.runtime!),
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Pill(
+                          borderRadius: .circular(20),
+                          child: Row(
+                            spacing: 6,
+                            children: [
+                              const Icon(Icons.calendar_today, size: 18),
+                              Text(
+                                '$movieYear г',
+                                style: theme.textTheme.bodyLarge?.copyWith(
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Spacer(),
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 8,
                       children: [
                         ...genreNames.map(
                           (genre) => Material(
@@ -87,14 +113,14 @@ class MovieCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Text(
                       movie.title,
                       style: theme.textTheme.displaySmall?.copyWith(
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 8),
                     Text(
                       movie.overview,
                       maxLines: 4,
@@ -102,14 +128,6 @@ class MovieCard extends StatelessWidget {
                       textAlign: .justify,
                     ),
                     const SizedBox(height: 16),
-                    Row(
-                      spacing: 4,
-                      children: [
-                        const Icon(Icons.access_time),
-                        Text('Год выхода: $movieYear'),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
                     Row(
                       spacing: 4,
                       children: [
