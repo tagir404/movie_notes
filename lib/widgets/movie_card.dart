@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/utils/formatters.dart';
@@ -7,13 +8,15 @@ import 'package:movie_notes/widgets/pill.dart';
 class MovieCard extends StatelessWidget {
   const MovieCard({
     required this.movie,
-    required this.genreNames,
+    required this.genres,
+    required this.selectedGenreIds,
     required this.movieDetails,
     super.key,
   });
 
   final Movie movie;
-  final List<String> genreNames;
+  final List<Genre> genres;
+  final List<int> selectedGenreIds;
   final MovieDetails? movieDetails;
 
   @override
@@ -93,9 +96,17 @@ class MovieCard extends StatelessWidget {
                       spacing: 8,
                       runSpacing: 8,
                       children: [
-                        ...genreNames.map(
-                          (genre) => Material(
-                            color: Colors.white.withValues(alpha: 0.15),
+                        ...genres.map((genre) {
+                          final isSelected = selectedGenreIds.contains(
+                            genre.id,
+                          );
+
+                          return Material(
+                            color: isSelected
+                                ? theme.colorScheme.primary.withValues(
+                                    alpha: 0.85,
+                                  )
+                                : Colors.white.withValues(alpha: 0.15),
                             borderRadius: .circular(20),
                             child: Padding(
                               padding: const .symmetric(
@@ -103,14 +114,15 @@ class MovieCard extends StatelessWidget {
                                 horizontal: 8,
                               ),
                               child: Text(
-                                genre,
+                                genre.name,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
+                                  fontWeight: isSelected ? .bold : null,
                                 ),
                               ),
                             ),
-                          ),
-                        ),
+                          );
+                        }),
                       ],
                     ),
                     const SizedBox(height: 8),
