@@ -114,15 +114,16 @@ class _MoviesState extends State<Movies> {
 
               final movieGenres = movie.genreIds
                   .map(
-                    (id) => movieRepository.genres
-                        .firstWhere((genre) => genre.id == id)
-                        .name,
+                    (id) => movieRepository.genres.firstWhere(
+                      (genre) => genre.id == id,
+                    ),
                   )
                   .toList();
 
               return MovieCard(
                 movie: movie,
-                genreNames: movieGenres,
+                genres: movieGenres,
+                selectedGenreIds: _filter.genreIds,
                 movieDetails: _movieDetails[movie.id],
               );
             },
