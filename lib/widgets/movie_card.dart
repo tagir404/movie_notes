@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/utils/formatters.dart';
+import 'package:movie_notes/widgets/pill.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -31,20 +32,13 @@ class MovieCard extends StatelessWidget {
           Positioned(
             top: 12,
             left: 12,
-            child: Material(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(20),
-              elevation: 6,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text(
-                  movieDetails == null || movieDetails!.runtime == null
-                      ? '...'
-                      : formatRuntime(movieDetails!.runtime!),
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: Colors.white,
-                  ),
-                ),
+            child: Pill(
+              borderRadius: .circular(20),
+              child: Text(
+                movieDetails == null || movieDetails!.runtime == null
+                    ? '...'
+                    : formatRuntime(movieDetails!.runtime!),
+                style: theme.textTheme.bodyLarge?.copyWith(color: Colors.white),
               ),
             ),
           ),

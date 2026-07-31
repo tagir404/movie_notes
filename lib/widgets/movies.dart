@@ -8,6 +8,7 @@ import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
 import 'package:movie_notes/widgets/movie_filter_widget.dart';
+import 'package:movie_notes/widgets/pill.dart';
 
 class Movies extends StatefulWidget {
   const Movies({super.key});
@@ -20,6 +21,7 @@ class _MoviesState extends State<Movies> {
   late final MovieApiService movieApiService;
   late final MovieRepository movieRepository;
 
+  final CardSwiperController _cardSwiperController = CardSwiperController();
   final Map<int, MovieDetails> _movieDetails = {};
   bool isLoading = true;
   bool _initialized = false;
@@ -100,6 +102,7 @@ class _MoviesState extends State<Movies> {
 
         Expanded(
           child: CardSwiper(
+            controller: _cardSwiperController,
             padding: const .all(0),
             cardsCount: movies.length,
             cardBuilder: (context, index, _, _) {
@@ -131,6 +134,31 @@ class _MoviesState extends State<Movies> {
               return true;
             },
           ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: .center,
+          spacing: 40,
+          children: [
+            Pill(
+              shape: const CircleBorder(),
+              child: IconButton(
+                onPressed: () => _cardSwiperController.swipe(.left),
+                icon: const Icon(Icons.block, size: 48, color: Colors.red),
+              ),
+            ),
+            Pill(
+              shape: const CircleBorder(),
+              child: IconButton(
+                onPressed: () => _cardSwiperController.swipe(.right),
+                icon: const Icon(
+                  Icons.bookmark_add,
+                  size: 48,
+                  color: Colors.green,
+                ),
+              ),
+            ),
+          ],
         ),
       ],
     );
