@@ -7,13 +7,15 @@ class RatingStars extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final filledStars = rating.floor();
-    final hasHalfStar = rating - filledStars >= 0.5;
+    final fiveStarRating = rating / 2;
+
+    final filledStars = fiveStarRating.floor();
+    final hasHalfStar = fiveStarRating - filledStars >= 0.5;
 
     return Row(
-      mainAxisSize: MainAxisSize.min,
+      mainAxisSize: .min,
       spacing: 2,
-      children: List.generate(10, (index) {
+      children: List.generate(5, (index) {
         if (index < filledStars) {
           return const Icon(Icons.star, size: 18, color: Colors.amber);
         }

@@ -162,6 +162,7 @@ class _MediaScreenState extends State<MediaScreen> {
                   .toList();
 
               return MovieCard(
+                key: ValueKey(movie.id),
                 movie: movie,
                 genres: movieGenres,
                 selectedGenreIds: _genreFilter.genreIds,
