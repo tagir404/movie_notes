@@ -9,26 +9,24 @@ import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 
-class MovieApiService {
+class MediaApiService {
   final http.Client client;
 
-  MovieApiService(this.client);
+  MediaApiService(this.client);
 
   final accessToken = dotenv.get('ACCESS_TOKEN');
 
-  Future<List<Genre>> fetchGenres() async {
-    final responses = await Future.wait([
-      _get('/3/genre/movie/list'),
-      _get('/3/genre/tv/list'),
-    ]);
+  Future<List<Genre>> fetchGenres(MediaContentType type) async {
+    final endpoint = switch (type) {
+      MediaContentType.movie => '/3/genre/movie/list',
+      MediaContentType.tvShow => '/3/genre/tv/list',
+    };
 
-    final movieGenres = responses[0]['genres'] as List;
-    final tvShowGenres = responses[1]['genres'] as List;
+    final response = await _get(endpoint);
 
-    return {
-      ...movieGenres.map((json) => Genre.fromJson(json)),
-      ...tvShowGenres.map((json) => Genre.fromJson(json)),
-    }.toList();
+    return (response['genres'] as List)
+        .map((json) => Genre.fromJson(json))
+        .toList();
   }
 
   Future<List<Movie>> fetchTrendingMovies() async {

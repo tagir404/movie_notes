@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_notes/repositories/movie_repository.dart';
+import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 
 class AppScope extends InheritedWidget {
@@ -10,8 +10,8 @@ class AppScope extends InheritedWidget {
     super.key,
   });
 
-  final MovieApiService movieApiService;
-  final MovieRepository movieRepository;
+  final MediaApiService movieApiService;
+  final MediaRepository movieRepository;
 
   static AppScope? maybeOf(BuildContext context) {
     return context.dependOnInheritedWidgetOfExactType<AppScope>();

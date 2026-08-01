@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_notes/repositories/movie_repository.dart';
+import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/screens/movies_screen.dart';
 import 'package:movie_notes/screens/tv_shows_screen.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
@@ -13,8 +13,8 @@ Future<void> main() async {
   await dotenv.load();
 
   final client = http.Client();
-  final apiService = MovieApiService(client);
-  final repository = MovieRepository(apiService);
+  final apiService = MediaApiService(client);
+  final repository = MediaRepository(apiService);
 
   await repository.init();
 

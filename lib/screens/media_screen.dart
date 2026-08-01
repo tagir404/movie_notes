@@ -4,7 +4,7 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/repositories/movie_repository.dart';
+import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
@@ -26,8 +26,8 @@ class MediaScreen extends StatefulWidget {
 }
 
 class _MediaScreenState extends State<MediaScreen> {
-  late final MovieApiService movieApiService;
-  late final MovieRepository movieRepository;
+  late final MediaApiService movieApiService;
+  late final MediaRepository movieRepository;
 
   final CardSwiperController _cardSwiperController = CardSwiperController();
   final Map<int, MovieDetails> _movieDetails = {};
@@ -120,7 +120,7 @@ class _MediaScreenState extends State<MediaScreen> {
     return Column(
       children: [
         MovieGenreFilter(
-          genres: movieRepository.genres,
+          genres: movieRepository.genres(widget.type),
           selectedGenres: _genreFilter.genreIds,
           onChanged: (genreIds) {
             setState(() {
@@ -144,9 +144,9 @@ class _MediaScreenState extends State<MediaScreen> {
 
               final movieGenres = movie.genreIds
                   .map(
-                    (id) => movieRepository.genres.firstWhere(
-                      (genre) => genre.id == id,
-                    ),
+                    (id) => movieRepository
+                        .genres(widget.type)
+                        .firstWhere((genre) => genre.id == id),
                   )
                   .toList();
 
