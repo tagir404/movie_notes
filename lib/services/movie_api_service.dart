@@ -31,19 +31,20 @@ class MovieApiService {
     }.toList();
   }
 
-  Future<List<Movie>> fetchTrending() async {
-    final responses = await Future.wait([
-      _get('/3/trending/movie/week'),
-      _get('/3/trending/tv/week'),
-    ]);
+  Future<List<Movie>> fetchTrendingMovies() async {
+    final json = await _get('/3/trending/movie/week');
 
-    final moviesJson = responses[0]['results'] as List;
-    final tvJson = responses[1]['results'] as List;
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, MediaContentType.movie))
+        .toList();
+  }
 
-    return [
-      ...moviesJson.map((json) => Movie.fromJson(json, MediaContentType.movie)),
-      ...tvJson.map((json) => Movie.fromJson(json, MediaContentType.tvShow)),
-    ];
+  Future<List<Movie>> fetchTrendingTvShows() async {
+    final json = await _get('/3/trending/tv/week');
+
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, MediaContentType.tvShow))
+        .toList();
   }
 
   Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {
@@ -64,45 +65,26 @@ class MovieApiService {
     }
   }
 
-  Future<List<Movie>> fetchMediaByGenres(
-    List<int> genreIds,
-    MediaContentType type,
-  ) async {
-    final endpoint = type == MediaContentType.movie
-        ? '/3/discover/movie'
-        : '/3/discover/tv';
-
+  Future<List<Movie>> fetchMoviesByGenres(List<int> genreIds) async {
     final json = await _get(
-      endpoint,
+      '/3/discover/movie',
       queryParameters: {'with_genres': genreIds.join(',')},
     );
 
     return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, type))
+        .map((item) => Movie.fromJson(item, MediaContentType.movie))
         .toList();
   }
 
-  Future<List<Movie>> fetchTrendingByGenres(List<int> genreIds) async {
-    final responses = await Future.wait([
-      _get(
-        '/3/discover/movie',
-        queryParameters: {'with_genres': genreIds.join(',')},
-      ),
-      _get(
-        '/3/discover/tv',
-        queryParameters: {'with_genres': genreIds.join(',')},
-      ),
-    ]);
+  Future<List<Movie>> fetchTvShowsByGenres(List<int> genreIds) async {
+    final json = await _get(
+      '/3/discover/tv',
+      queryParameters: {'with_genres': genreIds.join(',')},
+    );
 
-    final moviesJson = responses[0]['results'] as List;
-    final tvShowsJson = responses[1]['results'] as List;
-
-    return [
-      ...moviesJson.map((json) => Movie.fromJson(json, MediaContentType.movie)),
-      ...tvShowsJson.map(
-        (json) => Movie.fromJson(json, MediaContentType.tvShow),
-      ),
-    ];
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, MediaContentType.tvShow))
+        .toList();
   }
 
   Future<dynamic> _get(
