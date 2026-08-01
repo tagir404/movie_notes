@@ -7,4 +7,12 @@ class Genre {
   factory Genre.fromJson(Map<String, dynamic> json) {
     return Genre(id: json['id'], name: json['name']);
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is Genre && other.id == id;
+  }
+
+  @override
+  int get hashCode => id.hashCode;
 }

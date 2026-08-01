@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:movie_notes/repositories/movie_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
-import 'package:movie_notes/widgets/movies.dart';
+import 'package:movie_notes/screens/movies_screen.dart';
 import 'package:http/http.dart' as http;
 
 Future<void> main() async {
@@ -34,7 +34,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
-        body: Padding(padding: .all(25), child: Movies()),
+        body: Padding(padding: .all(25), child: MoviesScreen()),
       ),
       theme: ThemeData(textTheme: GoogleFonts.nunitoTextTheme()),
     );

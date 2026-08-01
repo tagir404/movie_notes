@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/genre.dart';
 
-class MovieFilterWidget extends StatelessWidget {
-  const MovieFilterWidget({
+class MovieGenreFilter extends StatelessWidget {
+  const MovieGenreFilter({
     required this.genres,
     required this.selectedGenres,
     required this.onChanged,

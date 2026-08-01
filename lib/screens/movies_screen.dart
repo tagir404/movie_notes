@@ -1,50 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/models/movie_filter.dart';
+import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/repositories/movie_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
-import 'package:movie_notes/widgets/movie_filter_widget.dart';
+import 'package:movie_notes/widgets/movie_genre_filter.dart';
+import 'package:movie_notes/widgets/movie_type_filter.dart';
 import 'package:movie_notes/widgets/pill.dart';
 
-class Movies extends StatefulWidget {
-  const Movies({super.key});
+class MoviesScreen extends StatefulWidget {
+  const MoviesScreen({super.key});
 
   @override
-  State<Movies> createState() => _MoviesState();
+  State<MoviesScreen> createState() => _MoviesScreenState();
 }
 
-class _MoviesState extends State<Movies> {
+class _MoviesScreenState extends State<MoviesScreen> {
   late final MovieApiService movieApiService;
   late final MovieRepository movieRepository;
 
   final CardSwiperController _cardSwiperController = CardSwiperController();
   final Map<int, MovieDetails> _movieDetails = {};
+
   bool isLoading = true;
   bool _initialized = false;
+
   List<Movie> movies = [];
-  MovieFilter _filter = const MovieFilter();
+
+  GenreFilter _genreFilter = const GenreFilter();
+  MediaContentType? _movieTypeFilter;
+
+  List<Movie> get filteredMovies {
+    return movies.where((movie) {
+      if (_movieTypeFilter != null && movie.type != _movieTypeFilter) {
+        return false;
+      }
+
+      return true;
+    }).toList();
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+
     if (_initialized) return;
     _initialized = true;
 
     movieApiService = AppScope.of(context).movieApiService;
     movieRepository = AppScope.of(context).movieRepository;
 
-    _loadMovies();
+    _loadMedia();
   }
 
-  Future<void> _loadMovies() async {
+  Future<void> _loadMedia() async {
     try {
-      final loadedMovies = _filter.hasGenres
-          ? await movieApiService.fetchMoviesByGenres(_filter.genreIds)
-          : await movieApiService.fetchPopularMovies();
+      final List<Movie> loadedMovies;
+
+      if (_genreFilter.hasGenres) {
+        if (_movieTypeFilter != null) {
+          loadedMovies = await movieApiService.fetchMediaByGenres(
+            _genreFilter.genreIds,
+            _movieTypeFilter!,
+          );
+        } else {
+          loadedMovies = await movieApiService.fetchTrendingByGenres(
+            _genreFilter.genreIds,
+          );
+        }
+      } else {
+        loadedMovies = await movieApiService.fetchTrending();
+      }
 
       if (!mounted) return;
 
@@ -52,54 +82,62 @@ class _MoviesState extends State<Movies> {
         movies = loadedMovies;
         isLoading = false;
       });
-
-      if (movies.isNotEmpty) {
-        _loadMovieDetails(movies.first.id);
-      }
-    } catch (_) {
-      if (!mounted) return;
-
-      setState(() {
-        isLoading = false;
-      });
+    } catch (e) {
+      debugPrint(e.toString());
     }
   }
 
-  Future<void> _loadMovieDetails(int movieId) async {
-    if (_movieDetails.containsKey(movieId)) return;
+  Future<void> _loadMovieDetails(Movie movie) async {
+    if (_movieDetails.containsKey(movie.id)) return;
 
-    final details = await movieRepository.getMovieDetails(movieId);
+    final details = await movieRepository.getMovieDetails(movie.id, movie.type);
 
     if (!mounted) return;
 
     setState(() {
-      _movieDetails[movieId] = details;
+      _movieDetails[movie.id] = details;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) return const Center(child: CircularProgressIndicator());
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
 
-    if (movies.isEmpty) return const Center(child: Text('Фильмы не найдены'));
+    if (filteredMovies.isEmpty) {
+      return const Center(child: Text('Фильмы не найдены'));
+    }
 
     return Column(
-      crossAxisAlignment: .start,
       children: [
-        MovieFilterWidget(
-          genres: movieRepository.genres,
-          selectedGenres: _filter.genreIds,
-          onChanged: (genreIds) {
-            setState(() {
-              _filter = _filter.copyWith(genreIds: genreIds);
-            });
+        Row(
+          mainAxisAlignment: .spaceAround,
+          children: [
+            MovieGenreFilter(
+              genres: movieRepository.genres,
+              selectedGenres: _genreFilter.genreIds,
+              onChanged: (genreIds) {
+                setState(() {
+                  _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+                });
 
-            _loadMovies();
-          },
+                _loadMedia();
+              },
+            ),
+            MovieTypeFilter(
+              selectedFilter: _movieTypeFilter,
+              onChanged: (filter) {
+                setState(() {
+                  _movieTypeFilter = filter;
+                });
+
+                _loadMedia();
+              },
+            ),
+          ],
         ),
-
         const SizedBox(height: 16),
-
         Expanded(
           child: CardSwiper(
             controller: _cardSwiperController,
@@ -107,10 +145,9 @@ class _MoviesState extends State<Movies> {
               horizontal: true,
               vertical: false,
             ),
-            padding: const .all(0),
-            cardsCount: movies.length,
+            cardsCount: filteredMovies.length,
             cardBuilder: (context, index, _, _) {
-              final movie = movies[index];
+              final movie = filteredMovies[index];
 
               final movieGenres = movie.genreIds
                   .map(
@@ -123,19 +160,18 @@ class _MoviesState extends State<Movies> {
               return MovieCard(
                 movie: movie,
                 genres: movieGenres,
-                selectedGenreIds: _filter.genreIds,
+                selectedGenreIds: _genreFilter.genreIds,
                 movieDetails: _movieDetails[movie.id],
               );
             },
             onSwipe: (previousIndex, currentIndex, direction) {
               if (currentIndex == null) return true;
 
-              _loadMovieDetails(movies[currentIndex].id);
+              _loadMovieDetails(filteredMovies[currentIndex]);
 
-              if (currentIndex + 1 < movies.length) {
-                _loadMovieDetails(movies[currentIndex + 1].id);
+              if (currentIndex + 1 < filteredMovies.length) {
+                _loadMovieDetails(filteredMovies[currentIndex + 1]);
               }
-
               return true;
             },
           ),

@@ -103,9 +103,7 @@ class MovieCard extends StatelessWidget {
 
                           return Material(
                             color: isSelected
-                                ? theme.colorScheme.primary.withValues(
-                                    alpha: 0.85,
-                                  )
+                                ? theme.colorScheme.primary
                                 : Colors.white.withValues(alpha: 0.15),
                             borderRadius: .circular(20),
                             child: Padding(
@@ -117,7 +115,6 @@ class MovieCard extends StatelessWidget {
                                 genre.name,
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: Colors.white,
-                                  fontWeight: isSelected ? .bold : null,
                                 ),
                               ),
                             ),

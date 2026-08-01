@@ -1,3 +1,4 @@
+import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
@@ -21,15 +22,18 @@ class MovieRepository {
     return _genres!;
   }
 
-  final Map<int, MovieDetails> _detailsCache = {};
+  final Map<String, MovieDetails> _detailsCache = {};
 
-  Future<MovieDetails> getMovieDetails(int id) async {
-    final cachedMovie = _detailsCache[id];
+  Future<MovieDetails> getMovieDetails(int id, MediaContentType type) async {
+    final cacheKey = '$type-$id';
+
+    final cachedMovie = _detailsCache[cacheKey];
 
     if (cachedMovie != null) return cachedMovie;
 
-    final movieDetails = await apiService.fetchMovieDetails(id);
-    _detailsCache[id] = movieDetails;
+    final movieDetails = await apiService.fetchMediaDetails(id, type);
+
+    _detailsCache[cacheKey] = movieDetails;
 
     return movieDetails;
   }

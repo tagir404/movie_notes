@@ -1,8 +1,10 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/constants/api_constants.dart';
+import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -15,23 +17,43 @@ class MovieApiService {
   final accessToken = dotenv.get('ACCESS_TOKEN');
 
   Future<List<Genre>> fetchGenres() async {
-    final json = await _get('/3/genre/movie/list');
+    final responses = await Future.wait([
+      _get('/3/genre/movie/list'),
+      _get('/3/genre/tv/list'),
+    ]);
 
-    return (json['genres'] as List)
-        .map((genre) => Genre.fromJson(genre))
-        .toList();
+    final movieGenres = responses[0]['genres'] as List;
+    final tvShowGenres = responses[1]['genres'] as List;
+
+    return {
+      ...movieGenres.map((json) => Genre.fromJson(json)),
+      ...tvShowGenres.map((json) => Genre.fromJson(json)),
+    }.toList();
   }
 
-  Future<List<Movie>> fetchPopularMovies() async {
-    final json = await _get('/3/movie/popular');
+  Future<List<Movie>> fetchTrending() async {
+    final responses = await Future.wait([
+      _get('/3/trending/movie/week'),
+      _get('/3/trending/tv/week'),
+    ]);
 
-    return (json['results'] as List)
-        .map((movie) => Movie.fromJson(movie))
-        .toList();
+    final moviesJson = responses[0]['results'] as List;
+    final tvJson = responses[1]['results'] as List;
+
+    return [
+      ...moviesJson.map((json) => Movie.fromJson(json, MediaContentType.movie)),
+      ...tvJson.map((json) => Movie.fromJson(json, MediaContentType.tvShow)),
+    ];
   }
 
-  Future<MovieDetails> fetchMovieDetails(int movieId) async {
-    final json = await _get('/3/movie/$movieId');
+  Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {
+    final endpoint = type == MediaContentType.movie
+        ? '/3/movie/$id'
+        : '/3/tv/$id';
+
+    final json = await _get(endpoint);
+
+    debugPrint(json.toString());
 
     return MovieDetails.fromJson(json);
   }
@@ -42,15 +64,45 @@ class MovieApiService {
     }
   }
 
-  Future<List<Movie>> fetchMoviesByGenres(List<int> genreIds) async {
+  Future<List<Movie>> fetchMediaByGenres(
+    List<int> genreIds,
+    MediaContentType type,
+  ) async {
+    final endpoint = type == MediaContentType.movie
+        ? '/3/discover/movie'
+        : '/3/discover/tv';
+
     final json = await _get(
-      '/3/discover/movie',
+      endpoint,
       queryParameters: {'with_genres': genreIds.join(',')},
     );
 
     return (json['results'] as List)
-        .map((movie) => Movie.fromJson(movie))
+        .map((item) => Movie.fromJson(item, type))
         .toList();
+  }
+
+  Future<List<Movie>> fetchTrendingByGenres(List<int> genreIds) async {
+    final responses = await Future.wait([
+      _get(
+        '/3/discover/movie',
+        queryParameters: {'with_genres': genreIds.join(',')},
+      ),
+      _get(
+        '/3/discover/tv',
+        queryParameters: {'with_genres': genreIds.join(',')},
+      ),
+    ]);
+
+    final moviesJson = responses[0]['results'] as List;
+    final tvShowsJson = responses[1]['results'] as List;
+
+    return [
+      ...moviesJson.map((json) => Movie.fromJson(json, MediaContentType.movie)),
+      ...tvShowsJson.map(
+        (json) => Movie.fromJson(json, MediaContentType.tvShow),
+      ),
+    ];
   }
 
   Future<dynamic> _get(
