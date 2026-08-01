@@ -4,6 +4,7 @@ import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/utils/formatters.dart';
 import 'package:movie_notes/widgets/pill.dart';
+import 'package:movie_notes/widgets/rating_stars.dart';
 
 class MovieCard extends StatelessWidget {
   const MovieCard({
@@ -57,6 +58,10 @@ class MovieCard extends StatelessWidget {
                       mainAxisAlignment: .spaceBetween,
                       children: [
                         Pill(
+                          padding: const .symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
                           borderRadius: .circular(20),
                           child: Row(
                             spacing: 6,
@@ -75,6 +80,10 @@ class MovieCard extends StatelessWidget {
                           ),
                         ),
                         Pill(
+                          padding: const .symmetric(
+                            vertical: 4,
+                            horizontal: 12,
+                          ),
                           borderRadius: .circular(20),
                           child: Row(
                             spacing: 6,
@@ -136,12 +145,23 @@ class MovieCard extends StatelessWidget {
                       overflow: .ellipsis,
                       textAlign: .justify,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 24),
                     Row(
                       spacing: 4,
                       children: [
-                        const Icon(Icons.star),
-                        Text('Оценка: ${movie.voteAverage.toStringAsFixed(1)}'),
+                        RatingStars(rating: movie.voteAverage),
+                        Text(
+                          movie.voteAverage.toStringAsFixed(1),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
+                        ),
+                        Text(
+                          '· ${formatCount(movieDetails?.voteCount ?? 0)} оценок',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey,
+                          ),
+                        ),
                       ],
                     ),
                   ],

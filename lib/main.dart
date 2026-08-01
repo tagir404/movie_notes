@@ -55,9 +55,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const .all(25),
-        child: IndexedStack(index: _selectedIndex, children: _screens),
+      body: SafeArea(
+        child: Padding(
+          padding: const .all(20),
+          child: IndexedStack(index: _selectedIndex, children: _screens),
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,

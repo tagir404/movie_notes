@@ -68,6 +68,8 @@ class _MediaScreenState extends State<MediaScreen> {
         movies = loadedMovies;
         isLoading = false;
       });
+
+      _preloadDetails(0);
     } catch (e) {
       debugPrint(e.toString());
 
@@ -76,6 +78,14 @@ class _MediaScreenState extends State<MediaScreen> {
       setState(() {
         isLoading = false;
       });
+    }
+  }
+
+  void _preloadDetails(int index) {
+    _loadMovieDetails(movies[index]);
+
+    if (index + 1 < movies.length) {
+      _loadMovieDetails(movies[index + 1]);
     }
   }
 
@@ -133,6 +143,7 @@ class _MediaScreenState extends State<MediaScreen> {
         const SizedBox(height: 16),
         Expanded(
           child: CardSwiper(
+            padding: const .all(0),
             controller: _cardSwiperController,
             allowedSwipeDirection: const .symmetric(
               horizontal: true,
@@ -160,16 +171,13 @@ class _MediaScreenState extends State<MediaScreen> {
             onSwipe: (previousIndex, currentIndex, direction) {
               if (currentIndex == null) return true;
 
-              _loadMovieDetails(movies[currentIndex]);
+              _preloadDetails(currentIndex);
 
-              if (currentIndex + 1 < movies.length) {
-                _loadMovieDetails(movies[currentIndex + 1]);
-              }
               return true;
             },
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 28),
         Row(
           mainAxisAlignment: .center,
           spacing: 40,
@@ -178,7 +186,7 @@ class _MediaScreenState extends State<MediaScreen> {
               shape: const CircleBorder(),
               child: IconButton(
                 onPressed: () => _cardSwiperController.swipe(.left),
-                icon: const Icon(Icons.block, size: 44, color: Colors.red),
+                icon: const Icon(Icons.block, size: 40, color: Colors.red),
               ),
             ),
             Pill(
@@ -187,7 +195,7 @@ class _MediaScreenState extends State<MediaScreen> {
                 onPressed: () => _cardSwiperController.swipe(.right),
                 icon: const Icon(
                   Icons.bookmark_add,
-                  size: 44,
+                  size: 40,
                   color: Colors.green,
                 ),
               ),

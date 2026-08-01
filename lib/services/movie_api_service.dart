@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/constants/api_constants.dart';
@@ -51,8 +50,6 @@ class MediaApiService {
         : '/3/tv/$id';
 
     final json = await _get(endpoint);
-
-    debugPrint(json.toString());
 
     return MovieDetails.fromJson(json);
   }
