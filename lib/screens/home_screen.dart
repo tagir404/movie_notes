@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/screens/movies_screen.dart';
 import 'package:movie_notes/screens/trends_screen.dart';
 import 'package:movie_notes/screens/tv_shows_screen.dart';
+import 'package:movie_notes/screens/favorites_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,7 +14,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  static const _screens = [MoviesScreen(), TvShowsScreen(), TrendsScreen()];
+  static const _screens = [
+    MoviesScreen(),
+    TvShowsScreen(),
+    TrendsScreen(),
+    FavoritesScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {

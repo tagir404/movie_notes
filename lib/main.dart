@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_notes/database/app_database.dart';
+import 'package:movie_notes/database/favorite_datasource.dart';
+import 'package:movie_notes/repositories/favorite_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/screens/home_screen.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
@@ -14,6 +17,9 @@ Future<void> main() async {
   final client = http.Client();
   final apiService = MediaApiService(client);
   final repository = MediaRepository(apiService);
+  final favoriteRepository = FavoriteRepository(
+    FavoriteLocalDatasource(await AppDatabase.database),
+  );
 
   await repository.init();
 
@@ -21,6 +27,7 @@ Future<void> main() async {
     AppScope(
       movieApiService: apiService,
       movieRepository: repository,
+      favoriteRepository: favoriteRepository,
       child: const MainApp(),
     ),
   );

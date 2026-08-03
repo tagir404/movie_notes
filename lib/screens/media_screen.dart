@@ -4,6 +4,7 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
+import 'package:movie_notes/repositories/favorite_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
@@ -28,6 +29,7 @@ class MediaScreen extends StatefulWidget {
 class _MediaScreenState extends State<MediaScreen> {
   late final MediaApiService movieApiService;
   late final MediaRepository movieRepository;
+  late final FavoriteRepository favoriteRepository;
 
   final CardSwiperController _cardSwiperController = CardSwiperController();
   final Map<int, MovieDetails> _movieDetails = {};
@@ -49,6 +51,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
     movieApiService = AppScope.of(context).movieApiService;
     movieRepository = AppScope.of(context).movieRepository;
+    favoriteRepository = AppScope.of(context).favoriteRepository;
 
     _loadMedia();
   }
@@ -176,6 +179,9 @@ class _MediaScreenState extends State<MediaScreen> {
             },
             onSwipe: (previousIndex, currentIndex, direction) {
               if (currentIndex == null) return true;
+              direction == .right
+                  ? favoriteRepository.addFavorite(movies[currentIndex])
+                  : null;
 
               _preloadDetails(currentIndex);
 
