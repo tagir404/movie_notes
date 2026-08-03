@@ -32,7 +32,7 @@ class MediaApiService {
     final json = await _get('/3/trending/movie/week');
 
     return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, MediaContentType.movie))
+        .map((item) => Movie.fromJson(item, .movie))
         .toList();
   }
 
@@ -40,14 +40,34 @@ class MediaApiService {
     final json = await _get('/3/trending/tv/week');
 
     return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, MediaContentType.tvShow))
+        .map((item) => Movie.fromJson(item, .tvShow))
+        .toList();
+  }
+
+  Future<List<Movie>> fetchPopularMovies([int page = 1]) async {
+    final json = await _get(
+      '3/movie/popular',
+      queryParameters: {'page': page.toString()},
+    );
+
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, .movie))
+        .toList();
+  }
+
+  Future<List<Movie>> fetchPopularTvShows([int page = 1]) async {
+    final json = await _get(
+      '3/tv/popular',
+      queryParameters: {'page': page.toString()},
+    );
+
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, .tvShow))
         .toList();
   }
 
   Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {
-    final endpoint = type == MediaContentType.movie
-        ? '/3/movie/$id'
-        : '/3/tv/$id';
+    final endpoint = type == .movie ? '/3/movie/$id' : '/3/tv/$id';
 
     final json = await _get(endpoint);
 
@@ -67,7 +87,7 @@ class MediaApiService {
     );
 
     return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, MediaContentType.movie))
+        .map((item) => Movie.fromJson(item, .movie))
         .toList();
   }
 
@@ -78,7 +98,7 @@ class MediaApiService {
     );
 
     return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, MediaContentType.tvShow))
+        .map((item) => Movie.fromJson(item, .tvShow))
         .toList();
   }
 

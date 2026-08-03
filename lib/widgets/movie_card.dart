@@ -108,17 +108,17 @@ class _MovieCardSurface extends StatelessWidget {
     final posterUrl = 'https://image.tmdb.org/t/p/w500${movie.posterPath}';
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: .circular(12),
       child: Stack(
-        fit: StackFit.expand,
+        fit: .expand,
         children: [
-          Image.network(posterUrl, fit: BoxFit.cover),
+          Image.network(posterUrl, fit: .cover),
 
           const DecoratedBox(
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
+                begin: .topCenter,
+                end: .bottomCenter,
                 stops: [0, .7, 1],
                 colors: [Colors.transparent, Colors.black, Colors.black],
               ),
@@ -130,7 +130,7 @@ class _MovieCardSurface extends StatelessWidget {
               decoration: BoxDecoration(color: Color.fromARGB(150, 0, 0, 0)),
             ),
 
-          Padding(padding: const EdgeInsets.all(20), child: child),
+          Padding(padding: const .all(20), child: child),
         ],
       ),
     );
@@ -155,115 +155,90 @@ class _FrontContent extends StatelessWidget {
     final theme = Theme.of(context);
     final movieYear = movie.releaseDate.substring(0, 4);
 
-    return DefaultTextStyle(
-      style: theme.textTheme.bodyMedium!.copyWith(color: Colors.white),
-      child: IconTheme(
-        data: const IconThemeData(color: Colors.white),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      mainAxisAlignment: .end,
+      crossAxisAlignment: .start,
+      children: [
+        Row(
+          mainAxisAlignment: .spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Pill(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 12,
+            Pill(
+              padding: const .symmetric(vertical: 4, horizontal: 12),
+              borderRadius: .circular(20),
+              child: Row(
+                children: [
+                  const Icon(Icons.access_time, size: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                    movieDetails?.runtime == null
+                        ? '...'
+                        : formatRuntime(movieDetails!.runtime!),
+                    style: theme.textTheme.bodyLarge?.copyWith(),
                   ),
-                  borderRadius: BorderRadius.circular(20),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.access_time, size: 18),
-                      const SizedBox(width: 6),
-                      Text(
-                        movieDetails?.runtime == null
-                            ? '...'
-                            : formatRuntime(movieDetails!.runtime!),
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Pill(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 12,
-                  ),
-                  borderRadius: BorderRadius.circular(20),
-                  child: Row(
-                    children: [
-                      const Icon(Icons.calendar_today, size: 18),
-                      const SizedBox(width: 6),
-                      Text(
-                        '$movieYear г',
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: genres.map((genre) {
-                final isSelected = selectedGenreIds.contains(genre.id);
-
-                return Material(
-                  color: isSelected
-                      ? theme.colorScheme.primary
-                      : Colors.white.withValues(alpha: .15),
-                  borderRadius: BorderRadius.circular(20),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 4,
-                      horizontal: 8,
-                    ),
-                    child: Text(
-                      genre.name,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              movie.title,
-              style: theme.textTheme.headlineMedium?.copyWith(
-                color: Colors.white,
+                ],
               ),
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                RatingStars(rating: movie.voteAverage),
-                const SizedBox(width: 8),
-                Text(
-                  movie.voteAverage.toStringAsFixed(1),
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
+            Pill(
+              padding: const .symmetric(vertical: 4, horizontal: 12),
+              borderRadius: .circular(20),
+              child: Row(
+                children: [
+                  const Icon(Icons.calendar_today, size: 18),
+                  const SizedBox(width: 6),
+                  Text(
+                    '$movieYear г',
+                    style: theme.textTheme.bodyLarge?.copyWith(),
                   ),
-                ),
-                Text(
-                  ' · ${formatCount(movieDetails?.voteCount ?? 0)} оценок',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.grey,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),
-      ),
+        const Spacer(),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: genres.map((genre) {
+            final isSelected = selectedGenreIds.contains(genre.id);
+
+            return Material(
+              color: isSelected
+                  ? theme.colorScheme.primary
+                  : Colors.white.withValues(alpha: .15),
+              borderRadius: .circular(20),
+              child: Padding(
+                padding: const .symmetric(vertical: 4, horizontal: 8),
+                child: Text(
+                  genre.name,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          movie.title,
+          style: theme.textTheme.headlineMedium?.copyWith(color: Colors.white),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            RatingStars(rating: movie.voteAverage),
+            const SizedBox(width: 8),
+            Text(
+              movie.voteAverage.toStringAsFixed(1),
+              style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+            ),
+            Text(
+              ' · ${formatCount(movieDetails?.voteCount ?? 0)} оценок',
+              style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -295,7 +270,7 @@ class _BackContent extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               movieDetails!.tagline!,
-              style: const TextStyle(fontStyle: FontStyle.italic),
+              style: const TextStyle(fontStyle: .italic),
             ),
           ],
 
@@ -304,7 +279,7 @@ class _BackContent extends StatelessWidget {
           SingleChildScrollView(
             child: Text(
               movie.overview.isEmpty ? 'Описание отсутствует.' : movie.overview,
-              textAlign: TextAlign.justify,
+              textAlign: .justify,
             ),
           ),
         ],

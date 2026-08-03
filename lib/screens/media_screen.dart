@@ -34,6 +34,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
   bool isLoading = true;
   bool _initialized = false;
+  int page = 1;
 
   List<Movie> movies = [];
 
@@ -58,7 +59,7 @@ class _MediaScreenState extends State<MediaScreen> {
     });
 
     try {
-      final loadedMovies = widget.type == MediaContentType.movie
+      final loadedMovies = widget.type == .movie
           ? await _loadMovies()
           : await _loadTvShows();
 
@@ -94,7 +95,7 @@ class _MediaScreenState extends State<MediaScreen> {
       return movieApiService.fetchMoviesByGenres(_genreFilter.genreIds);
     }
 
-    return movieApiService.fetchTrendingMovies();
+    return movieApiService.fetchPopularMovies(page);
   }
 
   Future<List<Movie>> _loadTvShows() {
@@ -102,7 +103,7 @@ class _MediaScreenState extends State<MediaScreen> {
       return movieApiService.fetchTvShowsByGenres(_genreFilter.genreIds);
     }
 
-    return movieApiService.fetchTrendingTvShows();
+    return movieApiService.fetchPopularTvShows(page);
   }
 
   Future<void> _loadMovieDetails(Movie movie) async {
@@ -144,6 +145,10 @@ class _MediaScreenState extends State<MediaScreen> {
         Expanded(
           child: CardSwiper(
             padding: const .all(0),
+            isLoop: false,
+            numberOfCardsDisplayed: 2,
+            backCardOffset: const Offset(0, 0),
+            scale: 1,
             controller: _cardSwiperController,
             allowedSwipeDirection: const .symmetric(
               horizontal: true,
@@ -176,9 +181,16 @@ class _MediaScreenState extends State<MediaScreen> {
 
               return true;
             },
+            onEnd: () {
+              setState(() {
+                page++;
+              });
+
+              _loadMedia();
+            },
           ),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 20),
         Row(
           mainAxisAlignment: .center,
           spacing: 40,

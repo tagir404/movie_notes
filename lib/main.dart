@@ -3,8 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/repositories/media_repository.dart';
-import 'package:movie_notes/screens/movies_screen.dart';
-import 'package:movie_notes/screens/tv_shows_screen.dart';
+import 'package:movie_notes/screens/home_screen.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 
@@ -35,43 +34,11 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
-      theme: ThemeData(textTheme: GoogleFonts.nunitoTextTheme()),
-    );
-  }
-}
-
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-
-  static const _screens = [MoviesScreen(), TvShowsScreen()];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const .all(20),
-          child: IndexedStack(index: _selectedIndex, children: _screens),
+      theme: ThemeData(
+        textTheme: GoogleFonts.nunitoTextTheme(),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color.fromARGB(255, 7, 98, 255),
         ),
-      ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.movie), label: 'Фильмы'),
-          NavigationDestination(icon: Icon(Icons.tv), label: 'Сериалы'),
-        ],
       ),
     );
   }

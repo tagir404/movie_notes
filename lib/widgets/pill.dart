@@ -20,7 +20,6 @@ class Pill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.black,
       elevation: 6,
       shape: shape,
       borderRadius: borderRadius,

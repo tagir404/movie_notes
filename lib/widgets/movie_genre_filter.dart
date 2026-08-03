@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/genre.dart';
+import 'package:movie_notes/widgets/pill.dart';
 
 class MovieGenreFilter extends StatelessWidget {
   const MovieGenreFilter({
@@ -15,49 +16,47 @@ class MovieGenreFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.black,
+    return InkWell(
       borderRadius: .circular(20),
-      elevation: 6,
-      child: InkWell(
-        borderRadius: .circular(20),
-        splashColor: Colors.white24,
-        splashFactory: InkSparkle.splashFactory,
-        highlightColor: Colors.white10,
-        onTap: () => _showGenres(context),
-        child: Stack(
-          clipBehavior: .none,
-          children: [
-            const Padding(
-              padding: .symmetric(horizontal: 12, vertical: 8),
-              child: Text('Жанры', style: TextStyle(color: Colors.white)),
+      splashColor: Colors.white24,
+      splashFactory: InkSparkle.splashFactory,
+      highlightColor: Colors.white10,
+      onTap: () => _showGenres(context),
+      child: Stack(
+        clipBehavior: .none,
+        children: [
+          Pill(
+            borderRadius: .circular(20),
+            padding: const .symmetric(horizontal: 12, vertical: 4),
+            child: Text(
+              'Жанры',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
             ),
+          ),
 
-            if (selectedGenres.isNotEmpty)
-              Positioned(
-                top: -6,
-                right: -6,
-                child: Material(
-                  color: Colors.red,
-                  shape: const CircleBorder(),
-                  elevation: 4,
-                  child: SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: Center(
-                      child: Text(
-                        selectedGenres.length.toString(),
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 12,
-                        ),
-                      ),
+          if (selectedGenres.isNotEmpty)
+            Positioned(
+              top: -6,
+              right: -6,
+              child: Material(
+                color: Theme.of(context).colorScheme.primary,
+                shape: const CircleBorder(),
+                elevation: 4,
+                child: SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: Center(
+                    child: Text(
+                      selectedGenres.length.toString(),
+                      style: Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.copyWith(color: Colors.white),
                     ),
                   ),
                 ),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
