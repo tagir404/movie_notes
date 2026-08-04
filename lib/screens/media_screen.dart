@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
@@ -8,8 +7,8 @@ import 'package:movie_notes/repositories/favorite_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
+import 'package:movie_notes/widgets/media_swiper_view.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
-import 'package:movie_notes/widgets/movie_genre_filter.dart';
 import 'package:movie_notes/widgets/pill.dart';
 
 class MediaScreen extends StatefulWidget {
@@ -31,7 +30,6 @@ class _MediaScreenState extends State<MediaScreen> {
   late final MediaRepository movieRepository;
   late final FavoriteRepository favoriteRepository;
 
-  final CardSwiperController _cardSwiperController = CardSwiperController();
   final Map<int, MovieDetails> _movieDetails = {};
 
   bool isLoading = true;
@@ -39,8 +37,14 @@ class _MediaScreenState extends State<MediaScreen> {
   int page = 1;
 
   List<Movie> movies = [];
-
   GenreFilter _genreFilter = const GenreFilter();
+  late MediaContentType _selectedType;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedType = widget.type;
+  }
 
   @override
   void didChangeDependencies() {
@@ -62,7 +66,7 @@ class _MediaScreenState extends State<MediaScreen> {
     });
 
     try {
-      final loadedMovies = widget.type == .movie
+      final loadedMovies = _selectedType == .movie
           ? await _loadMovies()
           : await _loadTvShows();
 
@@ -73,7 +77,9 @@ class _MediaScreenState extends State<MediaScreen> {
         isLoading = false;
       });
 
-      _preloadDetails(0);
+      if (movies.isNotEmpty) {
+        _preloadDetails(0);
+      }
     } catch (e) {
       debugPrint(e.toString());
 
@@ -85,7 +91,23 @@ class _MediaScreenState extends State<MediaScreen> {
     }
   }
 
+  void _setContentType(MediaContentType type) {
+    if (_selectedType == type) return;
+
+    setState(() {
+      _selectedType = type;
+      page = 1;
+      movies = [];
+      _movieDetails.clear();
+      _genreFilter = const GenreFilter();
+    });
+
+    _loadMedia();
+  }
+
   void _preloadDetails(int index) {
+    if (index < 0 || index >= movies.length) return;
+
     _loadMovieDetails(movies[index]);
 
     if (index + 1 < movies.length) {
@@ -123,105 +145,72 @@ class _MediaScreenState extends State<MediaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
+    return Scaffold(
+      appBar: AppBar(title: const Text('Контент')),
+      body: MediaSwiperView(
+        initialType: _selectedType,
+        emptyMessage: widget.emptyMessage,
+        isLoading: isLoading,
+        items: movies,
+        genresForType: movieRepository.genres,
+        selectedGenres: _genreFilter.genreIds,
+        onTypeChanged: (type) {
+          _setContentType(type);
+        },
+        onGenresChanged: (genreIds) {
+          setState(() {
+            _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+          });
 
-    if (movies.isEmpty) {
-      return Center(child: Text(widget.emptyMessage));
-    }
+          _loadMedia();
+        },
+        cardBuilder: (context, movie, selectedType, selectedGenres) {
+          final movieGenres = movie.genreIds
+              .map(
+                (id) => movieRepository
+                    .genres(selectedType)
+                    .firstWhere((genre) => genre.id == id),
+              )
+              .toList();
 
-    return Column(
-      children: [
-        MovieGenreFilter(
-          genres: movieRepository.genres(widget.type),
-          selectedGenres: _genreFilter.genreIds,
-          onChanged: (genreIds) {
-            setState(() {
-              _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
-            });
-
-            _loadMedia();
-          },
-        ),
-        const SizedBox(height: 16),
-        Expanded(
-          child: CardSwiper(
-            padding: const .all(0),
-            isLoop: false,
-            numberOfCardsDisplayed: 2,
-            backCardOffset: const Offset(0, 0),
-            scale: 1,
-            controller: _cardSwiperController,
-            allowedSwipeDirection: const .symmetric(
-              horizontal: true,
-              vertical: false,
-            ),
-            cardsCount: movies.length,
-            cardBuilder: (context, index, _, _) {
-              final movie = movies[index];
-
-              final movieGenres = movie.genreIds
-                  .map(
-                    (id) => movieRepository
-                        .genres(widget.type)
-                        .firstWhere((genre) => genre.id == id),
-                  )
-                  .toList();
-
-              return MovieCard(
-                key: ValueKey(movie.id),
-                movie: movie,
-                genres: movieGenres,
-                selectedGenreIds: _genreFilter.genreIds,
-                movieDetails: _movieDetails[movie.id],
-              );
-            },
-            onSwipe: (previousIndex, currentIndex, direction) {
-              if (currentIndex == null) return true;
-              direction == .right
-                  ? favoriteRepository.addFavorite(movies[currentIndex])
-                  : null;
-
-              _preloadDetails(currentIndex);
-
-              return true;
-            },
-            onEnd: () {
-              setState(() {
-                page++;
-              });
-
-              _loadMedia();
-            },
+          return MovieCard(
+            key: ValueKey(movie.id),
+            movie: movie,
+            genres: movieGenres,
+            selectedGenreIds: selectedGenres,
+            movieDetails: _movieDetails[movie.id],
+          );
+        },
+        leftAction: Pill(
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.block, size: 40, color: Colors.red),
           ),
         ),
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: .center,
-          spacing: 40,
-          children: [
-            Pill(
-              shape: const CircleBorder(),
-              child: IconButton(
-                onPressed: () => _cardSwiperController.swipe(.left),
-                icon: const Icon(Icons.block, size: 40, color: Colors.red),
-              ),
-            ),
-            Pill(
-              shape: const CircleBorder(),
-              child: IconButton(
-                onPressed: () => _cardSwiperController.swipe(.right),
-                icon: const Icon(
-                  Icons.bookmark_add,
-                  size: 40,
-                  color: Colors.green,
-                ),
-              ),
-            ),
-          ],
+        rightAction: Pill(
+          shape: const CircleBorder(),
+          child: IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.bookmark_add, size: 40, color: Colors.green),
+          ),
         ),
-      ],
+        onSwipe: (previousIndex, currentIndex, direction, movie) {
+          if (currentIndex == null) return true;
+          direction == .right ? favoriteRepository.addFavorite(movie) : null;
+
+          _preloadDetails(currentIndex);
+
+          return true;
+        },
+        onEnd: () {
+          setState(() {
+            page++;
+          });
+
+          _loadMedia();
+        },
+      ),
     );
   }
 }

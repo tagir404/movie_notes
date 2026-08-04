@@ -40,6 +40,12 @@ class _MovieCardState extends State<MovieCard>
     );
   }
 
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   void _flip() {
     if (_controller.value == 0) {
       _controller.forward();
@@ -130,7 +136,7 @@ class _MovieCardSurface extends StatelessWidget {
               decoration: BoxDecoration(color: Color.fromARGB(150, 0, 0, 0)),
             ),
 
-          Padding(padding: const .all(20), child: child),
+          Padding(padding: const .all(16), child: child),
         ],
       ),
     );
@@ -243,11 +249,24 @@ class _FrontContent extends StatelessWidget {
   }
 }
 
-class _BackContent extends StatelessWidget {
+class _BackContent extends StatefulWidget {
   const _BackContent({required this.movie, required this.movieDetails});
 
   final Movie movie;
   final MovieDetails? movieDetails;
+
+  @override
+  State<_BackContent> createState() => _BackContentState();
+}
+
+class _BackContentState extends State<_BackContent> {
+  final _controller = ScrollController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -260,26 +279,36 @@ class _BackContent extends StatelessWidget {
         mainAxisAlignment: .end,
         children: [
           Text(
-            movie.title,
+            widget.movie.title,
             style: theme.textTheme.headlineMedium?.copyWith(
               color: Colors.white,
             ),
           ),
 
-          if ((movieDetails?.tagline ?? '').isNotEmpty) ...[
+          if ((widget.movieDetails?.tagline ?? '').isNotEmpty) ...[
             const SizedBox(height: 8),
             Text(
-              movieDetails!.tagline!,
+              widget.movieDetails!.tagline!,
               style: const TextStyle(fontStyle: .italic),
             ),
           ],
 
           const SizedBox(height: 12),
 
-          SingleChildScrollView(
-            child: Text(
-              movie.overview.isEmpty ? 'Описание отсутствует.' : movie.overview,
-              textAlign: .justify,
+          Expanded(
+            child: Scrollbar(
+              thumbVisibility: true,
+              controller: _controller,
+              child: SingleChildScrollView(
+                controller: _controller,
+                padding: const .only(right: 8),
+                child: Text(
+                  widget.movie.overview.isEmpty
+                      ? 'Описание отсутствует.'
+                      : widget.movie.overview,
+                  textAlign: .justify,
+                ),
+              ),
             ),
           ),
         ],

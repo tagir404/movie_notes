@@ -6,6 +6,7 @@ class Pill extends StatelessWidget {
     this.shape,
     this.borderRadius,
     this.padding,
+    this.color,
     super.key,
   }) : assert(
          shape == null || borderRadius == null,
@@ -15,12 +16,14 @@ class Pill extends StatelessWidget {
   final ShapeBorder? shape;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
+  final Color? color;
   final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 6,
+      color: color,
       shape: shape,
       borderRadius: borderRadius,
       child: Padding(padding: padding ?? const .all(0), child: child),

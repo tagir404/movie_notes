@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/widgets/pill.dart';
 
-class MovieGenreFilter extends StatelessWidget {
-  const MovieGenreFilter({
+class MediaGenreFilter extends StatelessWidget {
+  const MediaGenreFilter({
     required this.genres,
     required this.selectedGenres,
     required this.onChanged,
@@ -18,9 +18,6 @@ class MovieGenreFilter extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       borderRadius: .circular(20),
-      splashColor: Colors.white24,
-      splashFactory: InkSparkle.splashFactory,
-      highlightColor: Colors.white10,
       onTap: () => _showGenres(context),
       child: Stack(
         clipBehavior: .none,

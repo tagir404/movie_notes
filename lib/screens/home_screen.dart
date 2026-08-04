@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:movie_notes/screens/movies_screen.dart';
-import 'package:movie_notes/screens/trends_screen.dart';
-import 'package:movie_notes/screens/tv_shows_screen.dart';
+import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/screens/favorites_screen.dart';
+import 'package:movie_notes/screens/media_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,21 +14,17 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
   static const _screens = [
-    MoviesScreen(),
-    TvShowsScreen(),
-    TrendsScreen(),
+    MediaScreen(
+      type: MediaContentType.movie,
+      emptyMessage: 'Контент не найден',
+    ),
     FavoritesScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const .all(20),
-          child: IndexedStack(index: _selectedIndex, children: _screens),
-        ),
-      ),
+      body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (index) {
@@ -38,12 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         },
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.movie), label: 'Фильмы'),
-          NavigationDestination(icon: Icon(Icons.tv), label: 'Сериалы'),
-          NavigationDestination(
-            icon: Icon(Icons.local_fire_department),
-            label: 'Тренды',
-          ),
+          NavigationDestination(icon: Icon(Icons.movie), label: 'Контент'),
           NavigationDestination(
             icon: Icon(Icons.bookmarks),
             label: 'Сохранённые',
