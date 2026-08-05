@@ -9,7 +9,6 @@ import 'package:movie_notes/services/movie_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
-import 'package:movie_notes/widgets/pill.dart';
 
 class MediaScreen extends StatefulWidget {
   const MediaScreen({
@@ -181,19 +180,19 @@ class _MediaScreenState extends State<MediaScreen> {
             movieDetails: _movieDetails[movie.id],
           );
         },
-        leftAction: Pill(
-          shape: const CircleBorder(),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.block, size: 40, color: Colors.red),
-          ),
+        leftActionInfo: Row(
+          spacing: 8,
+          children: [
+            const Icon(Icons.swipe_left, size: 16),
+            Text('Неинтересно', style: Theme.of(context).textTheme.bodyMedium),
+          ],
         ),
-        rightAction: Pill(
-          shape: const CircleBorder(),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.bookmark_add, size: 40, color: Colors.green),
-          ),
+        rightActionInfo: Row(
+          spacing: 8,
+          children: [
+            Text('Сохранить', style: Theme.of(context).textTheme.bodyMedium),
+            const Icon(Icons.swipe_right, size: 16),
+          ],
         ),
         onSwipe: (previousIndex, currentIndex, direction, movie) {
           if (currentIndex == null) return true;

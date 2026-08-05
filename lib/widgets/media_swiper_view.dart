@@ -34,8 +34,8 @@ class MediaSwiperView extends StatefulWidget {
     required this.onTypeChanged,
     required this.onGenresChanged,
     required this.cardBuilder,
-    required this.leftAction,
-    required this.rightAction,
+    required this.leftActionInfo,
+    required this.rightActionInfo,
     this.onSwipe,
     this.onEnd,
     super.key,
@@ -50,10 +50,10 @@ class MediaSwiperView extends StatefulWidget {
   final ValueChanged<MediaContentType> onTypeChanged;
   final ValueChanged<List<int>> onGenresChanged;
   final MediaSwiperCardBuilder cardBuilder;
-  final Widget leftAction;
-  final Widget rightAction;
   final MediaSwiperOnSwipe? onSwipe;
   final VoidCallback? onEnd;
+  final Widget leftActionInfo;
+  final Widget rightActionInfo;
 
   @override
   State<MediaSwiperView> createState() => _MediaSwiperViewState();
@@ -163,14 +163,10 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
               onEnd: widget.onEnd,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              widget.leftAction,
-              const SizedBox(width: 24),
-              widget.rightAction,
-            ],
+            mainAxisAlignment: .spaceBetween,
+            children: [widget.leftActionInfo, widget.rightActionInfo],
           ),
         ],
       ),

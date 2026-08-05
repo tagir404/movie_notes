@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
@@ -311,6 +312,25 @@ class _BackContentState extends State<_BackContent> {
               ),
             ),
           ),
+          const SizedBox(height: 12),
+
+          if (widget.movieDetails?.originCountry != null &&
+              widget.movieDetails!.originCountry!.isNotEmpty)
+            Row(
+              spacing: 8,
+              children: [
+                ...widget.movieDetails!.originCountry!.map(
+                  (countryCode) => CountryFlag.fromCountryCode(
+                    countryCode,
+                    theme: const ImageTheme(
+                      width: 30,
+                      height: 20,
+                      shape: RoundedRectangle(6),
+                    ),
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );

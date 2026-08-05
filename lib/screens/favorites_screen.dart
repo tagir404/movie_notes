@@ -97,17 +97,19 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 movieDetails: _movieDetails[movie.id],
               );
             },
-            leftAction: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.block, size: 36, color: Colors.red),
+            leftActionInfo: Row(
+              spacing: 8,
+              children: [
+                const Icon(Icons.swipe_left, size: 16),
+                Text('', style: Theme.of(context).textTheme.bodyMedium),
+              ],
             ),
-            rightAction: IconButton(
-              onPressed: () {},
-              icon: const Icon(
-                Icons.bookmark_remove,
-                size: 36,
-                color: Colors.green,
-              ),
+            rightActionInfo: Row(
+              spacing: 8,
+              children: [
+                Text('', style: Theme.of(context).textTheme.bodyMedium),
+                const Icon(Icons.swipe_right, size: 16),
+              ],
             ),
           );
         },

@@ -4,6 +4,7 @@ class MovieDetails {
   final int id;
   final String title;
   final String overview;
+  final List<String>? originCountry;
   final String? posterPath;
   final String? backdropPath;
   final String releaseDate;
@@ -18,6 +19,7 @@ class MovieDetails {
     required this.id,
     required this.title,
     required this.overview,
+    required this.originCountry,
     required this.posterPath,
     required this.backdropPath,
     required this.releaseDate,
@@ -34,6 +36,7 @@ class MovieDetails {
       id: json['id'],
       title: json['title'] ?? json['name'],
       overview: json['overview'],
+      originCountry: (json['origin_country'] as List?)?.cast<String>(),
       posterPath: json['poster_path'],
       backdropPath: json['backdrop_path'],
       releaseDate: json['release_date'] ?? json['first_air_date'],
