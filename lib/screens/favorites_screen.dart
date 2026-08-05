@@ -60,10 +60,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 );
               })
               .toList();
-
+          return Text('l');
           return MediaSwiperView(
             initialType: _selectedType,
-            emptyMessage: 'Нет сохраненных элементов.',
             isLoading: false,
             items: movies,
             genresForType: movieRepository.genres,
@@ -97,18 +96,36 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 movieDetails: _movieDetails[movie.id],
               );
             },
-            leftActionInfo: Row(
-              spacing: 8,
+            onSwipe: (previousIndex, currentIndex, direction, movie) {
+              if (currentIndex == null) return true;
+              direction == .left
+                  ? favoriteRepository.removeFavorite(movie.id)
+                  : null;
+              return true;
+            },
+            actionsInfo: Row(
+              mainAxisAlignment: .spaceBetween,
               children: [
-                const Icon(Icons.swipe_left, size: 16),
-                Text('', style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            ),
-            rightActionInfo: Row(
-              spacing: 8,
-              children: [
-                Text('', style: Theme.of(context).textTheme.bodyMedium),
-                const Icon(Icons.swipe_right, size: 16),
+                Row(
+                  spacing: 8,
+                  children: [
+                    const Icon(Icons.swipe_left, size: 16),
+                    Text(
+                      'Удалить',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                Row(
+                  spacing: 8,
+                  children: [
+                    Text(
+                      'Просмотрено',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const Icon(Icons.swipe_right, size: 16),
+                  ],
+                ),
               ],
             ),
           );

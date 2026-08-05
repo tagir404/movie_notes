@@ -26,7 +26,6 @@ typedef MediaSwiperOnSwipe =
 class MediaSwiperView extends StatefulWidget {
   const MediaSwiperView({
     required this.initialType,
-    required this.emptyMessage,
     required this.isLoading,
     required this.items,
     required this.genresForType,
@@ -34,15 +33,14 @@ class MediaSwiperView extends StatefulWidget {
     required this.onTypeChanged,
     required this.onGenresChanged,
     required this.cardBuilder,
-    required this.leftActionInfo,
-    required this.rightActionInfo,
+    required this.actionsInfo,
+    this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.onSwipe,
     this.onEnd,
     super.key,
   });
 
   final MediaContentType initialType;
-  final String emptyMessage;
   final bool isLoading;
   final List<Movie> items;
   final List<Genre> Function(MediaContentType type) genresForType;
@@ -52,8 +50,8 @@ class MediaSwiperView extends StatefulWidget {
   final MediaSwiperCardBuilder cardBuilder;
   final MediaSwiperOnSwipe? onSwipe;
   final VoidCallback? onEnd;
-  final Widget leftActionInfo;
-  final Widget rightActionInfo;
+  final Widget actionsInfo;
+  final AllowedSwipeDirection allowedSwipeDirection;
 
   @override
   State<MediaSwiperView> createState() => _MediaSwiperViewState();
@@ -104,10 +102,6 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    if (widget.items.isEmpty) {
-      return Center(child: Text(widget.emptyMessage));
-    }
-
     return Padding(
       padding: const .only(left: 20, right: 20, top: 0, bottom: 20),
       child: Column(
@@ -135,10 +129,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
               backCardOffset: const Offset(0, 0),
               scale: 1,
               controller: _cardSwiperController,
-              allowedSwipeDirection: const .symmetric(
-                horizontal: true,
-                vertical: false,
-              ),
+              allowedSwipeDirection: widget.allowedSwipeDirection,
               cardsCount: widget.items.length,
               cardBuilder: (context, index, _, _) {
                 final movie = widget.items[index];
@@ -164,10 +155,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: .spaceBetween,
-            children: [widget.leftActionInfo, widget.rightActionInfo],
-          ),
+          widget.actionsInfo,
         ],
       ),
     );

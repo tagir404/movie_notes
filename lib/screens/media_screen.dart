@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
@@ -148,7 +149,6 @@ class _MediaScreenState extends State<MediaScreen> {
       appBar: AppBar(title: const Text('Контент')),
       body: MediaSwiperView(
         initialType: _selectedType,
-        emptyMessage: widget.emptyMessage,
         isLoading: isLoading,
         items: movies,
         genresForType: movieRepository.genres,
@@ -163,6 +163,10 @@ class _MediaScreenState extends State<MediaScreen> {
 
           _loadMedia();
         },
+        allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
+          horizontal: true,
+          vertical: false,
+        ),
         cardBuilder: (context, movie, selectedType, selectedGenres) {
           final movieGenres = movie.genreIds
               .map(
@@ -180,18 +184,29 @@ class _MediaScreenState extends State<MediaScreen> {
             movieDetails: _movieDetails[movie.id],
           );
         },
-        leftActionInfo: Row(
-          spacing: 8,
+        actionsInfo: Row(
+          mainAxisAlignment: .spaceBetween,
           children: [
-            const Icon(Icons.swipe_left, size: 16),
-            Text('Неинтересно', style: Theme.of(context).textTheme.bodyMedium),
-          ],
-        ),
-        rightActionInfo: Row(
-          spacing: 8,
-          children: [
-            Text('Сохранить', style: Theme.of(context).textTheme.bodyMedium),
-            const Icon(Icons.swipe_right, size: 16),
+            Row(
+              spacing: 8,
+              children: [
+                const Icon(Icons.swipe_left, size: 16),
+                Text(
+                  'Неинтересно',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ],
+            ),
+            Row(
+              spacing: 8,
+              children: [
+                Text(
+                  'Сохранить',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const Icon(Icons.swipe_right, size: 16),
+              ],
+            ),
           ],
         ),
         onSwipe: (previousIndex, currentIndex, direction, movie) {
