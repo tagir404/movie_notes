@@ -6,7 +6,7 @@ import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/repositories/favorite_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
-import 'package:movie_notes/services/movie_api_service.dart';
+import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
 import 'package:movie_notes/widgets/movie_card.dart';
@@ -26,8 +26,8 @@ class MediaScreen extends StatefulWidget {
 }
 
 class _MediaScreenState extends State<MediaScreen> {
-  late final MediaApiService movieApiService;
-  late final MediaRepository movieRepository;
+  late final MediaApiService mediaApiService;
+  late final MediaRepository mediaRepository;
   late final FavoriteRepository favoriteRepository;
 
   final Map<int, MovieDetails> _movieDetails = {};
@@ -53,8 +53,8 @@ class _MediaScreenState extends State<MediaScreen> {
     if (_initialized) return;
     _initialized = true;
 
-    movieApiService = AppScope.of(context).movieApiService;
-    movieRepository = AppScope.of(context).movieRepository;
+    mediaApiService = AppScope.of(context).mediaApiService;
+    mediaRepository = AppScope.of(context).mediaRepository;
     favoriteRepository = AppScope.of(context).favoriteRepository;
 
     _loadMedia();
@@ -117,24 +117,24 @@ class _MediaScreenState extends State<MediaScreen> {
 
   Future<List<Movie>> _loadMovies() {
     if (_genreFilter.hasGenres) {
-      return movieApiService.fetchMoviesByGenres(_genreFilter.genreIds);
+      return mediaApiService.fetchMoviesByGenres(_genreFilter.genreIds);
     }
 
-    return movieApiService.fetchPopularMovies(page);
+    return mediaApiService.fetchPopularMovies(page);
   }
 
   Future<List<Movie>> _loadTvShows() {
     if (_genreFilter.hasGenres) {
-      return movieApiService.fetchTvShowsByGenres(_genreFilter.genreIds);
+      return mediaApiService.fetchTvShowsByGenres(_genreFilter.genreIds);
     }
 
-    return movieApiService.fetchPopularTvShows(page);
+    return mediaApiService.fetchPopularTvShows(page);
   }
 
   Future<void> _loadMovieDetails(Movie movie) async {
     if (_movieDetails.containsKey(movie.id)) return;
 
-    final details = await movieRepository.getMovieDetails(movie.id, movie.type);
+    final details = await mediaRepository.getMovieDetails(movie.id, movie.type);
 
     if (!mounted) return;
 
@@ -146,12 +146,11 @@ class _MediaScreenState extends State<MediaScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Контент')),
       body: MediaSwiperView(
         initialType: _selectedType,
         isLoading: isLoading,
         items: movies,
-        genresForType: movieRepository.genres,
+        genresForType: mediaRepository.genres,
         selectedGenres: _genreFilter.genreIds,
         onTypeChanged: (type) {
           _setContentType(type);
@@ -170,7 +169,7 @@ class _MediaScreenState extends State<MediaScreen> {
         cardBuilder: (context, movie, selectedType, selectedGenres) {
           final movieGenres = movie.genreIds
               .map(
-                (id) => movieRepository
+                (id) => mediaRepository
                     .genres(selectedType)
                     .firstWhere((genre) => genre.id == id),
               )
@@ -211,7 +210,11 @@ class _MediaScreenState extends State<MediaScreen> {
         ),
         onSwipe: (previousIndex, currentIndex, direction, movie) {
           if (currentIndex == null) return true;
-          direction == .right ? favoriteRepository.addFavorite(movie) : null;
+          if (direction == .right) {
+            favoriteRepository.addFavorite(movie);
+          } else if (direction == .left) {
+            AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
+          }
 
           _preloadDetails(currentIndex);
 

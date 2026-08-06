@@ -4,10 +4,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/database/app_database.dart';
 import 'package:movie_notes/database/favorite_datasource.dart';
+import 'package:movie_notes/database/skipped_media_datasource.dart';
 import 'package:movie_notes/repositories/favorite_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
+import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/screens/home_screen.dart';
-import 'package:movie_notes/services/movie_api_service.dart';
+import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 
 Future<void> main() async {
@@ -20,14 +22,18 @@ Future<void> main() async {
   final favoriteRepository = FavoriteRepository(
     FavoriteLocalDatasource(await AppDatabase.database),
   );
+  final skippedMediaRepository = SkippedMediaRepository(
+    SkippedMediaLocalDatasource(await AppDatabase.database),
+  );
 
   await repository.init();
 
   runApp(
     AppScope(
-      movieApiService: apiService,
-      movieRepository: repository,
+      mediaApiService: apiService,
+      mediaRepository: repository,
       favoriteRepository: favoriteRepository,
+      skippedMediaRepository: skippedMediaRepository,
       child: const MainApp(),
     ),
   );

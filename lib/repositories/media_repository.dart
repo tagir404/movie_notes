@@ -1,7 +1,7 @@
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/services/movie_api_service.dart';
+import 'package:movie_notes/services/media_api_service.dart';
 
 class MediaRepository {
   MediaRepository(this.apiService);

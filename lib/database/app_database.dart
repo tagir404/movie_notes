@@ -16,7 +16,7 @@ class AppDatabase {
 
     return openDatabase(
       path,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE favorites (
@@ -31,6 +31,37 @@ class AppDatabase {
             created_at INTEGER NOT NULL
           )
         ''');
+
+        await db.execute('''
+          CREATE TABLE skipped_media (
+            id INTEGER PRIMARY KEY,
+            type TEXT NOT NULL,
+            title TEXT NOT NULL,
+            overview TEXT,
+            poster_path TEXT,
+            backdrop_path TEXT,
+            release_date TEXT,
+            vote_average REAL,
+            created_at INTEGER NOT NULL
+          )
+        ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS skipped_media (
+              id INTEGER PRIMARY KEY,
+              type TEXT NOT NULL,
+              title TEXT NOT NULL,
+              overview TEXT,
+              poster_path TEXT,
+              backdrop_path TEXT,
+              release_date TEXT,
+              vote_average REAL,
+              created_at INTEGER NOT NULL
+            )
+          ''');
+        }
       },
     );
   }

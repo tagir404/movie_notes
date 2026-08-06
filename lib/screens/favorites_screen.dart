@@ -22,8 +22,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   Future<void> _loadMovieDetails(Movie movie) async {
     if (_movieDetails.containsKey(movie.id)) return;
 
-    final movieRepository = AppScope.of(context).movieRepository;
-    final details = await movieRepository.getMovieDetails(movie.id, movie.type);
+    final mediaRepository = AppScope.of(context).mediaRepository;
+    final details = await mediaRepository.getMovieDetails(movie.id, movie.type);
 
     if (!mounted) return;
 
@@ -35,11 +35,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   @override
   Widget build(BuildContext context) {
     final favoriteRepository = AppScope.of(context).favoriteRepository;
-    final movieRepository = AppScope.of(context).movieRepository;
+    final mediaRepository = AppScope.of(context).mediaRepository;
     final mediaList = favoriteRepository.getFavorites();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Сохранённые')),
       body: FutureBuilder(
         future: mediaList,
         builder: (context, snapshot) {
@@ -64,7 +63,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             initialType: _selectedType,
             isLoading: false,
             items: movies,
-            genresForType: movieRepository.genres,
+            genresForType: mediaRepository.genres,
             selectedGenres: _genreFilter.genreIds,
             onTypeChanged: (type) {
               setState(() {
@@ -81,7 +80,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
               final movieGenres = movie.genreIds
                   .map(
-                    (id) => movieRepository
+                    (id) => mediaRepository
                         .genres(selectedType)
                         .firstWhere((genre) => genre.id == id),
                   )
