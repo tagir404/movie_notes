@@ -97,65 +97,63 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const .only(left: 20, right: 20, top: 0, bottom: 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              MediaTypeFilter(
-                selectedType: _selectedType,
-                onChanged: _handleTypeChanged,
-              ),
-              MediaGenreFilter(
-                genres: widget.genresForType(_selectedType),
-                selectedGenres: _selectedGenres,
-                onChanged: _handleGenresChanged,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Expanded(
-            child: widget.isLoading
-                ? const Center(child: CircularProgressIndicator())
-                : CardSwiper(
-                    padding: const EdgeInsets.all(0),
-                    isLoop: false,
-                    numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
-                    backCardOffset: const Offset(0, 0),
-                    scale: 1,
-                    controller: _cardSwiperController,
-                    allowedSwipeDirection: widget.allowedSwipeDirection,
-                    cardsCount: widget.items.length,
-                    cardBuilder: (context, index, _, _) {
-                      final movie = widget.items[index];
-                      return widget.cardBuilder(
-                        context,
-                        movie,
-                        _selectedType,
-                        _selectedGenres,
-                      );
-                    },
-                    onSwipe: (previousIndex, currentIndex, direction) {
-                      if (currentIndex == null) return true;
-                      final movie = widget.items[currentIndex];
-                      return widget.onSwipe?.call(
-                            previousIndex,
-                            currentIndex,
-                            direction,
-                            movie,
-                          ) ??
-                          true;
-                    },
-                    onEnd: widget.onEnd,
-                  ),
-          ),
-          const SizedBox(height: 16),
-          widget.actionsInfo,
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Padding(
+    padding: const .only(left: 20, right: 20, top: 0, bottom: 20),
+    child: Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            MediaTypeFilter(
+              selectedType: _selectedType,
+              onChanged: _handleTypeChanged,
+            ),
+            MediaGenreFilter(
+              genres: widget.genresForType(_selectedType),
+              selectedGenres: _selectedGenres,
+              onChanged: _handleGenresChanged,
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Expanded(
+          child: widget.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : CardSwiper(
+                  padding: const EdgeInsets.all(0),
+                  isLoop: false,
+                  numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
+                  backCardOffset: const Offset(0, 0),
+                  scale: 1,
+                  controller: _cardSwiperController,
+                  allowedSwipeDirection: widget.allowedSwipeDirection,
+                  cardsCount: widget.items.length,
+                  cardBuilder: (context, index, _, _) {
+                    final movie = widget.items[index];
+                    return widget.cardBuilder(
+                      context,
+                      movie,
+                      _selectedType,
+                      _selectedGenres,
+                    );
+                  },
+                  onSwipe: (previousIndex, currentIndex, direction) {
+                    if (currentIndex == null) return true;
+                    final movie = widget.items[currentIndex];
+                    return widget.onSwipe?.call(
+                          previousIndex,
+                          currentIndex,
+                          direction,
+                          movie,
+                        ) ??
+                        true;
+                  },
+                  onEnd: widget.onEnd,
+                ),
+        ),
+        const SizedBox(height: 16),
+        widget.actionsInfo,
+      ],
+    ),
+  );
 }

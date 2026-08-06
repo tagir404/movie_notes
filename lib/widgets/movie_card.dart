@@ -56,47 +56,45 @@ class _MovieCardState extends State<MovieCard>
   }
 
   @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: _flip,
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (_, _) {
-          final angle = _controller.value * pi;
-          final isFront = angle < pi / 2;
+  Widget build(BuildContext context) => GestureDetector(
+    onTap: _flip,
+    child: AnimatedBuilder(
+      animation: _controller,
+      builder: (_, _) {
+        final angle = _controller.value * pi;
+        final isFront = angle < pi / 2;
 
-          return Transform(
-            alignment: Alignment.center,
-            transform: Matrix4.identity()
-              ..setEntry(3, 2, .001)
-              ..rotateY(angle),
-            child: isFront
-                ? _MovieCardSurface(
+        return Transform(
+          alignment: Alignment.center,
+          transform: Matrix4.identity()
+            ..setEntry(3, 2, .001)
+            ..rotateY(angle),
+          child: isFront
+              ? _MovieCardSurface(
+                  movie: widget.movie,
+                  child: _FrontContent(
                     movie: widget.movie,
-                    child: _FrontContent(
+                    genres: widget.genres,
+                    selectedGenreIds: widget.selectedGenreIds,
+                    movieDetails: widget.movieDetails,
+                  ),
+                )
+              : Transform(
+                  alignment: Alignment.center,
+                  transform: Matrix4.rotationY(pi),
+                  child: _MovieCardSurface(
+                    isBack: true,
+                    movie: widget.movie,
+                    child: _BackContent(
                       movie: widget.movie,
-                      genres: widget.genres,
-                      selectedGenreIds: widget.selectedGenreIds,
                       movieDetails: widget.movieDetails,
                     ),
-                  )
-                : Transform(
-                    alignment: Alignment.center,
-                    transform: Matrix4.rotationY(pi),
-                    child: _MovieCardSurface(
-                      isBack: true,
-                      movie: widget.movie,
-                      child: _BackContent(
-                        movie: widget.movie,
-                        movieDetails: widget.movieDetails,
-                      ),
-                    ),
                   ),
-          );
-        },
-      ),
-    );
-  }
+                ),
+        );
+      },
+    ),
+  );
 }
 
 class _MovieCardSurface extends StatelessWidget {

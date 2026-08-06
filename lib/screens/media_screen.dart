@@ -61,9 +61,7 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   Future<void> _loadMedia() async {
-    setState(() {
-      isLoading = true;
-    });
+    setState(() => isLoading = true);
 
     try {
       final loadedMovies = _selectedType == .movie
@@ -85,9 +83,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
       if (!mounted) return;
 
-      setState(() {
-        isLoading = false;
-      });
+      setState(() => isLoading = false);
     }
   }
 
@@ -144,90 +140,85 @@ class _MediaScreenState extends State<MediaScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: MediaSwiperView(
-        initialType: _selectedType,
-        isLoading: isLoading,
-        items: movies,
-        genresForType: mediaRepository.genres,
-        selectedGenres: _genreFilter.genreIds,
-        onTypeChanged: (type) {
-          _setContentType(type);
-        },
-        onGenresChanged: (genreIds) {
-          setState(() {
-            _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
-          });
+  Widget build(BuildContext context) => Scaffold(
+    body: MediaSwiperView(
+      initialType: _selectedType,
+      isLoading: isLoading,
+      items: movies,
+      genresForType: mediaRepository.genres,
+      selectedGenres: _genreFilter.genreIds,
+      onTypeChanged: (type) {
+        _setContentType(type);
+      },
+      onGenresChanged: (genreIds) {
+        setState(() {
+          _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+        });
 
-          _loadMedia();
-        },
-        allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
-          horizontal: true,
-          vertical: false,
-        ),
-        cardBuilder: (context, movie, selectedType, selectedGenres) {
-          final movieGenres = movie.genreIds
-              .map(
-                (id) => mediaRepository
-                    .genres(selectedType)
-                    .firstWhere((genre) => genre.id == id),
-              )
-              .toList();
-
-          return MovieCard(
-            key: ValueKey(movie.id),
-            movie: movie,
-            genres: movieGenres,
-            selectedGenreIds: selectedGenres,
-            movieDetails: _movieDetails[movie.id],
-          );
-        },
-        actionsInfo: Row(
-          mainAxisAlignment: .spaceBetween,
-          children: [
-            Row(
-              spacing: 8,
-              children: [
-                const Icon(Icons.swipe_left, size: 16),
-                Text(
-                  'Неинтересно',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ],
-            ),
-            Row(
-              spacing: 8,
-              children: [
-                Text(
-                  'Сохранить',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const Icon(Icons.swipe_right, size: 16),
-              ],
-            ),
-          ],
-        ),
-        onSwipe: (previousIndex, currentIndex, direction, movie) {
-          if (currentIndex == null) return true;
-          if (direction == .right) {
-            favoritesRepository.addFavorite(movie);
-          } else if (direction == .left) {
-            AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
-          }
-
-          _preloadDetails(currentIndex);
-
-          return true;
-        },
-        onEnd: () {
-          setState(() {
-            page++;
-          });
-
-          _loadMedia();
-        },
+        _loadMedia();
+      },
+      allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
+        horizontal: true,
+        vertical: false,
       ),
-    );
-  }
+      cardBuilder: (context, movie, selectedType, selectedGenres) {
+        final movieGenres = movie.genreIds
+            .map(
+              (id) => mediaRepository
+                  .genres(selectedType)
+                  .firstWhere((genre) => genre.id == id),
+            )
+            .toList();
+
+        return MovieCard(
+          key: ValueKey(movie.id),
+          movie: movie,
+          genres: movieGenres,
+          selectedGenreIds: selectedGenres,
+          movieDetails: _movieDetails[movie.id],
+        );
+      },
+      actionsInfo: Row(
+        mainAxisAlignment: .spaceBetween,
+        children: [
+          Row(
+            spacing: 8,
+            children: [
+              const Icon(Icons.swipe_left, size: 16),
+              Text(
+                'Неинтересно',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ],
+          ),
+          Row(
+            spacing: 8,
+            children: [
+              Text('Сохранить', style: Theme.of(context).textTheme.bodyMedium),
+              const Icon(Icons.swipe_right, size: 16),
+            ],
+          ),
+        ],
+      ),
+      onSwipe: (previousIndex, currentIndex, direction, movie) {
+        if (currentIndex == null) return true;
+        if (direction == .right) {
+          favoritesRepository.addFavorite(movie);
+        } else if (direction == .left) {
+          AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
+        }
+
+        _preloadDetails(currentIndex);
+
+        return true;
+      },
+      onEnd: () {
+        setState(() {
+          page++;
+        });
+
+        _loadMedia();
+      },
+    ),
+  );
 }

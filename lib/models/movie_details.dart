@@ -31,25 +31,23 @@ class MovieDetails {
     required this.homepage,
   });
 
-  factory MovieDetails.fromJson(Map<String, dynamic> json) {
-    return MovieDetails(
-      id: json['id'],
-      title: json['title'] ?? json['name'],
-      overview: json['overview'],
-      originCountry: (json['origin_country'] as List?)?.cast<String>(),
-      posterPath: json['poster_path'],
-      backdropPath: json['backdrop_path'],
-      releaseDate: json['release_date'] ?? json['first_air_date'],
-      runtime: parseRuntime(json),
-      voteAverage: (json['vote_average'] as num).toDouble(),
-      voteCount: json['vote_count'],
-      genres: (json['genres'] as List)
-          .map((genre) => Genre.fromJson(genre))
-          .toList(),
-      tagline: json['tagline'],
-      homepage: json['homepage'],
-    );
-  }
+  factory MovieDetails.fromJson(Map<String, dynamic> json) => MovieDetails(
+    id: json['id'],
+    title: json['title'] ?? json['name'],
+    overview: json['overview'],
+    originCountry: (json['origin_country'] as List?)?.cast<String>(),
+    posterPath: json['poster_path'],
+    backdropPath: json['backdrop_path'],
+    releaseDate: json['release_date'] ?? json['first_air_date'],
+    runtime: parseRuntime(json),
+    voteAverage: (json['vote_average'] as num).toDouble(),
+    voteCount: json['vote_count'],
+    genres: (json['genres'] as List)
+        .map((genre) => Genre.fromJson(genre))
+        .toList(),
+    tagline: json['tagline'],
+    homepage: json['homepage'],
+  );
 }
 
 int? parseRuntime(Map<String, dynamic> json) {

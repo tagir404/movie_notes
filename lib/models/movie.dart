@@ -23,17 +23,16 @@ class Movie {
   final double voteAverage;
   final List<int> genreIds;
 
-  factory Movie.fromJson(Map<String, dynamic> json, MediaContentType type) {
-    return Movie(
-      id: json['id'],
-      type: type,
-      title: json['title'] ?? json['name'],
-      overview: json['overview'],
-      posterPath: json['poster_path'],
-      backdropPath: json['backdrop_path'],
-      releaseDate: json['release_date'] ?? json['first_air_date'],
-      voteAverage: (json['vote_average'] as num).toDouble(),
-      genreIds: List<int>.from(json['genre_ids']),
-    );
-  }
+  factory Movie.fromJson(Map<String, dynamic> json, MediaContentType type) =>
+      Movie(
+        id: json['id'],
+        type: type,
+        title: json['title'] ?? json['name'],
+        overview: json['overview'],
+        posterPath: json['poster_path'],
+        backdropPath: json['backdrop_path'],
+        releaseDate: json['release_date'] ?? json['first_air_date'],
+        voteAverage: (json['vote_average'] as num).toDouble(),
+        genreIds: List<int>.from(json['genre_ids']),
+      );
 }

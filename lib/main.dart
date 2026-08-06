@@ -43,16 +43,14 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const HomeScreen(),
-      theme: ThemeData(
-        textTheme: GoogleFonts.nunitoTextTheme(),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color.fromARGB(255, 7, 98, 255),
-        ),
+  Widget build(BuildContext context) => MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: const HomeScreen(),
+    theme: ThemeData(
+      textTheme: GoogleFonts.nunitoTextTheme(),
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: const Color.fromARGB(255, 7, 98, 255),
       ),
-    );
-  }
+    ),
+  );
 }

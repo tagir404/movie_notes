@@ -28,8 +28,9 @@ class SkippedMediaLocalDatasource {
   Future<List<Movie>> getSkippedMedia() async {
     final List<Map<String, dynamic>> maps = await db.query('skipped_media');
 
-    return List.generate(maps.length, (i) {
-      return Movie(
+    return List.generate(
+      maps.length,
+      (i) => Movie(
         id: maps[i]['id'],
         type: MediaContentType.values.byName(maps[i]['type']),
         title: maps[i]['title'],
@@ -39,7 +40,7 @@ class SkippedMediaLocalDatasource {
         releaseDate: maps[i]['release_date'],
         voteAverage: maps[i]['vote_average'],
         genreIds: [],
-      );
-    });
+      ),
+    );
   }
 }

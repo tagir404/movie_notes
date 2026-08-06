@@ -19,9 +19,8 @@ class AppScope extends InheritedWidget {
   final FavoritesRepository favoritesRepository;
   final SkippedMediaRepository skippedMediaRepository;
 
-  static AppScope? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<AppScope>();
-  }
+  static AppScope? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<AppScope>();
 
   static AppScope of(BuildContext context) {
     final result = maybeOf(context);

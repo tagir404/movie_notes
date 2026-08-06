@@ -34,39 +34,37 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_title),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const SettingsScreen()),
-              );
-            },
-            icon: const Icon(Icons.settings),
-          ),
-        ],
-        actionsPadding: const EdgeInsets.only(right: 8),
-      ),
-      body: IndexedStack(index: _selectedIndex, children: _screens),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _selectedIndex,
-        onDestinationSelected: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.movie), label: 'Контент'),
-          NavigationDestination(
-            icon: Icon(Icons.bookmarks),
-            label: 'Сохранённые',
-          ),
-        ],
-      ),
-    );
-  }
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: Text(_title),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+            );
+          },
+          icon: const Icon(Icons.settings),
+        ),
+      ],
+      actionsPadding: const EdgeInsets.only(right: 8),
+    ),
+    body: IndexedStack(index: _selectedIndex, children: _screens),
+    bottomNavigationBar: NavigationBar(
+      selectedIndex: _selectedIndex,
+      onDestinationSelected: (index) {
+        setState(() {
+          _selectedIndex = index;
+        });
+      },
+      destinations: const [
+        NavigationDestination(icon: Icon(Icons.movie), label: 'Контент'),
+        NavigationDestination(
+          icon: Icon(Icons.bookmarks),
+          label: 'Сохранённые',
+        ),
+      ],
+    ),
+  );
 }

@@ -32,12 +32,10 @@ class MediaRepository {
     return _tvGenres!;
   }
 
-  List<Genre> genres(MediaContentType type) {
-    return switch (type) {
-      .movie => movieGenres,
-      .tvShow => tvGenres,
-    };
-  }
+  List<Genre> genres(MediaContentType type) => switch (type) {
+    .movie => movieGenres,
+    .tvShow => tvGenres,
+  };
 
   final Map<String, MovieDetails> _detailsCache = {};
 

@@ -15,48 +15,46 @@ class MediaGenreFilter extends StatelessWidget {
   final ValueChanged<List<int>> onChanged;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: .circular(20),
-      onTap: () => _showGenres(context),
-      child: Stack(
-        clipBehavior: .none,
-        children: [
-          Pill(
-            borderRadius: .circular(20),
-            padding: const .symmetric(horizontal: 12, vertical: 4),
-            child: Text(
-              'Жанры',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
-            ),
+  Widget build(BuildContext context) => InkWell(
+    borderRadius: .circular(20),
+    onTap: () => _showGenres(context),
+    child: Stack(
+      clipBehavior: .none,
+      children: [
+        Pill(
+          borderRadius: .circular(20),
+          padding: const .symmetric(horizontal: 12, vertical: 4),
+          child: Text(
+            'Жанры',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
           ),
+        ),
 
-          if (selectedGenres.isNotEmpty)
-            Positioned(
-              top: -6,
-              right: -6,
-              child: Material(
-                color: Theme.of(context).colorScheme.primary,
-                shape: const CircleBorder(),
-                elevation: 4,
-                child: SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: Center(
-                    child: Text(
-                      selectedGenres.length.toString(),
-                      style: Theme.of(
-                        context,
-                      ).textTheme.bodySmall?.copyWith(color: Colors.white),
-                    ),
+        if (selectedGenres.isNotEmpty)
+          Positioned(
+            top: -6,
+            right: -6,
+            child: Material(
+              color: Theme.of(context).colorScheme.primary,
+              shape: const CircleBorder(),
+              elevation: 4,
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: Center(
+                  child: Text(
+                    selectedGenres.length.toString(),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.copyWith(color: Colors.white),
                   ),
                 ),
               ),
             ),
-        ],
-      ),
-    );
-  }
+          ),
+      ],
+    ),
+  );
 
   void _showGenres(BuildContext context) {
     showModalBottomSheet(
@@ -65,68 +63,68 @@ class MediaGenreFilter extends StatelessWidget {
         var selected = [...selectedGenres];
 
         return StatefulBuilder(
-          builder: (context, setState) {
-            return SafeArea(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const .all(16),
-                    child: Row(
-                      mainAxisAlignment: .spaceBetween,
-                      children: [
-                        const Text(
-                          'Выберите жанры',
-                          style: TextStyle(fontSize: 18, fontWeight: .bold),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            setState(() {
-                              selected.clear();
-                            });
-                          },
-                          child: const Text('Сбросить'),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Expanded(
-                    child: ListView(
-                      children: genres.map((genre) {
-                        return CheckboxListTile(
-                          title: Text(genre.name),
-                          value: selected.contains(genre.id),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value == true) {
-                                selected.add(genre.id);
-                              } else {
-                                selected.remove(genre.id);
-                              }
-                            });
-                          },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const .all(16),
-                    child: SizedBox(
-                      width: .infinity,
-                      child: FilledButton(
-                        onPressed: () {
-                          onChanged(selected);
-                          Navigator.pop(context);
-                        },
-                        child: const Text('Применить'),
+          builder: (context, setState) => SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const .all(16),
+                  child: Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [
+                      const Text(
+                        'Выберите жанры',
+                        style: TextStyle(fontSize: 18, fontWeight: .bold),
                       ),
+                      TextButton(
+                        onPressed: () {
+                          setState(() {
+                            selected.clear();
+                          });
+                        },
+                        child: const Text('Сбросить'),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Expanded(
+                  child: ListView(
+                    children: genres
+                        .map(
+                          (genre) => CheckboxListTile(
+                            title: Text(genre.name),
+                            value: selected.contains(genre.id),
+                            onChanged: (value) {
+                              setState(() {
+                                if (value == true) {
+                                  selected.add(genre.id);
+                                } else {
+                                  selected.remove(genre.id);
+                                }
+                              });
+                            },
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+
+                Padding(
+                  padding: const .all(16),
+                  child: SizedBox(
+                    width: .infinity,
+                    child: FilledButton(
+                      onPressed: () {
+                        onChanged(selected);
+                        Navigator.pop(context);
+                      },
+                      child: const Text('Применить'),
                     ),
                   ),
-                ],
-              ),
-            );
-          },
+                ),
+              ],
+            ),
+          ),
         );
       },
     );

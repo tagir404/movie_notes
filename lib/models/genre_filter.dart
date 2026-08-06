@@ -5,7 +5,6 @@ class GenreFilter {
 
   bool get hasGenres => genreIds.isNotEmpty;
 
-  GenreFilter copyWith({List<int>? genreIds}) {
-    return GenreFilter(genreIds: genreIds ?? this.genreIds);
-  }
+  GenreFilter copyWith({List<int>? genreIds}) =>
+      GenreFilter(genreIds: genreIds ?? this.genreIds);
 }

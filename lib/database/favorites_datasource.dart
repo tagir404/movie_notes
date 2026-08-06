@@ -28,8 +28,9 @@ class FavoritesLocalDatasource {
   Future<List<Movie>> getFavorites() async {
     final List<Map<String, dynamic>> maps = await db.query('favorites');
 
-    return List.generate(maps.length, (i) {
-      return Movie(
+    return List.generate(
+      maps.length,
+      (i) => Movie(
         id: maps[i]['id'],
         type: MediaContentType.values.byName(maps[i]['type']),
         title: maps[i]['title'],
@@ -39,7 +40,7 @@ class FavoritesLocalDatasource {
         releaseDate: maps[i]['release_date'],
         voteAverage: maps[i]['vote_average'],
         genreIds: [],
-      );
-    });
+      ),
+    );
   }
 }

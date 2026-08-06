@@ -20,13 +20,11 @@ class Pill extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 6,
-      color: color,
-      shape: shape,
-      borderRadius: borderRadius,
-      child: Padding(padding: padding ?? const .all(0), child: child),
-    );
-  }
+  Widget build(BuildContext context) => Material(
+    elevation: 6,
+    color: color,
+    shape: shape,
+    borderRadius: borderRadius,
+    child: Padding(padding: padding ?? const .all(0), child: child),
+  );
 }
