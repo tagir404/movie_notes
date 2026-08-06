@@ -20,6 +20,16 @@ class SkippedMediaRepository {
     await refreshSkippedMedia();
   }
 
+  Future<void> restoreAllSkippedMedia() async {
+    final items = await local.getSkippedMedia();
+
+    for (final item in items) {
+      await local.removeSkippedMedia(item.id);
+    }
+
+    await refreshSkippedMedia();
+  }
+
   Future<List<Movie>> getSkippedMedia() async {
     final items = await local.getSkippedMedia();
     skippedMedia.value = items;

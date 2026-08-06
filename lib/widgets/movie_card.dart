@@ -119,21 +119,18 @@ class _MovieCardSurface extends StatelessWidget {
         children: [
           Image.network(posterUrl, fit: .cover),
 
-          const DecoratedBox(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: .topCenter,
-                end: .bottomCenter,
-                stops: [0, .7, 1],
-                colors: [Colors.transparent, Colors.black, Colors.black],
-              ),
-            ),
+          Container(
+            decoration: isBack
+                ? const BoxDecoration(color: Color.fromARGB(220, 0, 0, 0))
+                : const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0, .7, 1],
+                      colors: [Colors.transparent, Colors.black, Colors.black],
+                    ),
+                  ),
           ),
-
-          if (isBack)
-            const DecoratedBox(
-              decoration: BoxDecoration(color: Color.fromARGB(150, 0, 0, 0)),
-            ),
 
           Padding(padding: const .all(16), child: child),
         ],

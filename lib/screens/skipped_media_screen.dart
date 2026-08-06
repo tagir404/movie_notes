@@ -1,53 +1,111 @@
 import 'package:flutter/material.dart';
+import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
+import 'package:movie_notes/widgets/dialogs/confirmation_dialog.dart';
 
-class SkippedMediaScreen extends StatelessWidget {
+class SkippedMediaScreen extends StatefulWidget {
   const SkippedMediaScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final repository = AppScope.of(context).skippedMediaRepository;
+  State<SkippedMediaScreen> createState() => _SkippedMediaScreenState();
+}
 
-    return Scaffold(
-      appBar: AppBar(title: const Text('Пропущенные')),
-      body: FutureBuilder(
-        future: repository.getSkippedMedia(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == .waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
+class _SkippedMediaScreenState extends State<SkippedMediaScreen> {
+  late final SkippedMediaRepository _repository;
 
-          if (snapshot.hasError) {
-            return Center(child: Text('Ошибка: ${snapshot.error}'));
-          }
+  List<Movie> _items = [];
+  bool _isLoading = true;
+  bool _initialized = false;
 
-          final items = snapshot.data ?? const [];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-          if (items.isEmpty) {
-            return const Center(child: Text('Список пропущенных фильмов пуст'));
-          }
+    if (!_initialized) {
+      _initialized = true;
+      _repository = AppScope.of(context).skippedMediaRepository;
 
-          return ListView.builder(
-            itemCount: items.length,
+      _loadItems();
+    }
+  }
+
+  Future<void> _loadItems() async {
+    final items = await _repository.getSkippedMedia();
+
+    if (!mounted) return;
+
+    setState(() {
+      _items = items;
+      _isLoading = false;
+    });
+  }
+
+  Future<void> _removeMovie(Movie movie) async {
+    await _repository.removeSkippedMedia(movie.id);
+
+    setState(() => _items.removeWhere((item) => item.id == movie.id));
+  }
+
+  Future<void> _restoreAllMovies() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => const ConfirmationDialog(
+        title: 'Вернуть все фильмы?',
+        content: 'Все пропущенные фильмы будут возвращены в каталог.',
+        confirmText: 'Вернуть',
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    await _repository.restoreAllSkippedMedia();
+
+    if (!mounted) return;
+
+    setState(() => _items.clear());
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Пропущенные'),
+      actions: [
+        if (_items.isNotEmpty)
+          IconButton(
+            onPressed: _restoreAllMovies,
+            icon: const Icon(Icons.restore),
+            tooltip: 'Вернуть все',
+          ),
+      ],
+      actionsPadding: const EdgeInsets.only(right: 8),
+    ),
+    body: _isLoading
+        ? const Center(child: CircularProgressIndicator())
+        : _items.isEmpty
+        ? const Center(child: Text('Список пропущенных фильмов пуст'))
+        : ListView.builder(
+            itemCount: _items.length,
             itemBuilder: (context, index) {
-              final movie = items[index];
+              final movie = _items[index];
+
               return Dismissible(
                 key: ValueKey(movie.id),
+                direction: DismissDirection.endToStart,
                 background: Container(
                   color: Colors.grey,
-                  alignment: .centerRight,
-                  padding: const .symmetric(horizontal: 20),
+                  alignment: Alignment.centerRight,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: const Row(
+                    spacing: 8,
                     mainAxisAlignment: .end,
                     children: [
                       Icon(Icons.undo, color: Colors.white),
-                      SizedBox(width: 8),
                       Text('Вернуть', style: TextStyle(color: Colors.white)),
                     ],
                   ),
                 ),
-                direction: .endToStart,
-                onDismissed: (_) => repository.removeSkippedMedia(movie.id),
+                onDismissed: (_) => _removeMovie(movie),
                 child: ListTile(
                   title: Text(movie.title),
                   trailing: const Icon(
@@ -58,9 +116,6 @@ class SkippedMediaScreen extends StatelessWidget {
                 ),
               );
             },
-          );
-        },
-      ),
-    );
-  }
+          ),
+  );
 }

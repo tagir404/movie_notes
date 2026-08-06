@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String get _title {
     switch (_selectedIndex) {
       case 0:
-        return 'Контент';
+        return 'Каталог';
       case 1:
         return 'Сохранённые';
       default:
@@ -26,10 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   static const _screens = [
-    MediaScreen(
-      type: MediaContentType.movie,
-      emptyMessage: 'Контент не найден',
-    ),
+    MediaScreen(type: MediaContentType.movie, emptyMessage: 'Каталог пуст'),
     FavoritesScreen(),
   ];
 
@@ -59,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       },
       destinations: const [
-        NavigationDestination(icon: Icon(Icons.movie), label: 'Контент'),
+        NavigationDestination(icon: Icon(Icons.movie), label: 'Каталог'),
         NavigationDestination(
           icon: Icon(Icons.bookmarks),
           label: 'Сохранённые',
