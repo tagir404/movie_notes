@@ -325,7 +325,7 @@ class _BackContentState extends State<_BackContent> {
                     theme: const ImageTheme(
                       width: 30,
                       height: 20,
-                      shape: RoundedRectangle(6),
+                      shape: RoundedRectangle(4),
                     ),
                   ),
                 ),

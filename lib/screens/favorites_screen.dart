@@ -60,7 +60,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 );
               })
               .toList();
-          return Text('l');
           return MediaSwiperView(
             initialType: _selectedType,
             isLoading: false,

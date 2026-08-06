@@ -98,10 +98,6 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
     return Padding(
       padding: const .only(left: 20, right: 20, top: 0, bottom: 20),
       child: Column(
@@ -122,37 +118,39 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
           ),
           const SizedBox(height: 20),
           Expanded(
-            child: CardSwiper(
-              padding: const EdgeInsets.all(0),
-              isLoop: false,
-              numberOfCardsDisplayed: 2,
-              backCardOffset: const Offset(0, 0),
-              scale: 1,
-              controller: _cardSwiperController,
-              allowedSwipeDirection: widget.allowedSwipeDirection,
-              cardsCount: widget.items.length,
-              cardBuilder: (context, index, _, _) {
-                final movie = widget.items[index];
-                return widget.cardBuilder(
-                  context,
-                  movie,
-                  _selectedType,
-                  _selectedGenres,
-                );
-              },
-              onSwipe: (previousIndex, currentIndex, direction) {
-                if (currentIndex == null) return true;
-                final movie = widget.items[currentIndex];
-                return widget.onSwipe?.call(
-                      previousIndex,
-                      currentIndex,
-                      direction,
-                      movie,
-                    ) ??
-                    true;
-              },
-              onEnd: widget.onEnd,
-            ),
+            child: widget.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : CardSwiper(
+                    padding: const EdgeInsets.all(0),
+                    isLoop: false,
+                    numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
+                    backCardOffset: const Offset(0, 0),
+                    scale: 1,
+                    controller: _cardSwiperController,
+                    allowedSwipeDirection: widget.allowedSwipeDirection,
+                    cardsCount: widget.items.length,
+                    cardBuilder: (context, index, _, _) {
+                      final movie = widget.items[index];
+                      return widget.cardBuilder(
+                        context,
+                        movie,
+                        _selectedType,
+                        _selectedGenres,
+                      );
+                    },
+                    onSwipe: (previousIndex, currentIndex, direction) {
+                      if (currentIndex == null) return true;
+                      final movie = widget.items[currentIndex];
+                      return widget.onSwipe?.call(
+                            previousIndex,
+                            currentIndex,
+                            direction,
+                            movie,
+                          ) ??
+                          true;
+                    },
+                    onEnd: widget.onEnd,
+                  ),
           ),
           const SizedBox(height: 16),
           widget.actionsInfo,
