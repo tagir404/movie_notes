@@ -3,9 +3,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/database/app_database.dart';
-import 'package:movie_notes/database/favorite_datasource.dart';
+import 'package:movie_notes/database/favorites_datasource.dart';
 import 'package:movie_notes/database/skipped_media_datasource.dart';
-import 'package:movie_notes/repositories/favorite_repository.dart';
+import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/screens/home_screen.dart';
@@ -19,8 +19,8 @@ Future<void> main() async {
   final client = http.Client();
   final apiService = MediaApiService(client);
   final repository = MediaRepository(apiService);
-  final favoriteRepository = FavoriteRepository(
-    FavoriteLocalDatasource(await AppDatabase.database),
+  final favoritesRepository = FavoritesRepository(
+    FavoritesLocalDatasource(await AppDatabase.database),
   );
   final skippedMediaRepository = SkippedMediaRepository(
     SkippedMediaLocalDatasource(await AppDatabase.database),
@@ -32,7 +32,7 @@ Future<void> main() async {
     AppScope(
       mediaApiService: apiService,
       mediaRepository: repository,
-      favoriteRepository: favoriteRepository,
+      favoritesRepository: favoritesRepository,
       skippedMediaRepository: skippedMediaRepository,
       child: const MainApp(),
     ),

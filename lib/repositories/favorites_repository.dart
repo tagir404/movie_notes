@@ -1,10 +1,10 @@
-import 'package:movie_notes/database/favorite_datasource.dart';
+import 'package:movie_notes/database/favorites_datasource.dart';
 import 'package:movie_notes/models/movie.dart';
 
-class FavoriteRepository {
-  FavoriteRepository(this.local);
+class FavoritesRepository {
+  FavoritesRepository(this.local);
 
-  final FavoriteLocalDatasource local;
+  final FavoritesLocalDatasource local;
 
   Future<void> addFavorite(Movie movie) => local.addFavorite(movie);
 

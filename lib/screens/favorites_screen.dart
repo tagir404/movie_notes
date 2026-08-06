@@ -34,9 +34,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final favoriteRepository = AppScope.of(context).favoriteRepository;
+    final favoritesRepository = AppScope.of(context).favoritesRepository;
     final mediaRepository = AppScope.of(context).mediaRepository;
-    final mediaList = favoriteRepository.getFavorites();
+    final mediaList = favoritesRepository.getFavorites();
 
     return Scaffold(
       body: FutureBuilder(
@@ -97,7 +97,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             onSwipe: (previousIndex, currentIndex, direction, movie) {
               if (currentIndex == null) return true;
               direction == .left
-                  ? favoriteRepository.removeFavorite(movie.id)
+                  ? favoritesRepository.removeFavorite(movie.id)
                   : null;
               return true;
             },

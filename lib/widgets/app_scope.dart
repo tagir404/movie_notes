@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_notes/repositories/favorite_repository.dart';
+import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
@@ -8,7 +8,7 @@ class AppScope extends InheritedWidget {
   const AppScope({
     required this.mediaApiService,
     required this.mediaRepository,
-    required this.favoriteRepository,
+    required this.favoritesRepository,
     required this.skippedMediaRepository,
     required super.child,
     super.key,
@@ -16,7 +16,7 @@ class AppScope extends InheritedWidget {
 
   final MediaApiService mediaApiService;
   final MediaRepository mediaRepository;
-  final FavoriteRepository favoriteRepository;
+  final FavoritesRepository favoritesRepository;
   final SkippedMediaRepository skippedMediaRepository;
 
   static AppScope? maybeOf(BuildContext context) {

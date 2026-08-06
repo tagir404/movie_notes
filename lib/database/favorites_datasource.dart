@@ -2,8 +2,8 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:sqflite/sqflite.dart';
 
-class FavoriteLocalDatasource {
-  FavoriteLocalDatasource(this.db);
+class FavoritesLocalDatasource {
+  FavoritesLocalDatasource(this.db);
 
   final Database db;
 

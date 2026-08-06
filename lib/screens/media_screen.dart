@@ -4,7 +4,7 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/repositories/favorite_repository.dart';
+import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
@@ -28,7 +28,7 @@ class MediaScreen extends StatefulWidget {
 class _MediaScreenState extends State<MediaScreen> {
   late final MediaApiService mediaApiService;
   late final MediaRepository mediaRepository;
-  late final FavoriteRepository favoriteRepository;
+  late final FavoritesRepository favoritesRepository;
 
   final Map<int, MovieDetails> _movieDetails = {};
 
@@ -55,7 +55,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
     mediaApiService = AppScope.of(context).mediaApiService;
     mediaRepository = AppScope.of(context).mediaRepository;
-    favoriteRepository = AppScope.of(context).favoriteRepository;
+    favoritesRepository = AppScope.of(context).favoritesRepository;
 
     _loadMedia();
   }
@@ -211,7 +211,7 @@ class _MediaScreenState extends State<MediaScreen> {
         onSwipe: (previousIndex, currentIndex, direction, movie) {
           if (currentIndex == null) return true;
           if (direction == .right) {
-            favoriteRepository.addFavorite(movie);
+            favoritesRepository.addFavorite(movie);
           } else if (direction == .left) {
             AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
           }
