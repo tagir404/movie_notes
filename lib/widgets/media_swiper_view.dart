@@ -138,8 +138,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                     );
                   },
                   onSwipe: (previousIndex, currentIndex, direction) {
-                    if (currentIndex == null) return true;
-                    final movie = widget.items[currentIndex];
+                    final movie = widget.items[previousIndex];
                     return widget.onSwipe?.call(
                           previousIndex,
                           currentIndex,

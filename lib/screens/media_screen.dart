@@ -6,6 +6,7 @@ import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
+import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
@@ -29,6 +30,7 @@ class _MediaScreenState extends State<MediaScreen> {
   late final MediaApiService mediaApiService;
   late final MediaRepository mediaRepository;
   late final FavoritesRepository favoritesRepository;
+  late final SkippedMediaRepository skippedMediaRepository;
 
   final Map<int, MovieDetails> _movieDetails = {};
 
@@ -56,6 +58,7 @@ class _MediaScreenState extends State<MediaScreen> {
     mediaApiService = AppScope.of(context).mediaApiService;
     mediaRepository = AppScope.of(context).mediaRepository;
     favoritesRepository = AppScope.of(context).favoritesRepository;
+    skippedMediaRepository = AppScope.of(context).skippedMediaRepository;
 
     _loadMedia();
   }
@@ -64,14 +67,35 @@ class _MediaScreenState extends State<MediaScreen> {
     setState(() => isLoading = true);
 
     try {
-      final loadedMovies = _selectedType == .movie
-          ? await _loadMovies()
-          : await _loadTvShows();
+      final skippedMovies = await skippedMediaRepository.getSkippedMedia();
+      final skippedIds = skippedMovies.map((movie) => movie.id).toSet();
+
+      List<Movie> filteredMovies = const [];
+      var attempts = 0;
+
+      while (attempts < 5) {
+        final loadedMovies = _selectedType == .movie
+            ? await _loadMovies()
+            : await _loadTvShows();
+
+        filteredMovies = loadedMovies
+            .where((movie) => !skippedIds.contains(movie.id))
+            .toList();
+
+        if (filteredMovies.isNotEmpty ||
+            _genreFilter.hasGenres ||
+            loadedMovies.isEmpty) {
+          break;
+        }
+
+        page++;
+        attempts++;
+      }
 
       if (!mounted) return;
 
       setState(() {
-        movies = loadedMovies;
+        movies = filteredMovies;
         isLoading = false;
       });
 
@@ -194,10 +218,7 @@ class _MediaScreenState extends State<MediaScreen> {
             spacing: 8,
             children: [
               const Icon(Icons.swipe_left, size: 16),
-              Text(
-                'Неинтересно',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
+              Text('Пропустить', style: Theme.of(context).textTheme.bodyMedium),
             ],
           ),
           Row(
@@ -210,13 +231,13 @@ class _MediaScreenState extends State<MediaScreen> {
         ],
       ),
       onSwipe: (previousIndex, currentIndex, direction, movie) {
-        if (currentIndex == null) return true;
         if (direction == .right) {
           favoritesRepository.addFavorite(movie);
         } else if (direction == .left) {
           AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
         }
 
+        if (currentIndex == null) return true;
         _preloadDetails(currentIndex);
 
         return true;
