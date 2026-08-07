@@ -113,18 +113,27 @@ class _MediaScreenState extends State<MediaScreen> {
 
   Future<List<Movie>> _loadMovies() {
     if (_genreFilter.hasGenres) {
-      return mediaApiService.fetchMoviesByGenres(_genreFilter.genreIds);
+      return mediaApiService.fetchMedia(
+        type: MediaContentType.movie,
+        genreIds: _genreFilter.genreIds,
+      );
     }
 
-    return mediaApiService.fetchPopularMovies(page);
+    return mediaApiService.fetchMedia(type: MediaContentType.movie, page: page);
   }
 
   Future<List<Movie>> _loadTvShows() {
     if (_genreFilter.hasGenres) {
-      return mediaApiService.fetchTvShowsByGenres(_genreFilter.genreIds);
+      return mediaApiService.fetchMedia(
+        type: MediaContentType.tvShow,
+        genreIds: _genreFilter.genreIds,
+      );
     }
 
-    return mediaApiService.fetchPopularTvShows(page);
+    return mediaApiService.fetchMedia(
+      type: MediaContentType.tvShow,
+      page: page,
+    );
   }
 
   Future<void> _loadMovieDetails(Movie movie) async {
