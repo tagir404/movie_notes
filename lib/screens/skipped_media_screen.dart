@@ -41,10 +41,10 @@ class _SkippedMediaScreenState extends State<SkippedMediaScreen> {
     });
   }
 
-  Future<void> _removeMovie(Movie movie) async {
-    await _repository.removeSkippedMedia(movie.id);
-
-    setState(() => _items.removeWhere((item) => item.id == movie.id));
+  Future<void> _removeMovie(int movieId) async {
+    await _repository.removeSkippedMedia(movieId);
+    if (!mounted) return;
+    setState(() => _items.removeWhere((item) => item.id == movieId));
   }
 
   Future<void> _restoreAllMovies() async {
@@ -105,7 +105,7 @@ class _SkippedMediaScreenState extends State<SkippedMediaScreen> {
                     ],
                   ),
                 ),
-                onDismissed: (_) => _removeMovie(movie),
+                onDismissed: (_) => _removeMovie(movie.id),
                 child: ListTile(
                   title: Text(movie.title),
                   trailing: const Icon(

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:sqflite/sqflite.dart';
@@ -17,6 +19,7 @@ class SkippedMediaLocalDatasource {
       'backdrop_path': movie.backdropPath,
       'release_date': movie.releaseDate,
       'vote_average': movie.voteAverage,
+      'genre_ids': jsonEncode(movie.genreIds),
       'created_at': DateTime.now().millisecondsSinceEpoch,
     }, conflictAlgorithm: ConflictAlgorithm.ignore);
   }
@@ -39,7 +42,11 @@ class SkippedMediaLocalDatasource {
         backdropPath: maps[i]['backdrop_path'],
         releaseDate: maps[i]['release_date'],
         voteAverage: maps[i]['vote_average'],
-        genreIds: [],
+        genreIds: maps[i]['genre_ids'] == null
+            ? []
+            : (jsonDecode(maps[i]['genre_ids']) as List)
+                  .map((e) => e as int)
+                  .toList(),
       ),
     );
   }

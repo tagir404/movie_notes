@@ -178,7 +178,6 @@ class _MediaScreenState extends State<MediaScreen> {
       initialType: _selectedType,
       isLoading: isLoading,
       items: movies,
-      genresForType: mediaRepository.genres,
       selectedGenres: _genreFilter.genreIds,
       onTypeChanged: (type) {
         _setContentType(type);
@@ -234,7 +233,7 @@ class _MediaScreenState extends State<MediaScreen> {
         if (direction == .right) {
           favoritesRepository.addFavorite(movie);
         } else if (direction == .left) {
-          AppScope.of(context).skippedMediaRepository.addSkippedMedia(movie);
+          skippedMediaRepository.addSkippedMedia(movie);
         }
 
         if (currentIndex == null) return true;

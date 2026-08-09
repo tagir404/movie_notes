@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
-import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_genre_filter.dart';
 import 'package:movie_notes/widgets/media_type_filter.dart';
 
@@ -28,7 +28,6 @@ class MediaSwiperView extends StatefulWidget {
     required this.initialType,
     required this.isLoading,
     required this.items,
-    required this.genresForType,
     required this.selectedGenres,
     required this.onTypeChanged,
     required this.onGenresChanged,
@@ -43,7 +42,6 @@ class MediaSwiperView extends StatefulWidget {
   final MediaContentType initialType;
   final bool isLoading;
   final List<Movie> items;
-  final List<Genre> Function(MediaContentType type) genresForType;
   final List<int> selectedGenres;
   final ValueChanged<MediaContentType> onTypeChanged;
   final ValueChanged<List<int>> onGenresChanged;
@@ -109,7 +107,9 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
               onChanged: _handleTypeChanged,
             ),
             MediaGenreFilter(
-              genres: widget.genresForType(_selectedType),
+              genres: AppScope.of(
+                context,
+              ).mediaRepository.genres(_selectedType),
               selectedGenres: _selectedGenres,
               onChanged: _handleGenresChanged,
             ),
@@ -120,6 +120,11 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
           child: widget.isLoading
               ? const Center(child: CircularProgressIndicator())
               : CardSwiper(
+                  key: ValueKey(
+                    widget.items
+                        .map((movie) => '${movie.type.name}-${movie.id}')
+                        .join(','),
+                  ),
                   padding: const EdgeInsets.all(0),
                   isLoop: false,
                   numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
