@@ -6,7 +6,7 @@ import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
-import 'package:movie_notes/widgets/movie_card.dart';
+import 'package:movie_notes/widgets/movie_card/movie_card.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -142,10 +142,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             Row(
               spacing: 8,
               children: [
-                Text(
-                  'Просмотрено',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                Text('Листать', style: Theme.of(context).textTheme.bodyMedium),
                 const Icon(Icons.swipe_right, size: 16),
               ],
             ),

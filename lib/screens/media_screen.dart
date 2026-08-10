@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
@@ -10,17 +9,10 @@ import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
-import 'package:movie_notes/widgets/movie_card.dart';
+import 'package:movie_notes/widgets/movie_card/movie_card.dart';
 
 class MediaScreen extends StatefulWidget {
-  const MediaScreen({
-    required this.type,
-    required this.emptyMessage,
-    super.key,
-  });
-
-  final MediaContentType type;
-  final String emptyMessage;
+  const MediaScreen({super.key});
 
   @override
   State<MediaScreen> createState() => _MediaScreenState();
@@ -40,13 +32,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
   List<Movie> movies = [];
   GenreFilter _genreFilter = const GenreFilter();
-  late MediaContentType _selectedType;
-
-  @override
-  void initState() {
-    super.initState();
-    _selectedType = widget.type;
-  }
+  MediaContentType _selectedType = MediaContentType.movie;
 
   @override
   void didChangeDependencies() {
@@ -175,6 +161,7 @@ class _MediaScreenState extends State<MediaScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: MediaSwiperView(
+      isLoop: false,
       initialType: _selectedType,
       isLoading: isLoading,
       items: movies,
@@ -189,10 +176,6 @@ class _MediaScreenState extends State<MediaScreen> {
 
         _loadMedia();
       },
-      allowedSwipeDirection: const AllowedSwipeDirection.symmetric(
-        horizontal: true,
-        vertical: false,
-      ),
       cardBuilder: (context, movie, selectedType, selectedGenres) {
         final movieGenres = movie.genreIds
             .map(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/screens/favorites_screen.dart';
 import 'package:movie_notes/screens/media_screen.dart';
 import 'package:movie_notes/screens/settings_screen.dart';
@@ -25,10 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  static const _screens = [
-    MediaScreen(type: MediaContentType.movie, emptyMessage: 'Каталог пуст'),
-    FavoritesScreen(),
-  ];
+  static const _screens = [MediaScreen(), FavoritesScreen()];
 
   @override
   Widget build(BuildContext context) => Scaffold(

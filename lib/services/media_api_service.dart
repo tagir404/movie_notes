@@ -17,8 +17,8 @@ class MediaApiService {
 
   Future<List<Genre>> fetchGenres(MediaContentType type) async {
     final endpoint = switch (type) {
-      MediaContentType.movie => '/3/genre/movie/list',
-      MediaContentType.tvShow => '/3/genre/tv/list',
+      .movie => '/3/genre/movie/list',
+      .tvShow => '/3/genre/tv/list',
     };
 
     final response = await _get(endpoint);
@@ -34,7 +34,7 @@ class MediaApiService {
     List<int>? genreIds,
   }) async {
     final json = await _get(
-      type == MediaContentType.movie ? '/3/discover/movie' : '/3/discover/tv',
+      type == .movie ? '/3/discover/movie' : '/3/discover/tv',
       queryParameters: {
         'page': page.toString(),
         'sort_by': 'popularity.desc',

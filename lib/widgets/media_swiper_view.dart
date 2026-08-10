@@ -33,7 +33,7 @@ class MediaSwiperView extends StatefulWidget {
     required this.onGenresChanged,
     required this.cardBuilder,
     required this.actionsInfo,
-    this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
+    this.isLoop = true,
     this.onSwipe,
     this.onEnd,
     super.key,
@@ -46,10 +46,10 @@ class MediaSwiperView extends StatefulWidget {
   final ValueChanged<MediaContentType> onTypeChanged;
   final ValueChanged<List<int>> onGenresChanged;
   final MediaSwiperCardBuilder cardBuilder;
+  final bool isLoop;
   final MediaSwiperOnSwipe? onSwipe;
   final VoidCallback? onEnd;
   final Widget actionsInfo;
-  final AllowedSwipeDirection allowedSwipeDirection;
 
   @override
   State<MediaSwiperView> createState() => _MediaSwiperViewState();
@@ -96,7 +96,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const .only(left: 20, right: 20, top: 0, bottom: 20),
+    padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
     child: Column(
       children: [
         Row(
@@ -126,12 +126,15 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                         .join(','),
                   ),
                   padding: const EdgeInsets.all(0),
-                  isLoop: false,
+                  isLoop: widget.isLoop,
                   numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
                   backCardOffset: const Offset(0, 0),
                   scale: 1,
                   controller: _cardSwiperController,
-                  allowedSwipeDirection: widget.allowedSwipeDirection,
+                  allowedSwipeDirection: const .symmetric(
+                    horizontal: true,
+                    vertical: false,
+                  ),
                   cardsCount: widget.items.length,
                   cardBuilder: (context, index, _, _) {
                     final movie = widget.items[index];

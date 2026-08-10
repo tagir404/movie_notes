@@ -49,7 +49,7 @@ class MainApp extends StatelessWidget {
     theme: ThemeData(
       textTheme: GoogleFonts.nunitoTextTheme(),
       colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color.fromARGB(255, 7, 98, 255),
+        seedColor: const Color.fromARGB(255, 255, 7, 7),
       ),
     ),
   );
