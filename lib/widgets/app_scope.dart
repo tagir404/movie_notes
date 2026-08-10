@@ -3,6 +3,7 @@ import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
+import 'package:movie_notes/theme/theme_mode_controller.dart';
 
 class AppScope extends InheritedWidget {
   const AppScope({
@@ -10,6 +11,7 @@ class AppScope extends InheritedWidget {
     required this.mediaRepository,
     required this.favoritesRepository,
     required this.skippedMediaRepository,
+    required this.themeController,
     required super.child,
     super.key,
   });
@@ -18,6 +20,7 @@ class AppScope extends InheritedWidget {
   final MediaRepository mediaRepository;
   final FavoritesRepository favoritesRepository;
   final SkippedMediaRepository skippedMediaRepository;
+  final ThemeModeController themeController;
 
   static AppScope? maybeOf(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<AppScope>();

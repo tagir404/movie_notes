@@ -67,8 +67,11 @@ class _MovieCardState extends State<MovieCard>
           transform: Matrix4.identity()
             ..setEntry(3, 2, .001)
             ..rotateY(angle),
-          child: ClipRRect(
+          child: Material(
+            elevation: 6,
             borderRadius: BorderRadius.circular(12),
+            clipBehavior: Clip.antiAlias,
+
             child: Stack(
               fit: StackFit.expand,
               children: [
@@ -91,8 +94,8 @@ class _MovieCardState extends State<MovieCard>
                             ],
                           ),
                         )
-                      : const BoxDecoration(
-                          color: Color.fromARGB(255, 0, 0, 0),
+                      : BoxDecoration(
+                          color: Theme.of(context).colorScheme.surface,
                         ),
                 ),
 

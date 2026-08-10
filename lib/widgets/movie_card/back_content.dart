@@ -32,17 +32,12 @@ class _MovieCardBackState extends State<MovieCardBack> {
     final theme = Theme.of(context);
 
     return DefaultTextStyle(
-      style: theme.textTheme.bodyLarge!.copyWith(color: Colors.white),
+      style: theme.textTheme.bodyLarge!,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Text(
-            widget.movie.title,
-            style: theme.textTheme.headlineMedium?.copyWith(
-              color: Colors.white,
-            ),
-          ),
+          Text(widget.movie.title, style: theme.textTheme.headlineMedium),
 
           if ((widget.movieDetails?.tagline ?? '').isNotEmpty) ...[
             const SizedBox(height: 8),

@@ -10,6 +10,7 @@ import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/screens/home_screen.dart';
 import 'package:movie_notes/services/media_api_service.dart';
+import 'package:movie_notes/theme/theme_mode_controller.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 
 Future<void> main() async {
@@ -25,6 +26,8 @@ Future<void> main() async {
   final skippedMediaRepository = SkippedMediaRepository(
     SkippedMediaLocalDatasource(await AppDatabase.database),
   );
+  final themeController = ThemeModeController();
+  await themeController.load();
 
   await repository.init();
 
@@ -34,6 +37,7 @@ Future<void> main() async {
       mediaRepository: repository,
       favoritesRepository: favoritesRepository,
       skippedMediaRepository: skippedMediaRepository,
+      themeController: themeController,
       child: const MainApp(),
     ),
   );
@@ -43,14 +47,32 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) => MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: const HomeScreen(),
-    theme: ThemeData(
-      textTheme: GoogleFonts.nunitoTextTheme(),
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: const Color.fromARGB(255, 255, 7, 7),
+  Widget build(BuildContext context) {
+    final themeController = AppScope.of(context).themeController;
+
+    return AnimatedBuilder(
+      animation: themeController,
+      builder: (context, _) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: const HomeScreen(),
+        theme: ThemeData(
+          textTheme: GoogleFonts.nunitoTextTheme(),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 255, 7, 7),
+          ),
+        ),
+        darkTheme: ThemeData(
+          brightness: Brightness.dark,
+          textTheme: GoogleFonts.nunitoTextTheme(
+            ThemeData(brightness: Brightness.dark).textTheme,
+          ),
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: const Color.fromARGB(255, 255, 7, 7),
+            brightness: Brightness.dark,
+          ),
+        ),
+        themeMode: themeController.themeMode,
       ),
-    ),
-  );
+    );
+  }
 }
