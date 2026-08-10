@@ -2,6 +2,7 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
+import 'package:movie_notes/widgets/movie_card/movie_videos_dialog.dart';
 
 class MovieCardBack extends StatefulWidget {
   const MovieCardBack({
@@ -77,6 +78,7 @@ class _MovieCardBackState extends State<MovieCardBack> {
               if (widget.movieDetails?.originCountry != null &&
                   widget.movieDetails!.originCountry!.isNotEmpty)
                 Row(
+                  spacing: 8,
                   children: [
                     ...widget.movieDetails!.originCountry!.map(
                       (countryCode) => CountryFlag.fromCountryCode(
@@ -93,17 +95,23 @@ class _MovieCardBackState extends State<MovieCardBack> {
               Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) =>
+                            MovieVideosDialog(movie: widget.movie),
+                      );
+                    },
                     style: IconButton.styleFrom(
                       backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Colors.white,
+                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
                       padding: const EdgeInsets.all(12),
                       minimumSize: const Size(44, 44),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
                     ),
-                    icon: const Icon(Icons.photo_library_outlined, size: 22),
+                    icon: const Icon(Icons.videocam, size: 22),
                   ),
                 ],
               ),

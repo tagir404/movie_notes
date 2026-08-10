@@ -59,6 +59,17 @@ class MediaApiService {
     return MovieDetails.fromJson(json);
   }
 
+  Future<Map<String, dynamic>> fetchMediaVideos(
+    int id,
+    MediaContentType type,
+  ) async {
+    final endpoint = type == .movie
+        ? '/3/movie/$id/videos'
+        : '/3/tv/$id/videos';
+
+    return await _get(endpoint);
+  }
+
   void _checkResponse(http.Response response) {
     if (response.statusCode != 200) {
       throw Exception('Request failed: ${response.statusCode}');
