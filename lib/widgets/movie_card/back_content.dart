@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/widgets/movie_card/movie_videos_dialog.dart';
+import 'package:movie_notes/widgets/pill.dart';
 
 class MovieCardBack extends StatefulWidget {
   const MovieCardBack({
@@ -89,24 +90,22 @@ class _MovieCardBackState extends State<MovieCardBack> {
                 ),
               Row(
                 children: [
-                  IconButton(
-                    onPressed: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) =>
-                            MovieVideosDialog(movie: widget.movie),
-                      );
-                    },
-                    style: IconButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.primary,
-                      foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      padding: const EdgeInsets.all(12),
-                      minimumSize: const Size(44, 44),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  InkWell(
+                    onTap: () => showDialog<void>(
+                      context: context,
+                      builder: (context) =>
+                          MovieVideosDialog(movie: widget.movie),
+                    ),
+                    child: Pill(
+                      color: Theme.of(context).colorScheme.primary,
+                      padding: const .all(12),
+                      shape: const CircleBorder(),
+                      child: Icon(
+                        Icons.videocam,
+                        size: 22,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
-                    icon: const Icon(Icons.videocam, size: 22),
                   ),
                 ],
               ),
