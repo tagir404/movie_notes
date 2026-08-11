@@ -7,6 +7,7 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
+import 'package:movie_notes/models/movie_cast_member.dart';
 import 'package:movie_notes/models/movie_details.dart';
 
 class MediaApiService {
@@ -70,6 +71,24 @@ class MediaApiService {
         : '/3/tv/$id/videos';
 
     return await _get(endpoint);
+  }
+
+  Future<List<MovieCastMember>> fetchMediaCredits(
+    int id,
+    MediaContentType type,
+  ) async {
+    final endpoint = type == .movie
+        ? '/3/movie/$id/credits'
+        : '/3/tv/$id/credits';
+
+    final json = await _get(endpoint);
+
+    return (json['cast'] as List?)
+            ?.map(
+              (item) => MovieCastMember.fromJson(item as Map<String, dynamic>),
+            )
+            .toList() ??
+        [];
   }
 
   void _checkResponse(http.Response response) {

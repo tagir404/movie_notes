@@ -2,6 +2,7 @@ import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
+import 'package:movie_notes/screens/movie_cast_screen.dart';
 import 'package:movie_notes/widgets/movie_card/movie_videos_dialog.dart';
 import 'package:movie_notes/widgets/pill.dart';
 
@@ -89,7 +90,26 @@ class _MovieCardBackState extends State<MovieCardBack> {
                   ],
                 ),
               Row(
+                spacing: 12,
                 children: [
+                  InkWell(
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MovieCastScreen(movie: widget.movie),
+                      ),
+                    ),
+                    child: Pill(
+                      color: Theme.of(context).colorScheme.primary,
+                      padding: const .all(12),
+                      shape: const CircleBorder(),
+                      child: Icon(
+                        Icons.people,
+                        size: 22,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
                   InkWell(
                     onTap: () => showDialog<void>(
                       context: context,
