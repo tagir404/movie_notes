@@ -2,9 +2,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
+import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_genre_filter.dart';
+import 'package:movie_notes/widgets/media_sort_filter.dart';
 import 'package:movie_notes/widgets/media_type_filter.dart';
 
 typedef MediaSwiperCardBuilder =
@@ -29,8 +31,10 @@ class MediaSwiperView extends StatefulWidget {
     required this.isLoading,
     required this.items,
     required this.selectedGenres,
+    required this.selectedSort,
     required this.onTypeChanged,
     required this.onGenresChanged,
+    required this.onSortChanged,
     required this.cardBuilder,
     required this.actionsInfo,
     this.isLoop = true,
@@ -43,8 +47,10 @@ class MediaSwiperView extends StatefulWidget {
   final bool isLoading;
   final List<Movie> items;
   final List<int> selectedGenres;
+  final MediaSortOption selectedSort;
   final ValueChanged<MediaContentType> onTypeChanged;
   final ValueChanged<List<int>> onGenresChanged;
+  final ValueChanged<MediaSortOption> onSortChanged;
   final MediaSwiperCardBuilder cardBuilder;
   final bool isLoop;
   final MediaSwiperOnSwipe? onSwipe;
@@ -99,22 +105,32 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
     padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
     child: Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            MediaTypeFilter(
-              selectedType: _selectedType,
-              onChanged: _handleTypeChanged,
-            ),
-            MediaGenreFilter(
-              genres: AppScope.of(
-                context,
-              ).mediaRepository.genres(_selectedType),
-              selectedGenres: _selectedGenres,
-              onChanged: _handleGenresChanged,
-            ),
-          ],
+        SizedBox(
+          width: double.infinity,
+          child: Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            alignment: .spaceBetween,
+            children: [
+              MediaSortFilter(
+                selectedSort: widget.selectedSort,
+                onChanged: widget.onSortChanged,
+              ),
+              MediaGenreFilter(
+                genres: AppScope.of(
+                  context,
+                ).mediaRepository.genres(_selectedType),
+                selectedGenres: _selectedGenres,
+                onChanged: _handleGenresChanged,
+              ),
+              MediaTypeFilter(
+                selectedType: _selectedType,
+                onChanged: _handleTypeChanged,
+              ),
+            ],
+          ),
         ),
+
         const SizedBox(height: 20),
         Expanded(
           child: widget.isLoading

@@ -4,6 +4,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie_notes/constants/api_constants.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
+import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -32,12 +33,13 @@ class MediaApiService {
     required MediaContentType type,
     int page = 1,
     List<int>? genreIds,
+    MediaSortOption sortOption = MediaSortOption.popularity,
   }) async {
     final json = await _get(
       type == .movie ? '/3/discover/movie' : '/3/discover/tv',
       queryParameters: {
         'page': page.toString(),
-        'sort_by': 'popularity.desc',
+        'sort_by': sortOption.apiValueFor(type),
         'vote_average.gte': '6.5',
         'vote_count.gte': '1000',
         'include_adult': 'false',

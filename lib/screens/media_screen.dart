@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
+import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -31,8 +32,10 @@ class _MediaScreenState extends State<MediaScreen> {
   int page = 1;
 
   List<Movie> movies = [];
+
   GenreFilter _genreFilter = const GenreFilter();
   MediaContentType _selectedType = MediaContentType.movie;
+  MediaSortOption _selectedSort = MediaSortOption.popularity;
 
   @override
   void didChangeDependencies() {
@@ -60,9 +63,7 @@ class _MediaScreenState extends State<MediaScreen> {
       var attempts = 0;
 
       while (attempts < 5) {
-        final loadedMovies = _selectedType == .movie
-            ? await _loadMovies()
-            : await _loadTvShows();
+        final loadedMovies = await _loadMediaPage();
 
         filteredMovies = loadedMovies
             .where((movie) => !skippedIds.contains(movie.id))
@@ -97,6 +98,13 @@ class _MediaScreenState extends State<MediaScreen> {
     }
   }
 
+  Future<List<Movie>> _loadMediaPage() => mediaApiService.fetchMedia(
+    type: _selectedType,
+    page: page,
+    genreIds: _genreFilter.hasGenres ? _genreFilter.genreIds : null,
+    sortOption: _selectedSort,
+  );
+
   void _setContentType(MediaContentType type) {
     if (_selectedType == type) return;
 
@@ -106,6 +114,7 @@ class _MediaScreenState extends State<MediaScreen> {
       movies = [];
       _movieDetails.clear();
       _genreFilter = const GenreFilter();
+      _selectedSort = MediaSortOption.popularity;
     });
 
     _loadMedia();
@@ -119,31 +128,6 @@ class _MediaScreenState extends State<MediaScreen> {
     if (index + 1 < movies.length) {
       _loadMovieDetails(movies[index + 1]);
     }
-  }
-
-  Future<List<Movie>> _loadMovies() {
-    if (_genreFilter.hasGenres) {
-      return mediaApiService.fetchMedia(
-        type: MediaContentType.movie,
-        genreIds: _genreFilter.genreIds,
-      );
-    }
-
-    return mediaApiService.fetchMedia(type: MediaContentType.movie, page: page);
-  }
-
-  Future<List<Movie>> _loadTvShows() {
-    if (_genreFilter.hasGenres) {
-      return mediaApiService.fetchMedia(
-        type: MediaContentType.tvShow,
-        genreIds: _genreFilter.genreIds,
-      );
-    }
-
-    return mediaApiService.fetchMedia(
-      type: MediaContentType.tvShow,
-      page: page,
-    );
   }
 
   Future<void> _loadMovieDetails(Movie movie) async {
@@ -166,12 +150,25 @@ class _MediaScreenState extends State<MediaScreen> {
       isLoading: isLoading,
       items: movies,
       selectedGenres: _genreFilter.genreIds,
-      onTypeChanged: (type) {
-        _setContentType(type);
-      },
+      selectedSort: _selectedSort,
+      onTypeChanged: _setContentType,
       onGenresChanged: (genreIds) {
         setState(() {
           _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+          page = 1;
+          movies = [];
+          _movieDetails.clear();
+        });
+
+        _loadMedia();
+      },
+
+      onSortChanged: (sortOption) {
+        setState(() {
+          _selectedSort = sortOption;
+          page = 1;
+          movies = [];
+          _movieDetails.clear();
         });
 
         _loadMedia();

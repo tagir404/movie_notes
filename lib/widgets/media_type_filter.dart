@@ -14,6 +14,7 @@ class MediaTypeFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Row(
+    mainAxisSize: .min,
     children: [
       InkWell(
         borderRadius: .circular(20),
@@ -30,7 +31,9 @@ class MediaTypeFilter extends StatelessWidget {
           child: Text(
             'Фильмы',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: selectedType == .movie ? Colors.white : null,
+              color: selectedType == .movie
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : null,
             ),
           ),
         ),
@@ -50,7 +53,9 @@ class MediaTypeFilter extends StatelessWidget {
           child: Text(
             'Сериалы',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: selectedType == .tvShow ? Colors.white : null,
+              color: selectedType == .tvShow
+                  ? Theme.of(context).colorScheme.onPrimary
+                  : null,
             ),
           ),
         ),

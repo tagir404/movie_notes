@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
+import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -18,6 +19,7 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   late final FavoritesRepository _repository;
   MediaContentType _selectedType = MediaContentType.movie;
+  MediaSortOption _selectedSort = MediaSortOption.popularity;
   GenreFilter _genreFilter = const GenreFilter();
   final Map<int, MovieDetails> _movieDetails = {};
   bool _isLoading = true;
@@ -82,6 +84,15 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
       );
     }).toList();
 
+    movies.sort((a, b) {
+      switch (_selectedSort) {
+        case MediaSortOption.popularity:
+          return b.voteAverage.compareTo(a.voteAverage);
+        case MediaSortOption.newest:
+          return b.releaseDate.compareTo(a.releaseDate);
+      }
+    });
+
     if (movies.isEmpty) {
       return const Scaffold(
         body: Center(child: Text('Нет сохраненных элементов.')),
@@ -94,6 +105,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         isLoading: false,
         items: movies,
         selectedGenres: _genreFilter.genreIds,
+        selectedSort: _selectedSort,
         onTypeChanged: (type) {
           setState(() {
             _selectedType = type;
@@ -102,6 +114,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         onGenresChanged: (genreIds) {
           setState(() {
             _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+          });
+        },
+        onSortChanged: (sortOption) {
+          setState(() {
+            _selectedSort = sortOption;
           });
         },
         cardBuilder: (context, movie, selectedType, selectedGenres) {

@@ -44,9 +44,9 @@ class MediaGenreFilter extends StatelessWidget {
                 child: Center(
                   child: Text(
                     selectedGenres.length.toString(),
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.white),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               ),

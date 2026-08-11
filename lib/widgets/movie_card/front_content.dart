@@ -81,7 +81,9 @@ class MovieCardFront extends StatelessWidget {
                 child: Text(
                   genre.name,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white,
+                    color: isSelected
+                        ? theme.colorScheme.onPrimary
+                        : Colors.white,
                   ),
                 ),
               ),
