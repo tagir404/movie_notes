@@ -190,25 +190,8 @@ class _MediaScreenState extends State<MediaScreen> {
           movieDetails: _movieDetails[movie.id],
         );
       },
-      actionsInfo: Row(
-        mainAxisAlignment: .spaceBetween,
-        children: [
-          Row(
-            spacing: 8,
-            children: [
-              const Icon(Icons.swipe_left, size: 16),
-              Text('Пропустить', style: Theme.of(context).textTheme.bodyMedium),
-            ],
-          ),
-          Row(
-            spacing: 8,
-            children: [
-              Text('Сохранить', style: Theme.of(context).textTheme.bodyMedium),
-              const Icon(Icons.swipe_right, size: 16),
-            ],
-          ),
-        ],
-      ),
+      leftActionText: 'Пропустить',
+      rightActionText: 'Сохранить',
       onSwipe: (previousIndex, currentIndex, direction, movie) {
         if (direction == .right) {
           favoritesRepository.addFavorite(movie);

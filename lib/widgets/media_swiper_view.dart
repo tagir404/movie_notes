@@ -8,6 +8,7 @@ import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_genre_filter.dart';
 import 'package:movie_notes/widgets/media_sort_filter.dart';
 import 'package:movie_notes/widgets/media_type_filter.dart';
+import 'package:movie_notes/widgets/swiper_action.dart';
 
 typedef MediaSwiperCardBuilder =
     Widget Function(
@@ -36,7 +37,8 @@ class MediaSwiperView extends StatefulWidget {
     required this.onGenresChanged,
     required this.onSortChanged,
     required this.cardBuilder,
-    required this.actionsInfo,
+    required this.leftActionText,
+    required this.rightActionText,
     this.isLoop = true,
     this.onSwipe,
     this.onEnd,
@@ -55,7 +57,8 @@ class MediaSwiperView extends StatefulWidget {
   final bool isLoop;
   final MediaSwiperOnSwipe? onSwipe;
   final VoidCallback? onEnd;
-  final Widget actionsInfo;
+  final String leftActionText;
+  final String rightActionText;
 
   @override
   State<MediaSwiperView> createState() => _MediaSwiperViewState();
@@ -65,6 +68,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
   late MediaContentType _selectedType;
   late List<int> _selectedGenres;
   final CardSwiperController _cardSwiperController = CardSwiperController();
+  CardSwiperDirection? _swipeDirection;
 
   @override
   void initState() {
@@ -162,6 +166,10 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                     );
                   },
                   onSwipe: (previousIndex, currentIndex, direction) {
+                    setState(() {
+                      _swipeDirection = null;
+                    });
+
                     final movie = widget.items[previousIndex];
                     return widget.onSwipe?.call(
                           previousIndex,
@@ -171,11 +179,30 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                         ) ??
                         true;
                   },
+                  onSwipeDirectionChange: (CardSwiperDirection direction, _) {
+                    setState(() {
+                      _swipeDirection = direction;
+                    });
+                  },
                   onEnd: widget.onEnd,
                 ),
         ),
         const SizedBox(height: 16),
-        widget.actionsInfo,
+        Row(
+          mainAxisAlignment: .spaceBetween,
+          children: [
+            SwiperAction(
+              text: widget.leftActionText,
+              isActive: _swipeDirection == .left,
+              iconOnRight: false,
+            ),
+            SwiperAction(
+              text: widget.rightActionText,
+              isActive: _swipeDirection == .right,
+              iconOnRight: true,
+            ),
+          ],
+        ),
       ],
     ),
   );

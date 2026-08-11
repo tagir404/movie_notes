@@ -146,25 +146,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           }
           return true;
         },
-        actionsInfo: Row(
-          mainAxisAlignment: .spaceBetween,
-          children: [
-            Row(
-              spacing: 8,
-              children: [
-                const Icon(Icons.swipe_left, size: 16),
-                Text('Удалить', style: Theme.of(context).textTheme.bodyMedium),
-              ],
-            ),
-            Row(
-              spacing: 8,
-              children: [
-                Text('Листать', style: Theme.of(context).textTheme.bodyMedium),
-                const Icon(Icons.swipe_right, size: 16),
-              ],
-            ),
-          ],
-        ),
+        leftActionText: 'Удалить',
+        rightActionText: 'Листать',
       ),
     );
   }
