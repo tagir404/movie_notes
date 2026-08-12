@@ -3,6 +3,7 @@ import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_video.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import '../../l10n/app_localizations.dart';
 
 class MovieVideosDialog extends StatefulWidget {
   const MovieVideosDialog({required this.movie, super.key});
@@ -63,7 +64,7 @@ class _MovieVideosDialogState extends State<MovieVideosDialog> {
             ),
             padding: const EdgeInsets.all(16),
             child: Text(
-              'Нет доступных видео.',
+              AppLocalizations.of(context)!.no_available_videos,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_cast_member.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
+import '../l10n/app_localizations.dart';
 
 class MovieCastScreen extends StatelessWidget {
   const MovieCastScreen({required this.movie, super.key});
@@ -13,7 +14,9 @@ class MovieCastScreen extends StatelessWidget {
     final repository = AppScope.of(context).mediaRepository;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Актёрский состав')),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.movie_cast_title),
+      ),
       body: FutureBuilder<List<MovieCastMember>>(
         future: repository.getMediaCredits(movie.id, movie.type),
         builder: (context, snapshot) {
@@ -22,15 +25,17 @@ class MovieCastScreen extends StatelessWidget {
           }
 
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Не удалось загрузить список актёров.'),
+            return Center(
+              child: Text(AppLocalizations.of(context)!.movie_cast_load_error),
             );
           }
 
           final cast = snapshot.data ?? [];
 
           if (cast.isEmpty) {
-            return const Center(child: Text('Актёры не найдены.'));
+            return Center(
+              child: Text(AppLocalizations.of(context)!.movie_cast_not_found),
+            );
           }
 
           return ListView.builder(
@@ -56,10 +61,14 @@ class MovieCastScreen extends StatelessWidget {
                       ? const Icon(Icons.person)
                       : null,
                 ),
-                title: Text(member.name),
+                title: member.name.isNotEmpty
+                    ? Text(member.name)
+                    : Text(AppLocalizations.of(context)!.unknown),
                 subtitle: member.character.isNotEmpty
                     ? Text(member.character)
-                    : const Text('Роль неизвестна'),
+                    : Text(
+                        AppLocalizations.of(context)!.movie_cast_unknown_role,
+                      ),
               );
             },
           );

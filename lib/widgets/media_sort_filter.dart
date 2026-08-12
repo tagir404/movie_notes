@@ -18,7 +18,8 @@ class MediaSortFilter extends StatelessWidget {
     onSelected: onChanged,
     itemBuilder: (context) => MediaSortOption.values
         .map(
-          (option) => PopupMenuItem(value: option, child: Text(option.label)),
+          (option) =>
+              PopupMenuItem(value: option, child: Text(option.label(context))),
         )
         .toList(),
     child: Pill(
@@ -29,7 +30,7 @@ class MediaSortFilter extends StatelessWidget {
         spacing: 8,
         children: [
           Text(
-            selectedSort.label,
+            selectedSort.label(context),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
           ),
           const Icon(Icons.arrow_drop_down, size: 20),

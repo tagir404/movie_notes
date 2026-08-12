@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/widgets/pill.dart';
+import '../l10n/app_localizations.dart';
 
 class MediaTypeFilter extends StatelessWidget {
   const MediaTypeFilter({
@@ -29,7 +30,7 @@ class MediaTypeFilter extends StatelessWidget {
               ? Theme.of(context).colorScheme.primary
               : null,
           child: Text(
-            'Фильмы',
+            AppLocalizations.of(context)!.media_type_movies,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: selectedType == .movie
                   ? Theme.of(context).colorScheme.onPrimary
@@ -51,7 +52,7 @@ class MediaTypeFilter extends StatelessWidget {
               ? Theme.of(context).colorScheme.primary
               : null,
           child: Text(
-            'Сериалы',
+            AppLocalizations.of(context)!.media_type_tv_shows,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: selectedType == .tvShow
                   ? Theme.of(context).colorScheme.onPrimary

@@ -1,15 +1,18 @@
+import 'package:flutter/widgets.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
+import '../l10n/app_localizations.dart';
 
 enum MediaSortOption {
   popularity,
   newest;
 
-  String get label {
+  String label(BuildContext context) {
+    final loc = AppLocalizations.of(context);
     switch (this) {
       case MediaSortOption.popularity:
-        return 'По популярности';
+        return loc!.media_sort_popularity;
       case MediaSortOption.newest:
-        return 'По новизне';
+        return loc!.media_sort_newest;
     }
   }
 

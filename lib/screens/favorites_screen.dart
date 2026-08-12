@@ -8,6 +8,7 @@ import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
 import 'package:movie_notes/widgets/movie_card/movie_card.dart';
+import '../l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -94,8 +95,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     });
 
     if (movies.isEmpty) {
-      return const Scaffold(
-        body: Center(child: Text('Нет сохраненных элементов.')),
+      return Scaffold(
+        body: Center(
+          child: Text(AppLocalizations.of(context)!.favorites_empty),
+        ),
       );
     }
 
@@ -146,8 +149,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
           }
           return true;
         },
-        leftActionText: 'Удалить',
-        rightActionText: 'Листать',
+        leftActionText: AppLocalizations.of(context)!.action_delete,
+        rightActionText: AppLocalizations.of(context)!.action_swipe,
       ),
     );
   }

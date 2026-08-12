@@ -5,6 +5,7 @@ import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/screens/movie_cast_screen.dart';
 import 'package:movie_notes/widgets/movie_card/movie_videos_dialog.dart';
 import 'package:movie_notes/widgets/pill.dart';
+import '../../l10n/app_localizations.dart';
 
 class MovieCardBack extends StatefulWidget {
   const MovieCardBack({
@@ -60,7 +61,7 @@ class _MovieCardBackState extends State<MovieCardBack> {
                 padding: const EdgeInsets.only(right: 8),
                 child: Text(
                   widget.movie.overview.isEmpty
-                      ? 'Описание отсутствует.'
+                      ? AppLocalizations.of(context)!.description_missing
                       : widget.movie.overview,
                   textAlign: TextAlign.justify,
                 ),

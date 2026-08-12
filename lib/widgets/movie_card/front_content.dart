@@ -3,6 +3,7 @@ import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/utils/formatters.dart';
+import '../../l10n/app_localizations.dart';
 import 'package:movie_notes/widgets/pill.dart';
 import 'package:movie_notes/widgets/rating_stars.dart';
 
@@ -42,7 +43,7 @@ class MovieCardFront extends StatelessWidget {
                   Text(
                     movieDetails?.runtime == null
                         ? '...'
-                        : formatRuntime(movieDetails!.runtime!),
+                        : formatRuntime(context, movieDetails!.runtime!),
                     style: theme.textTheme.bodyLarge?.copyWith(),
                   ),
                 ],
@@ -56,7 +57,7 @@ class MovieCardFront extends StatelessWidget {
                   const Icon(Icons.calendar_today, size: 18),
                   const SizedBox(width: 6),
                   Text(
-                    '$movieYear г',
+                    '$movieYear${AppLocalizations.of(context)!.year_postfix}',
                     style: theme.textTheme.bodyLarge?.copyWith(),
                   ),
                 ],
@@ -105,7 +106,7 @@ class MovieCardFront extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
             Text(
-              ' · ${formatCount(movieDetails?.voteCount ?? 0)} оценок',
+              ' · ${formatCount(context, movieDetails?.voteCount ?? 0)} ${AppLocalizations.of(context)!.ratings_label}',
               style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
           ],

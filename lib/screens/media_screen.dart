@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
+import 'package:movie_notes/l10n/app_localizations.dart';
 import 'package:movie_notes/models/genre_filter.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -190,8 +191,8 @@ class _MediaScreenState extends State<MediaScreen> {
           movieDetails: _movieDetails[movie.id],
         );
       },
-      leftActionText: 'Пропустить',
-      rightActionText: 'Сохранить',
+      leftActionText: AppLocalizations.of(context)!.action_skip,
+      rightActionText: AppLocalizations.of(context)!.action_save,
       onSwipe: (previousIndex, currentIndex, direction, movie) {
         if (direction == .right) {
           favoritesRepository.addFavorite(movie);

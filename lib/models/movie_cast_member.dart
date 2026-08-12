@@ -11,7 +11,7 @@ class MovieCastMember {
 
   factory MovieCastMember.fromJson(Map<String, dynamic> json) =>
       MovieCastMember(
-        name: json['name'] as String? ?? 'Неизвестно',
+        name: json['name'] as String? ?? '',
         profilePath: json['profile_path'] as String?,
         character: json['character'] as String? ?? '',
       );

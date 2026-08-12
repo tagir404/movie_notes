@@ -12,6 +12,8 @@ import 'package:movie_notes/screens/home_screen.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/theme/theme_mode_controller.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +55,11 @@ class MainApp extends StatelessWidget {
     return AnimatedBuilder(
       animation: themeController,
       builder: (context, _) => MaterialApp(
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          ...GlobalMaterialLocalizations.delegates,
+        ],
+        supportedLocales: AppLocalizations.supportedLocales,
         debugShowCheckedModeBanner: false,
         home: const HomeScreen(),
         theme: ThemeData(

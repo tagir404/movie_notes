@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/screens/favorites_screen.dart';
 import 'package:movie_notes/screens/media_screen.dart';
 import 'package:movie_notes/screens/settings_screen.dart';
+import '../l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,9 +17,9 @@ class _HomeScreenState extends State<HomeScreen> {
   String get _title {
     switch (_selectedIndex) {
       case 0:
-        return 'Каталог';
+        return AppLocalizations.of(context)!.home_catalog;
       case 1:
-        return 'Сохранённые';
+        return AppLocalizations.of(context)!.home_saved;
       default:
         return '';
     }
@@ -51,11 +52,14 @@ class _HomeScreenState extends State<HomeScreen> {
           _selectedIndex = index;
         });
       },
-      destinations: const [
-        NavigationDestination(icon: Icon(Icons.movie), label: 'Каталог'),
+      destinations: [
         NavigationDestination(
-          icon: Icon(Icons.bookmarks),
-          label: 'Сохранённые',
+          icon: const Icon(Icons.movie),
+          label: AppLocalizations.of(context)!.home_catalog,
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.bookmarks),
+          label: AppLocalizations.of(context)!.home_saved,
         ),
       ],
     ),

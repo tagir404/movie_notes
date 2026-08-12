@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/widgets/pill.dart';
+import '../l10n/app_localizations.dart';
 
 class MediaGenreFilter extends StatelessWidget {
   const MediaGenreFilter({
@@ -25,7 +26,7 @@ class MediaGenreFilter extends StatelessWidget {
           borderRadius: .circular(20),
           padding: const .symmetric(horizontal: 12, vertical: 4),
           child: Text(
-            'Жанры',
+            AppLocalizations.of(context)!.filter_genres,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
           ),
         ),
@@ -71,9 +72,12 @@ class MediaGenreFilter extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: .spaceBetween,
                     children: [
-                      const Text(
-                        'Выберите жанры',
-                        style: TextStyle(fontSize: 18, fontWeight: .bold),
+                      Text(
+                        AppLocalizations.of(context)!.filter_choose_genres,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       TextButton(
                         onPressed: () {
@@ -81,7 +85,7 @@ class MediaGenreFilter extends StatelessWidget {
                             selected.clear();
                           });
                         },
-                        child: const Text('Сбросить'),
+                        child: Text(AppLocalizations.of(context)!.filter_reset),
                       ),
                     ],
                   ),
@@ -118,7 +122,7 @@ class MediaGenreFilter extends StatelessWidget {
                         onChanged(selected);
                         Navigator.pop(context);
                       },
-                      child: const Text('Применить'),
+                      child: Text(AppLocalizations.of(context)!.filter_apply),
                     ),
                   ),
                 ),
