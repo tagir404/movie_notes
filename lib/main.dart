@@ -11,6 +11,7 @@ import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/screens/home_screen.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/theme/theme_mode_controller.dart';
+import 'package:movie_notes/theme/locale_controller.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
@@ -30,6 +31,8 @@ Future<void> main() async {
   );
   final themeController = ThemeModeController();
   await themeController.load();
+  final localeController = LocaleController();
+  await localeController.load();
 
   await repository.init();
 
@@ -40,6 +43,7 @@ Future<void> main() async {
       favoritesRepository: favoritesRepository,
       skippedMediaRepository: skippedMediaRepository,
       themeController: themeController,
+      localeController: localeController,
       child: const MainApp(),
     ),
   );
@@ -51,34 +55,39 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = AppScope.of(context).themeController;
+    final localeController = AppScope.of(context).localeController;
 
     return AnimatedBuilder(
       animation: themeController,
-      builder: (context, _) => MaterialApp(
-        localizationsDelegates: [
-          AppLocalizations.delegate,
-          ...GlobalMaterialLocalizations.delegates,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
-        debugShowCheckedModeBanner: false,
-        home: const HomeScreen(),
-        theme: ThemeData(
-          textTheme: GoogleFonts.nunitoTextTheme(),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 255, 7, 7),
+      builder: (context, _) => AnimatedBuilder(
+        animation: localeController,
+        builder: (context, _) => MaterialApp(
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            ...GlobalMaterialLocalizations.delegates,
+          ],
+          supportedLocales: AppLocalizations.supportedLocales,
+          locale: localeController.locale,
+          debugShowCheckedModeBanner: false,
+          home: const HomeScreen(),
+          theme: ThemeData(
+            textTheme: GoogleFonts.nunitoTextTheme(),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 255, 7, 7),
+            ),
           ),
-        ),
-        darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          textTheme: GoogleFonts.nunitoTextTheme(
-            ThemeData(brightness: Brightness.dark).textTheme,
-          ),
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color.fromARGB(255, 255, 7, 7),
+          darkTheme: ThemeData(
             brightness: Brightness.dark,
+            textTheme: GoogleFonts.nunitoTextTheme(
+              ThemeData(brightness: Brightness.dark).textTheme,
+            ),
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: const Color.fromARGB(255, 255, 7, 7),
+              brightness: Brightness.dark,
+            ),
           ),
+          themeMode: themeController.themeMode,
         ),
-        themeMode: themeController.themeMode,
       ),
     );
   }

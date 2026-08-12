@@ -14,8 +14,6 @@
     "@settings_title": {},
     "settings_theme_title": "Theme",
     "@settings_theme_title": {},
-    "settings_theme_subtitle": "System, light or dark",
-    "@settings_theme_subtitle": {},
     "settings_theme_system": "System",
     "@settings_theme_system": {},
     "settings_theme_light": "Light",
@@ -87,5 +85,13 @@
     "ratings_label": "ratings",
     "@ratings_label": {},
     "year_postfix": "",
-    "@year_postfix": {}
+    "@year_postfix": {},
+    "settings_language_title": "Language",
+    "@settings_language_title": {},
+    "language_system": "System",
+    "@language_system": {},
+    "language_en": "English",
+    "@language_en": {},
+    "language_ru": "Русский",
+    "@language_ru": {}
 }

@@ -355,6 +355,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **''**
   String get year_postfix;
+
+  /// No description provided for @settings_language_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get settings_language_title;
+
+  /// No description provided for @language_system.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get language_system;
+
+  /// No description provided for @language_en.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get language_en;
+
+  /// No description provided for @language_ru.
+  ///
+  /// In en, this message translates to:
+  /// **'Русский'**
+  String get language_ru;
 }
 
 class _AppLocalizationsDelegate

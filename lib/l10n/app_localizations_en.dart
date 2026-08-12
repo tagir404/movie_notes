@@ -137,4 +137,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get year_postfix => '';
+
+  @override
+  String get settings_language_title => 'Language';
+
+  @override
+  String get language_system => 'System';
+
+  @override
+  String get language_en => 'English';
+
+  @override
+  String get language_ru => 'Русский';
 }

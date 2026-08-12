@@ -6,7 +6,6 @@
     "favorites_empty": "Нет сохраненных элементов.",
     "settings_title": "Настройки",
     "settings_theme_title": "Тема",
-    "settings_theme_subtitle": "Системная, светлая или тёмная",
     "settings_theme_system": "Системная",
     "settings_theme_light": "Светлая",
     "settings_theme_dark": "Тёмная",
@@ -42,5 +41,9 @@
     "runtime_minutes_abbreviation": "мин",
     "runtime_hours_abbreviation": "ч",
     "ratings_label": "оценок",
-    "year_postfix": " г"
+    "year_postfix": " г",
+    "settings_language_title": "Язык",
+    "language_system": "Системный",
+    "language_en": "English",
+    "language_ru": "Русский"
 }

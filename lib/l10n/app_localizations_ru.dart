@@ -137,4 +137,16 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get year_postfix => ' г';
+
+  @override
+  String get settings_language_title => 'Язык';
+
+  @override
+  String get language_system => 'Системный';
+
+  @override
+  String get language_en => 'English';
+
+  @override
+  String get language_ru => 'Русский';
 }
