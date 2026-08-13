@@ -134,12 +134,6 @@ abstract class AppLocalizations {
   /// **'Theme'**
   String get settings_theme_title;
 
-  /// No description provided for @settings_theme_subtitle.
-  ///
-  /// In en, this message translates to:
-  /// **'System, light or dark'**
-  String get settings_theme_subtitle;
-
   /// No description provided for @settings_theme_system.
   ///
   /// In en, this message translates to:
