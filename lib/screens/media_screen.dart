@@ -9,6 +9,7 @@ import 'package:movie_notes/repositories/favorites_repository.dart';
 import 'package:movie_notes/repositories/media_repository.dart';
 import 'package:movie_notes/repositories/skipped_media_repository.dart';
 import 'package:movie_notes/services/media_api_service.dart';
+import 'package:movie_notes/theme/locale_controller.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_swiper_view.dart';
 import 'package:movie_notes/widgets/movie_card/movie_card.dart';
@@ -25,6 +26,7 @@ class _MediaScreenState extends State<MediaScreen> {
   late final MediaRepository mediaRepository;
   late final FavoritesRepository favoritesRepository;
   late final SkippedMediaRepository skippedMediaRepository;
+  late final LocaleController localeController;
 
   final Map<int, MovieDetails> _movieDetails = {};
 
@@ -49,6 +51,8 @@ class _MediaScreenState extends State<MediaScreen> {
     mediaRepository = AppScope.of(context).mediaRepository;
     favoritesRepository = AppScope.of(context).favoritesRepository;
     skippedMediaRepository = AppScope.of(context).skippedMediaRepository;
+    localeController = AppScope.of(context).localeController;
+    localeController.addListener(_reloadLocalizedMedia);
 
     _loadMedia();
   }
@@ -97,6 +101,29 @@ class _MediaScreenState extends State<MediaScreen> {
 
       setState(() => isLoading = false);
     }
+  }
+
+  Future<void> _reloadLocalizedMedia() async {
+    setState(() {
+      page = 1;
+      movies = [];
+      _movieDetails.clear();
+      isLoading = true;
+    });
+
+    await mediaRepository.refreshLocalizedData();
+
+    if (!mounted) return;
+
+    await _loadMedia();
+  }
+
+  @override
+  void dispose() {
+    if (_initialized) {
+      localeController.removeListener(_reloadLocalizedMedia);
+    }
+    super.dispose();
   }
 
   Future<List<Movie>> _loadMediaPage() => mediaApiService.fetchMedia(

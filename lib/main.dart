@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie_notes/constants/api_constants.dart';
 import 'package:movie_notes/database/app_database.dart';
 import 'package:movie_notes/database/favorites_datasource.dart';
 import 'package:movie_notes/database/skipped_media_datasource.dart';
@@ -22,6 +23,11 @@ Future<void> main() async {
 
   final client = http.Client();
   final apiService = MediaApiService(client);
+  final localeController = LocaleController();
+  await localeController.load();
+  apiService.language = ApiConstants.languageForLocaleCode(
+    localeController.locale.languageCode,
+  );
   final repository = MediaRepository(apiService);
   final favoritesRepository = FavoritesRepository(
     FavoritesLocalDatasource(await AppDatabase.database),
@@ -31,10 +37,14 @@ Future<void> main() async {
   );
   final themeController = ThemeModeController();
   await themeController.load();
-  final localeController = LocaleController();
-  await localeController.load();
 
   await repository.init();
+
+  localeController.addListener(() {
+    apiService.language = ApiConstants.languageForLocaleCode(
+      localeController.locale.languageCode,
+    );
+  });
 
   runApp(
     AppScope(

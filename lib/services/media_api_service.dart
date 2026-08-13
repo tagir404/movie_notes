@@ -17,6 +17,8 @@ class MediaApiService {
 
   final accessToken = dotenv.get('ACCESS_TOKEN');
 
+  String language = ApiConstants.languageForLocaleCode('en');
+
   Future<List<Genre>> fetchGenres(MediaContentType type) async {
     final endpoint = switch (type) {
       .movie => '/3/genre/movie/list',
@@ -102,7 +104,7 @@ class MediaApiService {
     Map<String, String>? queryParameters,
   }) async {
     final uri = Uri.https(ApiConstants.baseUrl, path, {
-      'language': ApiConstants.language,
+      'language': language,
       ...?queryParameters,
     });
 
