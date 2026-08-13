@@ -18,6 +18,11 @@ class MediaRepository {
     _tvGenres = await apiService.fetchGenres(.tvShow);
   }
 
+  Future<void> refreshLocalizedData() async {
+    _detailsCache.clear();
+    await init();
+  }
+
   List<Genre> get movieGenres {
     if (_movieGenres == null) {
       throw StateError('MediaRepository is not initialized');
