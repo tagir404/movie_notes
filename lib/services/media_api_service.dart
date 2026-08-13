@@ -21,8 +21,8 @@ class MediaApiService {
 
   Future<List<Genre>> fetchGenres(MediaContentType type) async {
     final endpoint = switch (type) {
-      .movie => '/3/genre/movie/list',
-      .tvShow => '/3/genre/tv/list',
+      .movie => '/genre/movie/list',
+      .tvShow => '/genre/tv/list',
     };
 
     final response = await _get(endpoint);
@@ -39,7 +39,7 @@ class MediaApiService {
     MediaSortOption sortOption = MediaSortOption.popularity,
   }) async {
     final json = await _get(
-      type == .movie ? '/3/discover/movie' : '/3/discover/tv',
+      type == .movie ? '/discover/movie' : '/discover/tv',
       queryParameters: {
         'page': page.toString(),
         'sort_by': sortOption.apiValueFor(type),
@@ -57,31 +57,47 @@ class MediaApiService {
   }
 
   Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {
-    final endpoint = type == .movie ? '/3/movie/$id' : '/3/tv/$id';
+    final endpoint = type == .movie ? '/movie/$id' : '/tv/$id';
 
     final json = await _get(endpoint);
 
     return MovieDetails.fromJson(json);
   }
 
-  Future<Map<String, dynamic>> fetchMediaVideos(
-    int id,
-    MediaContentType type,
-  ) async {
-    final endpoint = type == .movie
-        ? '/3/movie/$id/videos'
-        : '/3/tv/$id/videos';
+  Future<String?> getTrailerKey(int mediaId, MediaContentType type) async {
+    final endpoint = type == MediaContentType.movie
+        ? '/movie/$mediaId/videos'
+        : '/tv/$mediaId/videos';
 
-    return await _get(endpoint);
+    final json = await _get(endpoint);
+
+    final videos = json['results'] as List;
+
+    final trailers = videos
+        .where(
+          (video) => video['site'] == 'YouTube' && video['type'] == 'Trailer',
+        )
+        .cast<Map<String, dynamic>>()
+        .toList();
+
+    if (trailers.isEmpty) return null;
+
+    final officialTrailer = trailers.where(
+      (video) => video['official'] == true,
+    );
+
+    if (officialTrailer.isNotEmpty) {
+      return officialTrailer.first['key'] as String;
+    }
+
+    return trailers.first['key'] as String;
   }
 
   Future<List<MovieCastMember>> fetchMediaCredits(
     int id,
     MediaContentType type,
   ) async {
-    final endpoint = type == .movie
-        ? '/3/movie/$id/credits'
-        : '/3/tv/$id/credits';
+    final endpoint = type == .movie ? '/movie/$id/credits' : '/tv/$id/credits';
 
     final json = await _get(endpoint);
 
@@ -103,7 +119,7 @@ class MediaApiService {
     String path, {
     Map<String, String>? queryParameters,
   }) async {
-    final uri = Uri.https(ApiConstants.baseUrl, path, {
+    final uri = Uri.https(ApiConstants.baseUrl, '/3$path', {
       'language': language,
       ...?queryParameters,
     });

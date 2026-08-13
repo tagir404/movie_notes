@@ -296,6 +296,12 @@ abstract class AppLocalizations {
   /// **'TV Shows'**
   String get media_type_tv_shows;
 
+  /// No description provided for @media_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing found'**
+  String get media_empty;
+
   /// No description provided for @action_skip.
   ///
   /// In en, this message translates to:
@@ -343,12 +349,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'ratings'**
   String get ratings_label;
-
-  /// No description provided for @year_postfix.
-  ///
-  /// In en, this message translates to:
-  /// **''**
-  String get year_postfix;
 
   /// No description provided for @settings_language_title.
   ///

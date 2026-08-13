@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
+import 'package:movie_notes/l10n/app_localizations.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import 'package:movie_notes/widgets/media_genre_filter.dart';
@@ -139,6 +140,8 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
         Expanded(
           child: widget.isLoading
               ? const Center(child: CircularProgressIndicator())
+              : widget.items.isEmpty
+              ? Center(child: Text(AppLocalizations.of(context)!.media_empty))
               : CardSwiper(
                   key: ValueKey(
                     widget.items
@@ -158,6 +161,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                   cardsCount: widget.items.length,
                   cardBuilder: (context, index, _, _) {
                     final movie = widget.items[index];
+
                     return widget.cardBuilder(
                       context,
                       movie,
@@ -171,6 +175,7 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                     });
 
                     final movie = widget.items[previousIndex];
+
                     return widget.onSwipe?.call(
                           previousIndex,
                           currentIndex,

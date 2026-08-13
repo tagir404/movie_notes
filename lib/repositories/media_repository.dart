@@ -2,7 +2,6 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie_cast_member.dart';
 import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/models/movie_video.dart';
 import 'package:movie_notes/services/media_api_service.dart';
 
 class MediaRepository {
@@ -60,31 +59,11 @@ class MediaRepository {
     return movieDetails;
   }
 
-  Future<List<MovieVideo>> getMediaVideos(int id, MediaContentType type) async {
-    final response = await apiService.fetchMediaVideos(id, type);
-
-    final rawVideos =
-        (response['results'] as List?)?.cast<Map<String, dynamic>>() ?? [];
-
-    final videos = rawVideos
-        .where(
-          (video) => (video['site'] as String?)?.toLowerCase() == 'youtube',
-        )
-        .map((video) => MovieVideo.fromJson(video))
-        .toList();
-
-    if (videos.isNotEmpty) {
-      videos.sort((a, b) {
-        if (a.official == b.official) return 0;
-        return a.official ? -1 : 1;
-      });
-    }
-
-    return videos;
-  }
-
   Future<List<MovieCastMember>> getMediaCredits(
     int id,
     MediaContentType type,
   ) async => apiService.fetchMediaCredits(id, type);
+
+  Future<String?> getTrailerKey(int id, MediaContentType type) async =>
+      apiService.getTrailerKey(id, type);
 }

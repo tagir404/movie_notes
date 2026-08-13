@@ -56,10 +56,7 @@ class MovieCardFront extends StatelessWidget {
                 children: [
                   const Icon(Icons.calendar_today, size: 18),
                   const SizedBox(width: 6),
-                  Text(
-                    '$movieYear${AppLocalizations.of(context)!.year_postfix}',
-                    style: theme.textTheme.bodyLarge?.copyWith(),
-                  ),
+                  Text(movieYear, style: theme.textTheme.bodyLarge?.copyWith()),
                 ],
               ),
             ),

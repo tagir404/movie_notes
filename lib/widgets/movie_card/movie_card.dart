@@ -6,6 +6,7 @@ import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/widgets/movie_card/back_content.dart';
 import 'package:movie_notes/widgets/movie_card/front_content.dart';
+import 'package:movie_notes/widgets/pill.dart';
 
 class MovieCard extends StatefulWidget {
   const MovieCard({
@@ -67,11 +68,8 @@ class _MovieCardState extends State<MovieCard>
           transform: Matrix4.identity()
             ..setEntry(3, 2, .001)
             ..rotateY(angle),
-          child: Material(
-            elevation: 6,
+          child: Pill(
             borderRadius: BorderRadius.circular(12),
-            clipBehavior: Clip.antiAlias,
-
             child: Stack(
               fit: StackFit.expand,
               children: [

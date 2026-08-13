@@ -26,6 +26,7 @@ class Pill extends StatelessWidget {
     color: color,
     shape: shape,
     borderRadius: borderRadius,
+    clipBehavior: .antiAlias,
     child: Padding(padding: padding ?? const .all(0), child: child),
   );
 }

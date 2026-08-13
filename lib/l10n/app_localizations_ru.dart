@@ -109,6 +109,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get media_type_tv_shows => 'Сериалы';
 
   @override
+  String get media_empty => 'Ничего не найдено';
+
+  @override
   String get action_skip => 'Пропустить';
 
   @override
@@ -131,9 +134,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get ratings_label => 'оценок';
-
-  @override
-  String get year_postfix => ' г';
 
   @override
   String get settings_language_title => 'Язык';
