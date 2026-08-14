@@ -121,6 +121,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get description_missing => 'No description available.';
 
   @override
+  String get trailer_title => 'Trailer';
+
+  @override
   String get no_available_videos => 'No available videos.';
 
   @override

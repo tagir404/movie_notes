@@ -37,6 +37,7 @@
     "action_skip": "Пропустить",
     "action_save": "Сохранить",
     "description_missing": "Описание отсутствует.",
+    "trailer_title": "Трейлер",
     "no_available_videos": "Нет доступных видео.",
     "unknown": "Неизвестно",
     "runtime_minutes_abbreviation": "мин",

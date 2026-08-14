@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/screens/movie_cast_screen.dart';
-import 'package:movie_notes/widgets/movie_card/movie_videos_dialog.dart';
+import 'package:movie_notes/screens/movie_video_screen.dart';
 import 'package:movie_notes/widgets/pill.dart';
 import '../../l10n/app_localizations.dart';
 
@@ -91,7 +91,7 @@ class _MovieCardBackState extends State<MovieCardBack> {
                   ],
                 ),
               Row(
-                spacing: 12,
+                spacing: 8,
                 children: [
                   InkWell(
                     onTap: () => Navigator.push(
@@ -115,7 +115,7 @@ class _MovieCardBackState extends State<MovieCardBack> {
                     onTap: () => showDialog<void>(
                       context: context,
                       builder: (context) =>
-                          MovieVideosDialog(movie: widget.movie),
+                          MovieVideoScreen(movie: widget.movie),
                     ),
                     child: Pill(
                       color: Theme.of(context).colorScheme.primary,

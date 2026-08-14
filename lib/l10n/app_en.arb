@@ -76,6 +76,8 @@
     "@action_save": {},
     "description_missing": "No description available.",
     "@description_missing": {},
+    "trailer_title": "Trailer",
+    "@trailer_title": {},
     "no_available_videos": "No available videos.",
     "@no_available_videos": {},
     "unknown": "Unknown",

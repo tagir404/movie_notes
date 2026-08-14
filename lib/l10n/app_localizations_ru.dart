@@ -121,6 +121,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get description_missing => 'Описание отсутствует.';
 
   @override
+  String get trailer_title => 'Трейлер';
+
+  @override
   String get no_available_videos => 'Нет доступных видео.';
 
   @override

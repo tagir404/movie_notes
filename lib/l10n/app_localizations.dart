@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'No description available.'**
   String get description_missing;
 
+  /// No description provided for @trailer_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Trailer'**
+  String get trailer_title;
+
   /// No description provided for @no_available_videos.
   ///
   /// In en, this message translates to:

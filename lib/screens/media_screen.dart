@@ -62,7 +62,11 @@ class _MediaScreenState extends State<MediaScreen> {
 
     try {
       final skippedMovies = await skippedMediaRepository.getSkippedMedia();
-      final skippedIds = skippedMovies.map((movie) => movie.id).toSet();
+      final favoriteMovies = await favoritesRepository.getFavorites();
+      final excludedIds = {
+        ...skippedMovies.map((movie) => movie.id),
+        ...favoriteMovies.map((movie) => movie.id),
+      };
 
       List<Movie> filteredMovies = const [];
       var attempts = 0;
@@ -71,7 +75,7 @@ class _MediaScreenState extends State<MediaScreen> {
         final loadedMovies = await _loadMediaPage();
 
         filteredMovies = loadedMovies
-            .where((movie) => !skippedIds.contains(movie.id))
+            .where((movie) => !excludedIds.contains(movie.id))
             .toList();
 
         if (filteredMovies.isNotEmpty ||
