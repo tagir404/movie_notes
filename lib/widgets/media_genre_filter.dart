@@ -16,45 +16,42 @@ class MediaGenreFilter extends StatelessWidget {
   final ValueChanged<List<int>> onChanged;
 
   @override
-  Widget build(BuildContext context) => InkWell(
-    borderRadius: .circular(20),
-    onTap: () => _showGenres(context),
-    child: Stack(
-      clipBehavior: .none,
-      children: [
-        Pill(
-          borderRadius: .circular(20),
-          padding: const .symmetric(horizontal: 12, vertical: 4),
-          child: Text(
-            AppLocalizations.of(context)!.filter_genres,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
-          ),
+  Widget build(BuildContext context) => Stack(
+    clipBehavior: .none,
+    children: [
+      Pill(
+        onTap: () => _showGenres(context),
+        borderRadius: .circular(20),
+        padding: const .symmetric(horizontal: 12, vertical: 4),
+        child: Text(
+          AppLocalizations.of(context)!.filter_genres,
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
         ),
+      ),
 
-        if (selectedGenres.isNotEmpty)
-          Positioned(
-            top: -6,
-            right: -6,
-            child: Material(
-              color: Theme.of(context).colorScheme.primary,
-              shape: const CircleBorder(),
-              elevation: 4,
-              child: SizedBox(
-                width: 20,
-                height: 20,
-                child: Center(
-                  child: Text(
-                    selectedGenres.length.toString(),
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+      if (selectedGenres.isNotEmpty)
+        Positioned(
+          top: -6,
+          right: -6,
+          child: Material(
+            color: Theme.of(context).colorScheme.primary,
+            shape: const CircleBorder(),
+            elevation: 4,
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: Center(
+                child: Text(
+                  selectedGenres.length.toString(),
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
                   ),
                 ),
               ),
             ),
           ),
-      ],
-    ),
+        ),
+    ],
   );
 
   void _showGenres(BuildContext context) {

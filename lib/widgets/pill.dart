@@ -7,6 +7,7 @@ class Pill extends StatelessWidget {
     this.borderRadius,
     this.padding,
     this.color,
+    this.onTap,
     super.key,
   }) : assert(
          shape == null || borderRadius == null,
@@ -18,6 +19,7 @@ class Pill extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
   final Color? color;
   final Widget child;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) => Material(
@@ -27,6 +29,20 @@ class Pill extends StatelessWidget {
     shape: shape,
     borderRadius: borderRadius,
     clipBehavior: .antiAlias,
-    child: Padding(padding: padding ?? const .all(0), child: child),
+    child: InkWell(
+      onTap: onTap,
+      child: Padding(padding: padding ?? const .all(0), child: child),
+    ),
   );
+
+  // @override
+  // Widget build(BuildContext context) => Material(
+  //   elevation: 2,
+  //   shadowColor: Theme.of(context).colorScheme.onSurface,
+  //   color: color,
+  //   shape: shape,
+  //   borderRadius: borderRadius,
+  //   clipBehavior: .antiAlias,
+  //   child: Padding(padding: padding ?? const .all(0), child: child),
+  // );
 }

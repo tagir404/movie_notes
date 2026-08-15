@@ -118,39 +118,35 @@ class _MovieCardBackState extends State<MovieCardBack> {
               Row(
                 spacing: 8,
                 children: [
-                  InkWell(
+                  Pill(
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (_) => MovieCastScreen(movie: widget.movie),
                       ),
                     ),
-                    child: Pill(
-                      color: Theme.of(context).colorScheme.primary,
-                      padding: const .all(12),
-                      shape: const CircleBorder(),
-                      child: Icon(
-                        Icons.people,
-                        size: 22,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                    color: Theme.of(context).colorScheme.primary,
+                    padding: const .all(12),
+                    shape: const CircleBorder(),
+                    child: Icon(
+                      Icons.people,
+                      size: 22,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
-                  InkWell(
+                  Pill(
                     onTap: () => showDialog<void>(
                       context: context,
                       builder: (context) =>
                           MovieVideoScreen(movie: widget.movie),
                     ),
-                    child: Pill(
-                      color: Theme.of(context).colorScheme.primary,
-                      padding: const .all(12),
-                      shape: const CircleBorder(),
-                      child: Icon(
-                        Icons.videocam,
-                        size: 22,
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                    color: Theme.of(context).colorScheme.primary,
+                    padding: const .all(12),
+                    shape: const CircleBorder(),
+                    child: Icon(
+                      Icons.videocam,
+                      size: 22,
+                      color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                 ],
