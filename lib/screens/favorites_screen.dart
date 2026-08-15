@@ -101,12 +101,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             }
           });
 
-          // if (movies.isEmpty) {
-          //   return Center(
-          //     child: Text(AppLocalizations.of(context)!.favorites_empty),
-          //   );
-          // }
-
           return MediaSwiperView(
             initialType: _selectedType,
             isLoading: false,

@@ -53,21 +53,46 @@ class _MovieCardBackState extends State<MovieCardBack> {
           const SizedBox(height: 12),
 
           Expanded(
-            child: Scrollbar(
-              thumbVisibility: true,
-              controller: _controller,
-              child: SingleChildScrollView(
-                controller: _controller,
-                padding: const EdgeInsets.only(right: 8),
-                child: Text(
-                  widget.movie.overview.isEmpty
-                      ? AppLocalizations.of(context)!.description_missing
-                      : widget.movie.overview,
-                  textAlign: TextAlign.justify,
+            child: Stack(
+              children: [
+                Scrollbar(
+                  thumbVisibility: true,
+                  controller: _controller,
+                  child: SingleChildScrollView(
+                    controller: _controller,
+                    padding: const EdgeInsets.only(right: 8, bottom: 40),
+                    child: Text(
+                      widget.movie.overview.isEmpty
+                          ? AppLocalizations.of(context)!.description_missing
+                          : widget.movie.overview,
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  height: 20,
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.bottomCenter,
+                          end: Alignment.topCenter,
+                          colors: [
+                            Theme.of(context).colorScheme.surface,
+                            Theme.of(context).colorScheme.surface.withAlpha(0),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+
           const SizedBox(height: 12),
 
           Row(
