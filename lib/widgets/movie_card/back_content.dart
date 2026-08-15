@@ -1,5 +1,5 @@
 import 'package:country_flags/country_flags.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/screens/movie_cast_screen.dart';
@@ -60,7 +60,7 @@ class _MovieCardBackState extends State<MovieCardBack> {
                   controller: _controller,
                   child: SingleChildScrollView(
                     controller: _controller,
-                    padding: const EdgeInsets.only(right: 8, bottom: 40),
+                    padding: const EdgeInsets.only(right: 8, bottom: 8),
                     child: Text(
                       widget.movie.overview.isEmpty
                           ? AppLocalizations.of(context)!.description_missing

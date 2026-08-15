@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/l10n/app_localizations.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/widgets/app_scope.dart';

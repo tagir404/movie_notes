@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/screens/skipped_media_screen.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
 import '../l10n/app_localizations.dart';

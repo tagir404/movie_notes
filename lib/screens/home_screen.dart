@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/screens/favorites_screen.dart';
 import 'package:movie_notes/screens/media_screen.dart';
 import 'package:movie_notes/screens/settings_screen.dart';

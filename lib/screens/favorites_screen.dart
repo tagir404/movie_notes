@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre_filter.dart';

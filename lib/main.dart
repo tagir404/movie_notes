@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +14,6 @@ import 'package:movie_notes/services/media_api_service.dart';
 import 'package:movie_notes/theme/theme_mode_controller.dart';
 import 'package:movie_notes/theme/locale_controller.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'l10n/app_localizations.dart';
 
 Future<void> main() async {
@@ -81,16 +80,16 @@ class MainApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           home: const HomeScreen(),
           theme: ThemeData(
-            textTheme: GoogleFonts.nunitoTextTheme(),
+            // textTheme: GoogleFonts.nunitoTextTheme(),
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 255, 7, 7),
             ),
           ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
-            textTheme: GoogleFonts.nunitoTextTheme(
-              ThemeData(brightness: Brightness.dark).textTheme,
-            ),
+            // textTheme: GoogleFonts.nunitoTextTheme(
+            //   ThemeData(brightness: Brightness.dark).textTheme,
+            // ),
             colorScheme: ColorScheme.fromSeed(
               seedColor: const Color.fromARGB(255, 255, 7, 7),
               brightness: Brightness.dark,

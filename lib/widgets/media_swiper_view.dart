@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';

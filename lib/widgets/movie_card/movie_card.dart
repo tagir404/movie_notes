@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:movie_notes/models/genre.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
