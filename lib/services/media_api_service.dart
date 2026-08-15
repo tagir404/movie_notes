@@ -82,6 +82,8 @@ class MediaApiService {
 
     if (trailers.isEmpty) return null;
 
+    trailers.sort((a, b) => (b['size'] ?? 0).compareTo(a['size'] ?? 0));
+
     final officialTrailer = trailers.where(
       (video) => video['official'] == true,
     );

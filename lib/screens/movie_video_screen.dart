@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:movie_notes/l10n/app_localizations.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/widgets/app_scope.dart';
@@ -16,14 +15,32 @@ class MovieVideoScreen extends StatefulWidget {
 
 class _MovieVideoScreenState extends State<MovieVideoScreen> {
   YoutubePlayerController? _controller;
+  bool isRotated = false;
+  bool _loading = true;
+  bool _loaded = false;
 
   @override
-  void dispose() {
-    _controller?.close();
-    super.dispose();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (_loaded) return;
+    _loaded = true;
+
+    _loadVideo();
   }
 
-  void _createController(String videoId) {
+  Future<void> _loadVideo() async {
+    final videoId = await AppScope.of(
+      context,
+    ).mediaRepository.getTrailerKey(widget.movie.id, widget.movie.type);
+
+    if (!mounted) return;
+
+    if (videoId == null) {
+      setState(() => _loading = false);
+      return;
+    }
+
     _controller = YoutubePlayerController.fromVideoId(
       videoId: videoId,
       autoPlay: true,
@@ -34,77 +51,47 @@ class _MovieVideoScreenState extends State<MovieVideoScreen> {
         strictRelatedVideos: true,
       ),
     );
+
+    setState(() => _loading = false);
+  }
+
+  void _rotateScreen() {
+    setState(() => isRotated = !isRotated);
+  }
+
+  @override
+  void dispose() {
+    _controller?.close();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(title: Text(AppLocalizations.of(context)!.trailer_title)),
-    body: FutureBuilder<String?>(
-      future: AppScope.of(
-        context,
-      ).mediaRepository.getTrailerKey(widget.movie.id, widget.movie.type),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState != ConnectionState.done) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (snapshot.hasError) {
-          return Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            padding: const EdgeInsets.all(16),
+    appBar: AppBar(
+      title: Text(AppLocalizations.of(context)!.trailer_title),
+      actions: [
+        IconButton(
+          onPressed: _rotateScreen,
+          icon: const Icon(Icons.screen_rotation),
+        ),
+      ],
+      actionsPadding: const .only(right: 8),
+    ),
+    body: _loading
+        ? const Center(child: CircularProgressIndicator())
+        : _controller == null
+        ? Center(
             child: Text(
               AppLocalizations.of(context)!.no_available_videos,
-              textAlign: TextAlign.center,
+              textAlign: .center,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-          );
-        }
-
-        final trailerKey = snapshot.data;
-
-        if (trailerKey == null) {
-          return Center(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.all(16),
-              child: Text(
-                AppLocalizations.of(context)!.no_available_videos,
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
+          )
+        : Center(
+            child: RotatedBox(
+              quarterTurns: isRotated ? 1 : 0,
+              child: YoutubePlayer(controller: _controller!),
             ),
-          );
-        }
-
-        if (_controller == null) {
-          _createController(trailerKey);
-          _controller!.enterFullScreen();
-
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-          SystemChrome.setPreferredOrientations([
-            DeviceOrientation.landscapeLeft,
-            DeviceOrientation.landscapeRight,
-          ]);
-          _controller!.setFullScreenListener((isFullScreen) {
-            if (!isFullScreen) {
-              SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown,
-              ]);
-              Navigator.of(context).pop();
-            }
-          });
-        }
-
-        return YoutubePlayer(controller: _controller!);
-      },
-    ),
+          ),
   );
 }
