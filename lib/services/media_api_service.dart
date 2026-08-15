@@ -6,6 +6,7 @@ import 'package:movie_notes/constants/api_constants.dart';
 import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/models/genre.dart';
+import 'package:movie_notes/models/media_page_result.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_cast_member.dart';
 import 'package:movie_notes/models/movie_details.dart';
@@ -38,6 +39,22 @@ class MediaApiService {
     List<int>? genreIds,
     MediaSortOption sortOption = MediaSortOption.popularity,
   }) async {
+    final result = await fetchMediaPage(
+      type: type,
+      page: page,
+      genreIds: genreIds,
+      sortOption: sortOption,
+    );
+
+    return result.movies;
+  }
+
+  Future<MediaPageResult> fetchMediaPage({
+    required MediaContentType type,
+    int page = 1,
+    List<int>? genreIds,
+    MediaSortOption sortOption = MediaSortOption.popularity,
+  }) async {
     final json = await _get(
       type == .movie ? '/discover/movie' : '/discover/tv',
       queryParameters: {
@@ -51,9 +68,12 @@ class MediaApiService {
       },
     );
 
-    return (json['results'] as List)
-        .map((item) => Movie.fromJson(item, type))
-        .toList();
+    return MediaPageResult(
+      movies: (json['results'] as List)
+          .map((item) => Movie.fromJson(item, type))
+          .toList(),
+      totalPages: (json['total_pages'] as num?)?.toInt() ?? page,
+    );
   }
 
   Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {

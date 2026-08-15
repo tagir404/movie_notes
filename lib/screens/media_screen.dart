@@ -3,6 +3,7 @@ import 'package:movie_notes/enums/media_content_type.dart';
 import 'package:movie_notes/enums/media_sort_option.dart';
 import 'package:movie_notes/l10n/app_localizations.dart';
 import 'package:movie_notes/models/genre_filter.dart';
+import 'package:movie_notes/models/media_page_result.dart';
 import 'package:movie_notes/models/movie.dart';
 import 'package:movie_notes/models/movie_details.dart';
 import 'package:movie_notes/repositories/favorites_repository.dart';
@@ -69,23 +70,25 @@ class _MediaScreenState extends State<MediaScreen> {
       };
 
       List<Movie> filteredMovies = const [];
-      var attempts = 0;
+      bool hasMorePages = true;
 
-      while (attempts < 5) {
-        final loadedMovies = await _loadMediaPage();
+      while (hasMorePages) {
+        final loadedPage = await _loadMediaPage();
+        final loadedMovies = loadedPage.movies;
 
         filteredMovies = loadedMovies
             .where((movie) => !excludedIds.contains(movie.id))
             .toList();
 
+        hasMorePages = page < loadedPage.totalPages;
+
         if (filteredMovies.isNotEmpty ||
-            _genreFilter.hasGenres ||
-            loadedMovies.isEmpty) {
+            loadedMovies.isEmpty ||
+            !hasMorePages) {
           break;
         }
 
         page++;
-        attempts++;
       }
 
       if (!mounted) return;
@@ -130,7 +133,7 @@ class _MediaScreenState extends State<MediaScreen> {
     super.dispose();
   }
 
-  Future<List<Movie>> _loadMediaPage() => mediaApiService.fetchMedia(
+  Future<MediaPageResult> _loadMediaPage() => mediaApiService.fetchMediaPage(
     type: _selectedType,
     page: page,
     genreIds: _genreFilter.hasGenres ? _genreFilter.genreIds : null,
