@@ -1,11 +1,11 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/models/genre.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/utils/formatters.dart';
+import 'package:movie_match/models/genre.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/models/movie_details.dart';
+import 'package:movie_match/utils/formatters.dart';
 import '../../l10n/app_localizations.dart';
-import 'package:movie_notes/widgets/pill.dart';
-import 'package:movie_notes/widgets/rating_stars.dart';
+import 'package:movie_match/widgets/pill.dart';
+import 'package:movie_match/widgets/rating_stars.dart';
 
 class MovieCardFront extends StatelessWidget {
   const MovieCardFront({

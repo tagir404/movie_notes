@@ -1,10 +1,10 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/screens/movie_cast_screen.dart';
-import 'package:movie_notes/screens/movie_video_screen.dart';
-import 'package:movie_notes/widgets/pill.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/models/movie_details.dart';
+import 'package:movie_match/screens/movie_cast_screen.dart';
+import 'package:movie_match/screens/movie_video_screen.dart';
+import 'package:movie_match/widgets/pill.dart';
 import '../../l10n/app_localizations.dart';
 
 class MovieCardBack extends StatefulWidget {

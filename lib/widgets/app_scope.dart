@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
-import 'package:movie_notes/repositories/favorites_repository.dart';
-import 'package:movie_notes/repositories/media_repository.dart';
-import 'package:movie_notes/repositories/skipped_media_repository.dart';
-import 'package:movie_notes/services/media_api_service.dart';
-import 'package:movie_notes/theme/theme_mode_controller.dart';
-import 'package:movie_notes/theme/locale_controller.dart';
+import 'package:movie_match/repositories/favorites_repository.dart';
+import 'package:movie_match/repositories/media_repository.dart';
+import 'package:movie_match/repositories/skipped_media_repository.dart';
+import 'package:movie_match/services/media_api_service.dart';
+import 'package:movie_match/theme/theme_mode_controller.dart';
+import 'package:movie_match/theme/locale_controller.dart';
 
 class AppScope extends InheritedWidget {
   const AppScope({

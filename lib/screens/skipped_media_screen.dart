@@ -1,8 +1,8 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/repositories/skipped_media_repository.dart';
-import 'package:movie_notes/widgets/app_scope.dart';
-import 'package:movie_notes/widgets/dialogs/confirmation_dialog.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/repositories/skipped_media_repository.dart';
+import 'package:movie_match/widgets/app_scope.dart';
+import 'package:movie_match/widgets/dialogs/confirmation_dialog.dart';
 import '../l10n/app_localizations.dart';
 
 class SkippedMediaScreen extends StatefulWidget {

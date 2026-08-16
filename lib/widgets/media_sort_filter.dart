@@ -1,6 +1,6 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/enums/media_sort_option.dart';
-import 'package:movie_notes/widgets/pill.dart';
+import 'package:movie_match/enums/media_sort_option.dart';
+import 'package:movie_match/widgets/pill.dart';
 
 class MediaSortFilter extends StatelessWidget {
   const MediaSortFilter({

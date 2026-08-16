@@ -1,4 +1,4 @@
-import 'package:movie_notes/models/genre.dart';
+import 'package:movie_match/models/genre.dart';
 
 class MovieDetails {
   final int id;

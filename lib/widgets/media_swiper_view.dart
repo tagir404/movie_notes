@@ -1,15 +1,15 @@
 import 'package:flutter/foundation.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:movie_notes/enums/media_content_type.dart';
-import 'package:movie_notes/enums/media_sort_option.dart';
-import 'package:movie_notes/l10n/app_localizations.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/widgets/app_scope.dart';
-import 'package:movie_notes/widgets/media_genre_filter.dart';
-import 'package:movie_notes/widgets/media_sort_filter.dart';
-import 'package:movie_notes/widgets/media_type_filter.dart';
-import 'package:movie_notes/widgets/swiper_action.dart';
+import 'package:movie_match/enums/media_content_type.dart';
+import 'package:movie_match/enums/media_sort_option.dart';
+import 'package:movie_match/l10n/app_localizations.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/widgets/app_scope.dart';
+import 'package:movie_match/widgets/media_genre_filter.dart';
+import 'package:movie_match/widgets/media_sort_filter.dart';
+import 'package:movie_match/widgets/media_type_filter.dart';
+import 'package:movie_match/widgets/swiper_action.dart';
 
 typedef MediaSwiperCardBuilder =
     Widget Function(

@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/screens/favorites_screen.dart';
-import 'package:movie_notes/screens/media_screen.dart';
-import 'package:movie_notes/screens/settings_screen.dart';
+import 'package:movie_match/screens/favorites_screen.dart';
+import 'package:movie_match/screens/media_screen.dart';
+import 'package:movie_match/screens/settings_screen.dart';
 import '../l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:movie_notes/enums/media_content_type.dart';
-import 'package:movie_notes/models/movie.dart';
+import 'package:movie_match/enums/media_content_type.dart';
+import 'package:movie_match/models/movie.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SkippedMediaLocalDatasource {

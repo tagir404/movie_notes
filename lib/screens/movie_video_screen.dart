@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/l10n/app_localizations.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/widgets/app_scope.dart';
+import 'package:movie_match/l10n/app_localizations.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/widgets/app_scope.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class MovieVideoScreen extends StatefulWidget {

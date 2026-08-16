@@ -1,13 +1,13 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:movie_notes/enums/media_content_type.dart';
-import 'package:movie_notes/enums/media_sort_option.dart';
-import 'package:movie_notes/models/genre_filter.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/models/movie_details.dart';
-import 'package:movie_notes/repositories/favorites_repository.dart';
-import 'package:movie_notes/widgets/app_scope.dart';
-import 'package:movie_notes/widgets/media_swiper_view.dart';
-import 'package:movie_notes/widgets/movie_card/movie_card.dart';
+import 'package:movie_match/enums/media_content_type.dart';
+import 'package:movie_match/enums/media_sort_option.dart';
+import 'package:movie_match/models/genre_filter.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/models/movie_details.dart';
+import 'package:movie_match/repositories/favorites_repository.dart';
+import 'package:movie_match/widgets/app_scope.dart';
+import 'package:movie_match/widgets/media_swiper_view.dart';
+import 'package:movie_match/widgets/movie_card/movie_card.dart';
 import '../l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatefulWidget {

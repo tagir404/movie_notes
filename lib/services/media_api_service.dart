@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie_notes/constants/api_constants.dart';
-import 'package:movie_notes/enums/media_content_type.dart';
-import 'package:movie_notes/enums/media_sort_option.dart';
-import 'package:movie_notes/models/genre.dart';
-import 'package:movie_notes/models/media_page_result.dart';
-import 'package:movie_notes/models/movie.dart';
-import 'package:movie_notes/models/movie_cast_member.dart';
-import 'package:movie_notes/models/movie_details.dart';
+import 'package:movie_match/constants/api_constants.dart';
+import 'package:movie_match/enums/media_content_type.dart';
+import 'package:movie_match/enums/media_sort_option.dart';
+import 'package:movie_match/models/genre.dart';
+import 'package:movie_match/models/media_page_result.dart';
+import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/models/movie_cast_member.dart';
+import 'package:movie_match/models/movie_details.dart';
 
 class MediaApiService {
   final http.Client client;

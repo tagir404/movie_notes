@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
-import 'package:movie_notes/database/skipped_media_datasource.dart';
-import 'package:movie_notes/models/movie.dart';
+import 'package:movie_match/database/skipped_media_datasource.dart';
+import 'package:movie_match/models/movie.dart';
 
 class SkippedMediaRepository {
   SkippedMediaRepository(this.local);

@@ -12,7 +12,7 @@ class AppDatabase {
   }
 
   static Future<Database> _initDatabase() async {
-    final path = join(await getDatabasesPath(), 'movie_notes.db');
+    final path = join(await getDatabasesPath(), 'movie_match.db');
 
     return openDatabase(
       path,
