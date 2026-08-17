@@ -16,7 +16,7 @@ class AppDatabase {
 
     return openDatabase(
       path,
-      version: 3,
+      version: 4,
       onCreate: (db, version) async {
         await db.execute('''
           CREATE TABLE favorites (
@@ -28,6 +28,7 @@ class AppDatabase {
             backdrop_path TEXT,
             release_date TEXT,
             vote_average REAL,
+            popularity REAL NOT NULL DEFAULT 0,
             genre_ids TEXT,
             created_at INTEGER NOT NULL
           )
@@ -43,36 +44,13 @@ class AppDatabase {
             backdrop_path TEXT,
             release_date TEXT,
             vote_average REAL,
+            popularity REAL NOT NULL DEFAULT 0,
             genre_ids TEXT,
             created_at INTEGER NOT NULL
           )
         ''');
       },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute('''
-            CREATE TABLE IF NOT EXISTS skipped_media (
-              id INTEGER PRIMARY KEY,
-              type TEXT NOT NULL,
-              title TEXT NOT NULL,
-              overview TEXT,
-              poster_path TEXT,
-              backdrop_path TEXT,
-              release_date TEXT,
-              vote_average REAL,
-              genre_ids TEXT,
-              created_at INTEGER NOT NULL
-            )
-          ''');
-        }
-
-        if (oldVersion < 3) {
-          await db.execute('ALTER TABLE favorites ADD COLUMN genre_ids TEXT');
-          await db.execute(
-            'ALTER TABLE skipped_media ADD COLUMN genre_ids TEXT',
-          );
-        }
-      },
+      onUpgrade: (db, oldVersion, newVersion) async {},
     );
   }
 }

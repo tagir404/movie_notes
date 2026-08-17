@@ -4,26 +4,29 @@ import '../l10n/app_localizations.dart';
 
 enum MediaSortOption {
   popularity,
-  newest;
+  newest,
+  rating;
 
   String label(BuildContext context) {
     final loc = AppLocalizations.of(context);
     switch (this) {
-      case MediaSortOption.popularity:
+      case .popularity:
         return loc!.media_sort_popularity;
-      case MediaSortOption.newest:
+      case .newest:
         return loc!.media_sort_newest;
+      case .rating:
+        return loc!.media_sort_rating;
     }
   }
 
   String apiValueFor(MediaContentType type) {
     switch (this) {
-      case MediaSortOption.popularity:
+      case .popularity:
         return 'popularity.desc';
-      case MediaSortOption.newest:
-        return type == MediaContentType.movie
-            ? 'release_date.desc'
-            : 'first_air_date.desc';
+      case .newest:
+        return type == .movie ? 'release_date.desc' : 'first_air_date.desc';
+      case .rating:
+        return 'vote_average.desc';
     }
   }
 }

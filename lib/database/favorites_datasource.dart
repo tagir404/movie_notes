@@ -19,6 +19,7 @@ class FavoritesLocalDatasource {
       'backdrop_path': movie.backdropPath,
       'release_date': movie.releaseDate,
       'vote_average': movie.voteAverage,
+      'popularity': movie.popularity,
       'genre_ids': jsonEncode(movie.genreIds),
       'created_at': DateTime.now().millisecondsSinceEpoch,
     }, conflictAlgorithm: ConflictAlgorithm.ignore);
@@ -41,7 +42,8 @@ class FavoritesLocalDatasource {
         posterPath: maps[i]['poster_path'],
         backdropPath: maps[i]['backdrop_path'],
         releaseDate: maps[i]['release_date'],
-        voteAverage: maps[i]['vote_average'],
+        voteAverage: (maps[i]['vote_average'] as num).toDouble(),
+        popularity: (maps[i]['popularity'] as num).toDouble(),
         genreIds: maps[i]['genre_ids'] == null
             ? []
             : (jsonDecode(maps[i]['genre_ids']) as List)

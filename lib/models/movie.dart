@@ -10,6 +10,7 @@ class Movie {
     required this.backdropPath,
     required this.releaseDate,
     required this.voteAverage,
+    required this.popularity,
     required this.genreIds,
   });
 
@@ -21,6 +22,7 @@ class Movie {
   final String? backdropPath;
   final String releaseDate;
   final double voteAverage;
+  final double popularity;
   final List<int> genreIds;
 
   factory Movie.fromJson(Map<String, dynamic> json, MediaContentType type) =>
@@ -33,6 +35,7 @@ class Movie {
         backdropPath: json['backdrop_path'],
         releaseDate: json['release_date'] ?? json['first_air_date'],
         voteAverage: (json['vote_average'] as num).toDouble(),
+        popularity: (json['popularity'] as num).toDouble(),
         genreIds: List<int>.from(json['genre_ids']),
       );
 }

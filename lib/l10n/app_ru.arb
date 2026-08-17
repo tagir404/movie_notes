@@ -31,6 +31,7 @@
     "filter_choose_genres": "Выберите жанры",
     "media_sort_popularity": "По популярности",
     "media_sort_newest": "По новизне",
+    "media_sort_rating": "По рейтингу",
     "media_type_movies": "Фильмы",
     "media_type_tv_shows": "Сериалы",
     "media_empty": "Ничего не найдено",

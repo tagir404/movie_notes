@@ -103,6 +103,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get media_sort_newest => 'По новизне';
 
   @override
+  String get media_sort_rating => 'По рейтингу';
+
+  @override
   String get media_type_movies => 'Фильмы';
 
   @override

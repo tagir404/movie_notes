@@ -93,11 +93,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
           movies.sort((a, b) {
             switch (_selectedSort) {
-              case MediaSortOption.popularity:
-                return b.voteAverage.compareTo(a.voteAverage);
+              case .popularity:
+                return b.popularity.compareTo(a.popularity);
 
-              case MediaSortOption.newest:
+              case .newest:
                 return b.releaseDate.compareTo(a.releaseDate);
+
+              case .rating:
+                return b.voteAverage.compareTo(a.voteAverage);
             }
           });
 

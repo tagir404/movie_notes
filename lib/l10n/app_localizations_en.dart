@@ -103,6 +103,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get media_sort_newest => 'By newest';
 
   @override
+  String get media_sort_rating => 'By rating';
+
+  @override
   String get media_type_movies => 'Movies';
 
   @override

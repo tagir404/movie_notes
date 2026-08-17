@@ -284,6 +284,12 @@ abstract class AppLocalizations {
   /// **'By newest'**
   String get media_sort_newest;
 
+  /// No description provided for @media_sort_rating.
+  ///
+  /// In en, this message translates to:
+  /// **'By rating'**
+  String get media_sort_rating;
+
   /// No description provided for @media_type_movies.
   ///
   /// In en, this message translates to:

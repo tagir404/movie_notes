@@ -64,6 +64,8 @@
     "@media_sort_popularity": {},
     "media_sort_newest": "By newest",
     "@media_sort_newest": {},
+    "media_sort_rating": "By rating",
+    "@media_sort_rating": {},
     "media_type_movies": "Movies",
     "@media_type_movies": {},
     "media_type_tv_shows": "TV Shows",
