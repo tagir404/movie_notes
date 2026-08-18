@@ -12,6 +12,7 @@ import 'package:movie_match/repositories/skipped_media_repository.dart';
 import 'package:movie_match/services/media_api_service.dart';
 import 'package:movie_match/theme/locale_controller.dart';
 import 'package:movie_match/widgets/app_scope.dart';
+import 'package:movie_match/widgets/media_filters.dart';
 import 'package:movie_match/widgets/media_swiper_view.dart';
 import 'package:movie_match/widgets/movie_card/movie_card.dart';
 
@@ -152,6 +153,24 @@ class _MediaScreenState extends State<MediaScreen> {
     _loadMedia();
   }
 
+  void _setSort(MediaSortOption sortOption) {
+    setState(() {
+      _selectedSort = sortOption;
+      _resetPagination();
+    });
+
+    _loadMedia();
+  }
+
+  void _setGenres(List<int> genreIds) {
+    setState(() {
+      _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
+      _resetPagination();
+    });
+
+    _loadMedia();
+  }
+
   void _preloadDetails(int index) {
     if (index < 0 || index >= movies.length) return;
 
@@ -182,80 +201,71 @@ class _MediaScreenState extends State<MediaScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    body: MediaSwiperView(
-      isLoop: false,
-      initialType: _selectedType,
-      isLoading: isLoading,
-      items: movies,
-      selectedGenres: _genreFilter.genreIds,
-      selectedSort: _selectedSort,
-      selectedCountry: _selectedCountry,
-      onTypeChanged: _setContentType,
-      onGenresChanged: (genreIds) {
-        setState(() {
-          _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
-          _resetPagination();
-        });
+    body: Padding(
+      padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
+      child: Column(
+        children: [
+          SizedBox(
+            width: double.infinity,
+            child: MediaFilters(
+              selectedSort: _selectedSort,
+              onSortChanged: _setSort,
+              selectedType: _selectedType,
+              onTypeChanged: _setContentType,
+              selectedGenres: _genreFilter.genreIds,
+              onGenresChanged: _setGenres,
+            ),
+          ),
 
-        _loadMedia();
-      },
+          const SizedBox(height: 20),
 
-      onSortChanged: (sortOption) {
-        setState(() {
-          _selectedSort = sortOption;
-          _resetPagination();
-        });
+          Expanded(
+            child: MediaSwiperView(
+              isLoop: false,
+              isLoading: isLoading,
+              items: movies,
+              cardBuilder: (context, movie) {
+                final movieGenres = movie.genreIds
+                    .map(
+                      (id) => mediaRepository
+                          .genres(_selectedType)
+                          .firstWhere((genre) => genre.id == id),
+                    )
+                    .toList();
 
-        _loadMedia();
-      },
+                return MovieCard(
+                  key: ValueKey(movie.id),
+                  movie: movie,
+                  genres: movieGenres,
+                  selectedGenreIds: _genreFilter.genreIds,
+                  movieDetails: _movieDetails[movie.id],
+                );
+              },
+              leftActionText: AppLocalizations.of(context)!.action_skip,
+              rightActionText: AppLocalizations.of(context)!.action_save,
+              onSwipe: (previousIndex, currentIndex, direction, movie) {
+                if (direction == .right) {
+                  favoritesRepository.addFavorite(movie);
+                } else if (direction == .left) {
+                  skippedMediaRepository.addSkippedMedia(movie);
+                }
 
-      onCountryChanged: (country) {
-        setState(() {
-          _selectedCountry = country;
-          _resetPagination();
-        });
+                if (currentIndex == null) return true;
+                _preloadDetails(currentIndex);
 
-        _loadMedia();
-      },
+                return true;
+              },
+              onEnd: () {
+                setState(() {
+                  page++;
+                });
 
-      cardBuilder: (context, movie, selectedType, selectedGenres) {
-        final movieGenres = movie.genreIds
-            .map(
-              (id) => mediaRepository
-                  .genres(selectedType)
-                  .firstWhere((genre) => genre.id == id),
-            )
-            .toList();
-
-        return MovieCard(
-          key: ValueKey(movie.id),
-          movie: movie,
-          genres: movieGenres,
-          selectedGenreIds: selectedGenres,
-          movieDetails: _movieDetails[movie.id],
-        );
-      },
-      leftActionText: AppLocalizations.of(context)!.action_skip,
-      rightActionText: AppLocalizations.of(context)!.action_save,
-      onSwipe: (previousIndex, currentIndex, direction, movie) {
-        if (direction == .right) {
-          favoritesRepository.addFavorite(movie);
-        } else if (direction == .left) {
-          skippedMediaRepository.addSkippedMedia(movie);
-        }
-
-        if (currentIndex == null) return true;
-        _preloadDetails(currentIndex);
-
-        return true;
-      },
-      onEnd: () {
-        setState(() {
-          page++;
-        });
-
-        _loadMedia();
-      },
+                _loadMedia();
+              },
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }

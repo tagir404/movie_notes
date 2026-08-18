@@ -25,10 +25,9 @@ class MediaGenreFilter extends StatelessWidget {
         padding: const .symmetric(horizontal: 12, vertical: 4),
         child: Text(
           AppLocalizations.of(context)!.filter_genres,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
-
       if (selectedGenres.isNotEmpty)
         Positioned(
           top: -6,
@@ -42,7 +41,7 @@ class MediaGenreFilter extends StatelessWidget {
               height: 20,
               child: Center(
                 child: Text(
-                  selectedGenres.length.toString(),
+                  '${selectedGenres.length}',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
@@ -55,79 +54,76 @@ class MediaGenreFilter extends StatelessWidget {
   );
 
   void _showGenres(BuildContext context) {
+    var selected = [...selectedGenres];
+
     showModalBottomSheet(
       context: context,
-      builder: (context) {
-        var selected = [...selectedGenres];
-
-        return StatefulBuilder(
-          builder: (context, setState) => SafeArea(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const .all(16),
-                  child: Row(
-                    mainAxisAlignment: .spaceBetween,
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.filter_choose_genres,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+      builder: (context) => StatefulBuilder(
+        builder: (context, setState) => SafeArea(
+          child: Column(
+            children: [
+              Padding(
+                padding: const .all(16),
+                child: Row(
+                  mainAxisAlignment: .spaceBetween,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.filter_choose_genres,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
-                      TextButton(
-                        onPressed: () {
-                          setState(() {
-                            selected.clear();
-                          });
-                        },
-                        child: Text(AppLocalizations.of(context)!.filter_reset),
-                      ),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  child: ListView(
-                    children: genres
-                        .map(
-                          (genre) => CheckboxListTile(
-                            title: Text(genre.name),
-                            value: selected.contains(genre.id),
-                            onChanged: (value) {
-                              setState(() {
-                                if (value == true) {
-                                  selected.add(genre.id);
-                                } else {
-                                  selected.remove(genre.id);
-                                }
-                              });
-                            },
-                          ),
-                        )
-                        .toList(),
-                  ),
-                ),
-
-                Padding(
-                  padding: const .all(16),
-                  child: SizedBox(
-                    width: .infinity,
-                    child: FilledButton(
-                      onPressed: () {
-                        onChanged(selected);
-                        Navigator.pop(context);
-                      },
-                      child: Text(AppLocalizations.of(context)!.filter_apply),
                     ),
+                    TextButton(
+                      onPressed: () {
+                        setState(selected.clear);
+                      },
+                      child: Text(AppLocalizations.of(context)!.filter_reset),
+                    ),
+                  ],
+                ),
+              ),
+
+              Expanded(
+                child: ListView.builder(
+                  itemCount: genres.length,
+                  itemBuilder: (context, index) {
+                    final genre = genres[index];
+
+                    return CheckboxListTile(
+                      title: Text(genre.name),
+                      value: selected.contains(genre.id),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == true) {
+                            selected.add(genre.id);
+                          } else {
+                            selected.remove(genre.id);
+                          }
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+
+              Padding(
+                padding: const .all(16),
+                child: SizedBox(
+                  width: .infinity,
+                  child: FilledButton(
+                    onPressed: () {
+                      onChanged(selected);
+                      Navigator.pop(context);
+                    },
+                    child: Text(AppLocalizations.of(context)!.filter_apply),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
