@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:movie_match/models/genre.dart';
 import 'package:movie_match/widgets/pill.dart';
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 class MediaGenreFilter extends StatelessWidget {
   const MediaGenreFilter({

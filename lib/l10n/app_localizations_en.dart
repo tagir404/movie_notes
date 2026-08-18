@@ -91,6 +91,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get skipped_restore_all_tooltip => 'Restore all';
 
   @override
+  String get filter_country => 'Country';
+
+  @override
+  String get filter_choose_country => 'Choose country';
+
+  @override
   String get filter_genres => 'Genres';
 
   @override

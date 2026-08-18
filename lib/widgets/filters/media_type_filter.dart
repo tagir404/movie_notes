@@ -1,7 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:movie_match/enums/media_content_type.dart';
 import 'package:movie_match/widgets/pill.dart';
-import '../l10n/app_localizations.dart';
+import '../../l10n/app_localizations.dart';
 
 class MediaTypeFilter extends StatelessWidget {
   const MediaTypeFilter({

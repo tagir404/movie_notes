@@ -91,6 +91,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get skipped_restore_all_tooltip => 'Вернуть все';
 
   @override
+  String get filter_country => 'Страна';
+
+  @override
+  String get filter_choose_country => 'Выберите страну';
+
+  @override
   String get filter_genres => 'Жанры';
 
   @override

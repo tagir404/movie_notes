@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:movie_match/constants/api_constants.dart';
 import 'package:movie_match/enums/media_content_type.dart';
 import 'package:movie_match/enums/media_sort_option.dart';
+import 'package:movie_match/models/country.dart';
 import 'package:movie_match/models/genre.dart';
 import 'package:movie_match/models/media_page_result.dart';
 import 'package:movie_match/models/movie.dart';
@@ -33,11 +34,17 @@ class MediaApiService {
         .toList();
   }
 
+  Future<List<Country>> fetchCountries() async {
+    final json = await _get('/configuration/countries');
+
+    return (json as List).map((item) => Country.fromJson(item)).toList();
+  }
+
   Future<List<Movie>> fetchMedia({
     required MediaContentType type,
     int page = 1,
     List<int>? genreIds,
-    MediaSortOption sortOption = MediaSortOption.popularity,
+    MediaSortOption sortOption = .popularity,
   }) async {
     final result = await fetchMediaPage(
       type: type,
@@ -53,7 +60,8 @@ class MediaApiService {
     required MediaContentType type,
     int page = 1,
     List<int>? genreIds,
-    MediaSortOption sortOption = MediaSortOption.popularity,
+    String? countryCode,
+    MediaSortOption sortOption = .popularity,
   }) async {
     final json = await _get(
       type == .movie ? '/discover/movie' : '/discover/tv',
@@ -65,6 +73,8 @@ class MediaApiService {
         'include_adult': 'false',
         if (genreIds != null && genreIds.isNotEmpty)
           'with_genres': genreIds.join(','),
+        // ignore: use_null_aware_elements
+        if (countryCode != null) 'with_origin_country': countryCode,
       },
     );
 
@@ -85,7 +95,7 @@ class MediaApiService {
   }
 
   Future<String?> getTrailerKey(int mediaId, MediaContentType type) async {
-    final endpoint = type == MediaContentType.movie
+    final endpoint = type == .movie
         ? '/movie/$mediaId/videos'
         : '/tv/$mediaId/videos';
 

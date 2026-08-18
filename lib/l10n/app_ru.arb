@@ -27,6 +27,8 @@
     "skipped_restore_all_title": "Вернуть все фильмы?",
     "skipped_restore_all_content": "Все пропущенные фильмы будут возвращены в каталог.",
     "skipped_restore_all_tooltip": "Вернуть все",
+    "filter_country": "Страна",
+    "filter_choose_country": "Выберите страну",
     "filter_genres": "Жанры",
     "filter_choose_genres": "Выберите жанры",
     "media_sort_popularity": "По популярности",

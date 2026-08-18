@@ -23,6 +23,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   MediaContentType _selectedType = MediaContentType.movie;
   MediaSortOption _selectedSort = MediaSortOption.popularity;
   GenreFilter _genreFilter = const GenreFilter();
+  String? _selectedCountry;
 
   final Map<int, MovieDetails> _movieDetails = {};
 
@@ -110,6 +111,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             items: movies,
             selectedGenres: _genreFilter.genreIds,
             selectedSort: _selectedSort,
+            selectedCountry: _selectedCountry,
             onTypeChanged: (type) {
               setState(() {
                 _selectedType = type;
@@ -123,6 +125,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             onSortChanged: (sortOption) {
               setState(() {
                 _selectedSort = sortOption;
+              });
+            },
+            onCountryChanged: (country) {
+              setState(() {
+                _selectedCountry = country;
               });
             },
             cardBuilder: (context, movie, selectedType, selectedGenres) {

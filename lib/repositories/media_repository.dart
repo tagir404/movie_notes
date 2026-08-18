@@ -1,4 +1,5 @@
 import 'package:movie_match/enums/media_content_type.dart';
+import 'package:movie_match/models/country.dart';
 import 'package:movie_match/models/genre.dart';
 import 'package:movie_match/models/movie_cast_member.dart';
 import 'package:movie_match/models/movie_details.dart';
@@ -11,10 +12,12 @@ class MediaRepository {
 
   List<Genre>? _movieGenres;
   List<Genre>? _tvGenres;
+  List<Country>? _countries;
 
   Future<void> init() async {
     _movieGenres = await apiService.fetchGenres(.movie);
     _tvGenres = await apiService.fetchGenres(.tvShow);
+    _countries = await apiService.fetchCountries();
   }
 
   Future<void> refreshLocalizedData() async {
@@ -36,6 +39,14 @@ class MediaRepository {
     }
 
     return _tvGenres!;
+  }
+
+  List<Country> get countries {
+    if (_countries == null) {
+      throw StateError('MediaRepository is not initialized');
+    }
+
+    return _countries!;
   }
 
   List<Genre> genres(MediaContentType type) => switch (type) {

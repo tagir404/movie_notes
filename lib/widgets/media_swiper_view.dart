@@ -6,9 +6,10 @@ import 'package:movie_match/enums/media_sort_option.dart';
 import 'package:movie_match/l10n/app_localizations.dart';
 import 'package:movie_match/models/movie.dart';
 import 'package:movie_match/widgets/app_scope.dart';
-import 'package:movie_match/widgets/media_genre_filter.dart';
-import 'package:movie_match/widgets/media_sort_filter.dart';
-import 'package:movie_match/widgets/media_type_filter.dart';
+// import 'package:movie_match/widgets/filters/media_country_filter.dart';
+import 'package:movie_match/widgets/filters/media_genre_filter.dart';
+import 'package:movie_match/widgets/filters/media_sort_filter.dart';
+import 'package:movie_match/widgets/filters/media_type_filter.dart';
 import 'package:movie_match/widgets/swiper_action.dart';
 
 typedef MediaSwiperCardBuilder =
@@ -34,9 +35,11 @@ class MediaSwiperView extends StatefulWidget {
     required this.items,
     required this.selectedGenres,
     required this.selectedSort,
+    required this.selectedCountry,
     required this.onTypeChanged,
     required this.onGenresChanged,
     required this.onSortChanged,
+    required this.onCountryChanged,
     required this.cardBuilder,
     required this.leftActionText,
     required this.rightActionText,
@@ -51,9 +54,11 @@ class MediaSwiperView extends StatefulWidget {
   final List<Movie> items;
   final List<int> selectedGenres;
   final MediaSortOption selectedSort;
+  final String? selectedCountry;
   final ValueChanged<MediaContentType> onTypeChanged;
   final ValueChanged<List<int>> onGenresChanged;
   final ValueChanged<MediaSortOption> onSortChanged;
+  final ValueChanged<String?> onCountryChanged;
   final MediaSwiperCardBuilder cardBuilder;
   final bool isLoop;
   final MediaSwiperOnSwipe? onSwipe;
@@ -68,6 +73,7 @@ class MediaSwiperView extends StatefulWidget {
 class _MediaSwiperViewState extends State<MediaSwiperView> {
   late MediaContentType _selectedType;
   late List<int> _selectedGenres;
+  // String? _selectedCountry;
   final CardSwiperController _cardSwiperController = CardSwiperController();
   CardSwiperDirection? _swipeDirection;
 
@@ -105,6 +111,14 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
     widget.onGenresChanged(genres);
   }
 
+  // void _handleCountryChanged(String? country) {
+  //   setState(() {
+  //     _selectedCountry = country;
+  //   });
+
+  //   widget.onCountryChanged(country);
+  // }
+
   @override
   Widget build(BuildContext context) => Padding(
     padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
@@ -132,6 +146,12 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
                 selectedType: _selectedType,
                 onChanged: _handleTypeChanged,
               ),
+              // Фильтр по странам
+              // MediaCountryFilter(
+              //   countries: AppScope.of(context).mediaRepository.countries,
+              //   selectedCountry: _selectedCountry,
+              //   onChanged: _handleCountryChanged,
+              // ),
             ],
           ),
         ),

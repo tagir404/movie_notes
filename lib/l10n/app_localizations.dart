@@ -260,6 +260,18 @@ abstract class AppLocalizations {
   /// **'Restore all'**
   String get skipped_restore_all_tooltip;
 
+  /// No description provided for @filter_country.
+  ///
+  /// In en, this message translates to:
+  /// **'Country'**
+  String get filter_country;
+
+  /// No description provided for @filter_choose_country.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose country'**
+  String get filter_choose_country;
+
   /// No description provided for @filter_genres.
   ///
   /// In en, this message translates to:

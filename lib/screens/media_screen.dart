@@ -40,6 +40,7 @@ class _MediaScreenState extends State<MediaScreen> {
   GenreFilter _genreFilter = const GenreFilter();
   MediaContentType _selectedType = MediaContentType.movie;
   MediaSortOption _selectedSort = MediaSortOption.popularity;
+  String? _selectedCountry;
 
   @override
   void didChangeDependencies() {
@@ -112,9 +113,7 @@ class _MediaScreenState extends State<MediaScreen> {
 
   Future<void> _reloadLocalizedMedia() async {
     setState(() {
-      page = 1;
-      movies = [];
-      _movieDetails.clear();
+      _resetPagination();
       isLoading = true;
     });
 
@@ -138,6 +137,7 @@ class _MediaScreenState extends State<MediaScreen> {
     page: page,
     genreIds: _genreFilter.hasGenres ? _genreFilter.genreIds : null,
     sortOption: _selectedSort,
+    countryCode: _selectedCountry,
   );
 
   void _setContentType(MediaContentType type) {
@@ -145,11 +145,8 @@ class _MediaScreenState extends State<MediaScreen> {
 
     setState(() {
       _selectedType = type;
-      page = 1;
-      movies = [];
-      _movieDetails.clear();
+      _resetPagination();
       _genreFilter = const GenreFilter();
-      _selectedSort = MediaSortOption.popularity;
     });
 
     _loadMedia();
@@ -177,6 +174,12 @@ class _MediaScreenState extends State<MediaScreen> {
     });
   }
 
+  void _resetPagination() {
+    page = 1;
+    movies = [];
+    _movieDetails.clear();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: MediaSwiperView(
@@ -186,13 +189,12 @@ class _MediaScreenState extends State<MediaScreen> {
       items: movies,
       selectedGenres: _genreFilter.genreIds,
       selectedSort: _selectedSort,
+      selectedCountry: _selectedCountry,
       onTypeChanged: _setContentType,
       onGenresChanged: (genreIds) {
         setState(() {
           _genreFilter = _genreFilter.copyWith(genreIds: genreIds);
-          page = 1;
-          movies = [];
-          _movieDetails.clear();
+          _resetPagination();
         });
 
         _loadMedia();
@@ -201,13 +203,21 @@ class _MediaScreenState extends State<MediaScreen> {
       onSortChanged: (sortOption) {
         setState(() {
           _selectedSort = sortOption;
-          page = 1;
-          movies = [];
-          _movieDetails.clear();
+          _resetPagination();
         });
 
         _loadMedia();
       },
+
+      onCountryChanged: (country) {
+        setState(() {
+          _selectedCountry = country;
+          _resetPagination();
+        });
+
+        _loadMedia();
+      },
+
       cardBuilder: (context, movie, selectedType, selectedGenres) {
         final movieGenres = movie.genreIds
             .map(
