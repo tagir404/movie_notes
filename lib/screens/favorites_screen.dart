@@ -5,7 +5,9 @@ import 'package:movie_match/models/genre_filter.dart';
 import 'package:movie_match/models/movie.dart';
 import 'package:movie_match/models/movie_details.dart';
 import 'package:movie_match/repositories/favorites_repository.dart';
+import 'package:movie_match/utils/filter_and_sort_media.dart';
 import 'package:movie_match/widgets/app_scope.dart';
+import 'package:movie_match/widgets/media_empty_state.dart';
 import 'package:movie_match/widgets/media_filters.dart';
 import 'package:movie_match/widgets/media_swiper_view.dart';
 import 'package:movie_match/widgets/movie_card/movie_card.dart';
@@ -122,33 +124,35 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
               child: ValueListenableBuilder<List<Movie>>(
                 valueListenable: _repository.favorites,
                 builder: (context, items, child) {
-                  final movies = items
-                      .where((movie) => movie.type == _selectedType)
-                      .where((movie) {
-                        if (_genreFilter.genreIds.isEmpty) return true;
+                  if (items.isEmpty) {
+                    return Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.favorites_empty,
+                      ),
+                    );
+                  }
 
-                        return movie.genreIds.any(
-                          (genreId) => _genreFilter.genreIds.contains(genreId),
-                        );
-                      })
-                      .toList();
+                  final filteredMovies = filterMedia(
+                    movies: items,
+                    type: _selectedType,
+                    genreIds: _genreFilter.genreIds,
+                  );
 
-                  movies.sort((a, b) {
-                    switch (_selectedSort) {
-                      case .popularity:
-                        return b.popularity.compareTo(a.popularity);
+                  if (filteredMovies.isEmpty) {
+                    return MediaEmptyState(
+                      onReset: () {
+                        setState(() {
+                          _selectedType = .movie;
+                          _genreFilter = const GenreFilter();
+                        });
+                      },
+                    );
+                  }
 
-                      case .newest:
-                        return b.releaseDate.compareTo(a.releaseDate);
-
-                      case .rating:
-                        return b.voteAverage.compareTo(a.voteAverage);
-                    }
-                  });
+                  sortMedia(filteredMovies, _selectedSort);
 
                   return MediaSwiperView(
-                    isLoading: false,
-                    items: movies,
+                    items: filteredMovies,
                     cardBuilder: (context, movie) {
                       _loadMovieDetails(movie);
 

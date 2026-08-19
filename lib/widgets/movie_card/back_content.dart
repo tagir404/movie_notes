@@ -37,8 +37,8 @@ class _MovieCardBackState extends State<MovieCardBack> {
     return DefaultTextStyle(
       style: theme.textTheme.bodyLarge!,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: .start,
+        mainAxisAlignment: .end,
         children: [
           Text(widget.movie.title, style: theme.textTheme.headlineMedium),
 
@@ -60,12 +60,12 @@ class _MovieCardBackState extends State<MovieCardBack> {
                   controller: _controller,
                   child: SingleChildScrollView(
                     controller: _controller,
-                    padding: const EdgeInsets.only(right: 8, bottom: 8),
+                    padding: const .only(right: 8, bottom: 8),
                     child: Text(
                       widget.movie.overview.isEmpty
                           ? AppLocalizations.of(context)!.description_missing
                           : widget.movie.overview,
-                      textAlign: TextAlign.justify,
+                      textAlign: .justify,
                     ),
                   ),
                 ),
@@ -78,8 +78,8 @@ class _MovieCardBackState extends State<MovieCardBack> {
                     child: DecoratedBox(
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.topCenter,
+                          begin: .bottomCenter,
+                          end: .topCenter,
                           colors: [
                             Theme.of(context).colorScheme.surface,
                             Theme.of(context).colorScheme.surface.withAlpha(0),

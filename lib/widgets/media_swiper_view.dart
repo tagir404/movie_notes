@@ -1,6 +1,5 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:movie_match/l10n/app_localizations.dart';
 import 'package:movie_match/models/movie.dart';
 import 'package:movie_match/widgets/swiper_action.dart';
 
@@ -17,7 +16,6 @@ typedef MediaSwiperOnSwipe =
 
 class MediaSwiperView extends StatefulWidget {
   const MediaSwiperView({
-    required this.isLoading,
     required this.items,
     required this.cardBuilder,
     required this.leftActionText,
@@ -28,7 +26,6 @@ class MediaSwiperView extends StatefulWidget {
     super.key,
   });
 
-  final bool isLoading;
   final List<Movie> items;
   final MediaSwiperCardBuilder cardBuilder;
   final bool isLoop;
@@ -49,59 +46,55 @@ class _MediaSwiperViewState extends State<MediaSwiperView> {
   Widget build(BuildContext context) => Column(
     children: [
       Expanded(
-        child: widget.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : widget.items.isEmpty
-            ? Center(child: Text(AppLocalizations.of(context)!.media_empty))
-            : CardSwiper(
-                // key: ValueKey(
-                //   widget.items
-                //       .map((movie) => '${movie.type.name}-${movie.id}')
-                //       .join(','),
-                // ),
-                padding: const EdgeInsets.all(0),
-                isLoop: widget.isLoop,
-                numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
-                backCardOffset: const Offset(0, 0),
-                scale: 1,
-                controller: _cardSwiperController,
-                allowedSwipeDirection: const .symmetric(
-                  horizontal: true,
-                  vertical: false,
-                ),
-                cardsCount: widget.items.length,
-                cardBuilder: (context, index, _, _) {
-                  final movie = widget.items[index];
+        child: CardSwiper(
+          key: ValueKey(
+            widget.items
+                .map((movie) => '${movie.type.name}-${movie.id}')
+                .join(','),
+          ),
+          padding: const EdgeInsets.all(0),
+          isLoop: widget.isLoop,
+          numberOfCardsDisplayed: widget.items.length == 1 ? 1 : 2,
+          backCardOffset: const Offset(0, 0),
+          scale: 1,
+          controller: _cardSwiperController,
+          allowedSwipeDirection: const .symmetric(
+            horizontal: true,
+            vertical: false,
+          ),
+          cardsCount: widget.items.length,
+          cardBuilder: (context, index, _, _) {
+            final movie = widget.items[index];
 
-                  return widget.cardBuilder(
-                    context,
-                    movie,
-                    // _selectedType,
-                    // _selectedGenres,
-                  );
-                },
-                onSwipe: (previousIndex, currentIndex, direction) {
-                  setState(() {
-                    _swipeDirection = null;
-                  });
+            return widget.cardBuilder(
+              context,
+              movie,
+              // _selectedType,
+              // _selectedGenres,
+            );
+          },
+          onSwipe: (previousIndex, currentIndex, direction) {
+            setState(() {
+              _swipeDirection = null;
+            });
 
-                  final movie = widget.items[previousIndex];
+            final movie = widget.items[previousIndex];
 
-                  return widget.onSwipe?.call(
-                        previousIndex,
-                        currentIndex,
-                        direction,
-                        movie,
-                      ) ??
-                      true;
-                },
-                onSwipeDirectionChange: (CardSwiperDirection direction, _) {
-                  setState(() {
-                    _swipeDirection = direction;
-                  });
-                },
-                onEnd: widget.onEnd,
-              ),
+            return widget.onSwipe?.call(
+                  previousIndex,
+                  currentIndex,
+                  direction,
+                  movie,
+                ) ??
+                true;
+          },
+          onSwipeDirectionChange: (CardSwiperDirection direction, _) {
+            setState(() {
+              _swipeDirection = direction;
+            });
+          },
+          onEnd: widget.onEnd,
+        ),
       ),
       const SizedBox(height: 16),
       Row(

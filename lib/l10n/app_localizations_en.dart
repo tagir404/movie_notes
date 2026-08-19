@@ -18,7 +18,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get home_saved => 'Saved';
 
   @override
-  String get favorites_empty => 'No saved items.';
+  String get favorites_empty => 'No saved movies';
 
   @override
   String get settings_title => 'Settings';
@@ -78,6 +78,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get filter_reset => 'Reset';
 
   @override
+  String get filter_reset_all => 'Clear filters';
+
+  @override
   String get filter_apply => 'Apply';
 
   @override
@@ -119,6 +122,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get media_empty => 'Nothing found';
+
+  @override
+  String get media_empty_filtered_hint => 'Change the filter settings';
 
   @override
   String get action_skip => 'Skip';

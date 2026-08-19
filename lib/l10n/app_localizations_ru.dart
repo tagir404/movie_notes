@@ -18,7 +18,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get home_saved => 'Сохранённые';
 
   @override
-  String get favorites_empty => 'Нет сохраненных элементов.';
+  String get favorites_empty => 'Нет сохраненных фильмов';
 
   @override
   String get settings_title => 'Настройки';
@@ -78,6 +78,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get filter_reset => 'Сбросить';
 
   @override
+  String get filter_reset_all => 'Сбросить фильтры';
+
+  @override
   String get filter_apply => 'Применить';
 
   @override
@@ -119,6 +122,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get media_empty => 'Ничего не найдено';
+
+  @override
+  String get media_empty_filtered_hint => 'Измените параметры фильтра';
 
   @override
   String get action_skip => 'Пропустить';

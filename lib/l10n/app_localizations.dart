@@ -119,7 +119,7 @@ abstract class AppLocalizations {
   /// No description provided for @favorites_empty.
   ///
   /// In en, this message translates to:
-  /// **'No saved items.'**
+  /// **'No saved movies'**
   String get favorites_empty;
 
   /// No description provided for @settings_title.
@@ -236,6 +236,12 @@ abstract class AppLocalizations {
   /// **'Reset'**
   String get filter_reset;
 
+  /// No description provided for @filter_reset_all.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get filter_reset_all;
+
   /// No description provided for @filter_apply.
   ///
   /// In en, this message translates to:
@@ -319,6 +325,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Nothing found'**
   String get media_empty;
+
+  /// No description provided for @media_empty_filtered_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the filter settings'**
+  String get media_empty_filtered_hint;
 
   /// No description provided for @action_skip.
   ///
