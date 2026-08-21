@@ -70,12 +70,7 @@ class MediaSwiperViewState extends State<MediaSwiperView> {
           cardBuilder: (context, index, _, _) {
             final movie = widget.items[index];
 
-            return widget.cardBuilder(
-              context,
-              movie,
-              // _selectedType,
-              // _selectedGenres,
-            );
+            return widget.cardBuilder(context, movie);
           },
           onSwipe: (previousIndex, currentIndex, direction) {
             setState(() {
@@ -100,7 +95,7 @@ class MediaSwiperViewState extends State<MediaSwiperView> {
           onEnd: widget.onEnd,
         ),
       ),
-      const SizedBox(height: 16),
+      const SizedBox(height: 12),
       Row(
         mainAxisAlignment: .spaceBetween,
         children: [

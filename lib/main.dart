@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -81,9 +82,7 @@ class MainApp extends StatelessWidget {
           home: const HomeScreen(),
           theme: ThemeData(
             // textTheme: GoogleFonts.nunitoTextTheme(),
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 7, 7),
-            ),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.grey),
           ),
           darkTheme: ThemeData(
             brightness: Brightness.dark,
@@ -91,7 +90,7 @@ class MainApp extends StatelessWidget {
             //   ThemeData(brightness: Brightness.dark).textTheme,
             // ),
             colorScheme: ColorScheme.fromSeed(
-              seedColor: const Color.fromARGB(255, 255, 7, 7),
+              seedColor: Colors.grey,
               brightness: Brightness.dark,
             ),
           ),

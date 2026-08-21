@@ -103,7 +103,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
     return Scaffold(
       body: Padding(
-        padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
+        padding: const .only(left: 20, right: 20, top: 20, bottom: 8),
         child: Column(
           children: [
             SizedBox(

@@ -30,6 +30,7 @@ class _MediaScreenState extends State<MediaScreen> {
   late final FavoritesRepository favoritesRepository;
   late final SkippedMediaRepository skippedMediaRepository;
   late final LocaleController localeController;
+  late final AppLocalizations? l10n;
 
   final Map<int, MovieDetails> _movieDetails = {};
   final _swiperKey = GlobalKey<MediaSwiperViewState>();
@@ -58,6 +59,7 @@ class _MediaScreenState extends State<MediaScreen> {
     skippedMediaRepository = AppScope.of(context).skippedMediaRepository;
     localeController = AppScope.of(context).localeController;
     localeController.addListener(_reloadLocalizedMedia);
+    l10n = AppLocalizations.of(context);
 
     _loadMedia();
   }
@@ -219,10 +221,15 @@ class _MediaScreenState extends State<MediaScreen> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
+          duration: const Duration(seconds: 3),
+          persist: false,
           content: Text(message),
-          action: SnackBarAction(
-            label: AppLocalizations.of(context)!.action_undo,
-            onPressed: onUndo,
+          action: SnackBarAction(label: l10n!.action_undo, onPressed: onUndo),
+          shape: const RoundedRectangleBorder(
+            borderRadius: .only(
+              topLeft: .circular(24),
+              topRight: .circular(24),
+            ),
           ),
         ),
       );
@@ -231,7 +238,7 @@ class _MediaScreenState extends State<MediaScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Padding(
-      padding: const .only(left: 20, right: 20, top: 12, bottom: 12),
+      padding: const .only(left: 20, right: 20, top: 20, bottom: 8),
       child: Column(
         children: [
           SizedBox(
@@ -274,15 +281,13 @@ class _MediaScreenState extends State<MediaScreen> {
                         movieDetails: _movieDetails[movie.id],
                       );
                     },
-                    leftActionText: AppLocalizations.of(context)!.action_skip,
-                    rightActionText: AppLocalizations.of(context)!.action_save,
+                    leftActionText: l10n!.action_skip,
+                    rightActionText: l10n!.action_save,
                     onSwipe: (previousIndex, currentIndex, direction, movie) {
                       if (direction == .right) {
                         favoritesRepository.addFavorite(movie);
                         _showUndoSnackBar(
-                          message: AppLocalizations.of(
-                            context,
-                          )!.media_saved_snackbar,
+                          message: l10n!.media_saved_snackbar,
                           onUndo: () async {
                             await favoritesRepository.removeFavorite(movie.id);
                             _swiperKey.currentState?.undo();
@@ -291,9 +296,7 @@ class _MediaScreenState extends State<MediaScreen> {
                       } else if (direction == .left) {
                         skippedMediaRepository.addSkippedMedia(movie);
                         _showUndoSnackBar(
-                          message: AppLocalizations.of(
-                            context,
-                          )!.media_skipped_snackbar,
+                          message: l10n!.media_skipped_snackbar,
                           onUndo: () async {
                             await skippedMediaRepository.removeSkippedMedia(
                               movie.id,
