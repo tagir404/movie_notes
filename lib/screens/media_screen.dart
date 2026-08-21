@@ -32,6 +32,7 @@ class _MediaScreenState extends State<MediaScreen> {
   late final LocaleController localeController;
 
   final Map<int, MovieDetails> _movieDetails = {};
+  final _swiperKey = GlobalKey<MediaSwiperViewState>();
 
   bool isLoading = true;
   bool _initialized = false;
@@ -210,6 +211,23 @@ class _MediaScreenState extends State<MediaScreen> {
     _loadMedia();
   }
 
+  void _showUndoSnackBar({
+    required String message,
+    required VoidCallback onUndo,
+  }) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(message),
+          action: SnackBarAction(
+            label: AppLocalizations.of(context)!.action_undo,
+            onPressed: onUndo,
+          ),
+        ),
+      );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
     body: Padding(
@@ -236,6 +254,7 @@ class _MediaScreenState extends State<MediaScreen> {
                 : movies.isEmpty
                 ? MediaEmptyState(onReset: _resetFilters)
                 : MediaSwiperView(
+                    key: _swiperKey,
                     isLoop: false,
                     items: movies,
                     cardBuilder: (context, movie) {
@@ -260,8 +279,28 @@ class _MediaScreenState extends State<MediaScreen> {
                     onSwipe: (previousIndex, currentIndex, direction, movie) {
                       if (direction == .right) {
                         favoritesRepository.addFavorite(movie);
+                        _showUndoSnackBar(
+                          message: AppLocalizations.of(
+                            context,
+                          )!.media_saved_snackbar,
+                          onUndo: () async {
+                            await favoritesRepository.removeFavorite(movie.id);
+                            _swiperKey.currentState?.undo();
+                          },
+                        );
                       } else if (direction == .left) {
                         skippedMediaRepository.addSkippedMedia(movie);
+                        _showUndoSnackBar(
+                          message: AppLocalizations.of(
+                            context,
+                          )!.media_skipped_snackbar,
+                          onUndo: () async {
+                            await skippedMediaRepository.removeSkippedMedia(
+                              movie.id,
+                            );
+                            _swiperKey.currentState?.undo();
+                          },
+                        );
                       }
 
                       if (currentIndex == null) return true;

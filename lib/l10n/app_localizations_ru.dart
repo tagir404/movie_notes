@@ -133,6 +133,15 @@ class AppLocalizationsRu extends AppLocalizations {
   String get action_save => 'Сохранить';
 
   @override
+  String get action_undo => 'Отменить';
+
+  @override
+  String get media_saved_snackbar => 'Фильм сохранён';
+
+  @override
+  String get media_skipped_snackbar => 'Фильм пропущен';
+
+  @override
   String get description_missing => 'Описание отсутствует.';
 
   @override

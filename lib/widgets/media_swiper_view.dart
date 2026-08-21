@@ -35,12 +35,16 @@ class MediaSwiperView extends StatefulWidget {
   final String rightActionText;
 
   @override
-  State<MediaSwiperView> createState() => _MediaSwiperViewState();
+  State<MediaSwiperView> createState() => MediaSwiperViewState();
 }
 
-class _MediaSwiperViewState extends State<MediaSwiperView> {
+class MediaSwiperViewState extends State<MediaSwiperView> {
   final CardSwiperController _cardSwiperController = CardSwiperController();
   CardSwiperDirection? _swipeDirection;
+
+  void undo() {
+    _cardSwiperController.undo();
+  }
 
   @override
   Widget build(BuildContext context) => Column(

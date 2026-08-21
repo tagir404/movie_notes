@@ -133,6 +133,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get action_save => 'Save';
 
   @override
+  String get action_undo => 'Undo';
+
+  @override
+  String get media_saved_snackbar => 'Movie saved';
+
+  @override
+  String get media_skipped_snackbar => 'Movie skipped';
+
+  @override
   String get description_missing => 'No description available.';
 
   @override

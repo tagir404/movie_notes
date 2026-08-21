@@ -344,6 +344,24 @@ abstract class AppLocalizations {
   /// **'Save'**
   String get action_save;
 
+  /// No description provided for @action_undo.
+  ///
+  /// In en, this message translates to:
+  /// **'Undo'**
+  String get action_undo;
+
+  /// No description provided for @media_saved_snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Movie saved'**
+  String get media_saved_snackbar;
+
+  /// No description provided for @media_skipped_snackbar.
+  ///
+  /// In en, this message translates to:
+  /// **'Movie skipped'**
+  String get media_skipped_snackbar;
+
   /// No description provided for @description_missing.
   ///
   /// In en, this message translates to:
