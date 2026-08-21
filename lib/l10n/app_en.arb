@@ -86,10 +86,18 @@
     "@action_save": {},
     "action_undo": "Undo",
     "@action_undo": {},
-    "media_saved_snackbar": "Movie saved",
-    "@media_saved_snackbar": {},
-    "media_skipped_snackbar": "Movie skipped",
-    "@media_skipped_snackbar": {},
+    "media_saved_snackbar": "{mediaType, select, movie {Movie saved} tvShow {TV show saved} other {Media saved}}",
+    "@media_saved_snackbar": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "media_skipped_snackbar": "{mediaType, select, movie {Movie skipped} tvShow {TV show skipped} other {Media skipped}}",
+    "@media_skipped_snackbar": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
     "description_missing": "No description available.",
     "@description_missing": {},
     "trailer_title": "Trailer",

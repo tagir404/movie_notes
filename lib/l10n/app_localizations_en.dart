@@ -136,10 +136,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get action_undo => 'Undo';
 
   @override
-  String get media_saved_snackbar => 'Movie saved';
+  String media_saved_snackbar(String mediaType) {
+    String _temp0 = intl.Intl.selectLogic(mediaType, {
+      'movie': 'Movie saved',
+      'tvShow': 'TV show saved',
+      'other': 'Media saved',
+    });
+    return '$_temp0';
+  }
 
   @override
-  String get media_skipped_snackbar => 'Movie skipped';
+  String media_skipped_snackbar(String mediaType) {
+    String _temp0 = intl.Intl.selectLogic(mediaType, {
+      'movie': 'Movie skipped',
+      'tvShow': 'TV show skipped',
+      'other': 'Media skipped',
+    });
+    return '$_temp0';
+  }
 
   @override
   String get description_missing => 'No description available.';

@@ -136,10 +136,24 @@ class AppLocalizationsRu extends AppLocalizations {
   String get action_undo => 'Отменить';
 
   @override
-  String get media_saved_snackbar => 'Фильм сохранён';
+  String media_saved_snackbar(String mediaType) {
+    String _temp0 = intl.Intl.selectLogic(mediaType, {
+      'movie': 'Фильм сохранён',
+      'tvShow': 'Сериал сохранён',
+      'other': 'Медиа сохранено',
+    });
+    return '$_temp0';
+  }
 
   @override
-  String get media_skipped_snackbar => 'Фильм пропущен';
+  String media_skipped_snackbar(String mediaType) {
+    String _temp0 = intl.Intl.selectLogic(mediaType, {
+      'movie': 'Фильм пропущен',
+      'tvShow': 'Сериал пропущен',
+      'other': 'Медиа пропущено',
+    });
+    return '$_temp0';
+  }
 
   @override
   String get description_missing => 'Описание отсутствует.';

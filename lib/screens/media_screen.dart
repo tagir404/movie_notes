@@ -287,7 +287,7 @@ class _MediaScreenState extends State<MediaScreen> {
                       if (direction == .right) {
                         favoritesRepository.addFavorite(movie);
                         _showUndoSnackBar(
-                          message: l10n!.media_saved_snackbar,
+                          message: l10n!.media_saved_snackbar(movie.type.name),
                           onUndo: () async {
                             await favoritesRepository.removeFavorite(movie.id);
                             _swiperKey.currentState?.undo();
@@ -296,7 +296,9 @@ class _MediaScreenState extends State<MediaScreen> {
                       } else if (direction == .left) {
                         skippedMediaRepository.addSkippedMedia(movie);
                         _showUndoSnackBar(
-                          message: l10n!.media_skipped_snackbar,
+                          message: l10n!.media_skipped_snackbar(
+                            movie.type.name,
+                          ),
                           onUndo: () async {
                             await skippedMediaRepository.removeSkippedMedia(
                               movie.id,

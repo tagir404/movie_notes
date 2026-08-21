@@ -42,8 +42,18 @@
     "action_skip": "Пропустить",
     "action_save": "Сохранить",
     "action_undo": "Отменить",
-    "media_saved_snackbar": "Фильм сохранён",
-    "media_skipped_snackbar": "Фильм пропущен",
+    "media_saved_snackbar": "{mediaType, select, movie {Фильм сохранён} tvShow {Сериал сохранён} other {Медиа сохранено}}",
+    "@media_saved_snackbar": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
+    "media_skipped_snackbar": "{mediaType, select, movie {Фильм пропущен} tvShow {Сериал пропущен} other {Медиа пропущено}}",
+    "@media_skipped_snackbar": {
+        "placeholders": {
+            "mediaType": {}
+        }
+    },
     "description_missing": "Описание отсутствует.",
     "trailer_title": "Трейлер",
     "no_available_videos": "Нет доступных видео.",

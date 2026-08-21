@@ -353,14 +353,14 @@ abstract class AppLocalizations {
   /// No description provided for @media_saved_snackbar.
   ///
   /// In en, this message translates to:
-  /// **'Movie saved'**
-  String get media_saved_snackbar;
+  /// **'{mediaType, select, movie {Movie saved} tvShow {TV show saved} other {Media saved}}'**
+  String media_saved_snackbar(String mediaType);
 
   /// No description provided for @media_skipped_snackbar.
   ///
   /// In en, this message translates to:
-  /// **'Movie skipped'**
-  String get media_skipped_snackbar;
+  /// **'{mediaType, select, movie {Movie skipped} tvShow {TV show skipped} other {Media skipped}}'**
+  String media_skipped_snackbar(String mediaType);
 
   /// No description provided for @description_missing.
   ///
