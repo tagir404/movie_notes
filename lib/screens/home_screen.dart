@@ -14,37 +14,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  String get _title {
-    switch (_selectedIndex) {
-      case 0:
-        return AppLocalizations.of(context)!.home_catalog;
-      case 1:
-        return AppLocalizations.of(context)!.home_saved;
-      default:
-        return '';
-    }
-  }
-
-  static const _screens = [MediaScreen(), FavoritesScreen()];
+  static const _screens = [MediaScreen(), FavoritesScreen(), SettingsScreen()];
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: Text(_title),
-      actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
-            );
-          },
-          icon: const Icon(Icons.settings),
-        ),
-      ],
-      actionsPadding: const EdgeInsets.only(right: 8),
+    body: SafeArea(
+      child: IndexedStack(index: _selectedIndex, children: _screens),
     ),
-    body: IndexedStack(index: _selectedIndex, children: _screens),
     bottomNavigationBar: NavigationBar(
       selectedIndex: _selectedIndex,
       onDestinationSelected: (index) {
@@ -60,6 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
         NavigationDestination(
           icon: const Icon(Icons.bookmarks),
           label: AppLocalizations.of(context)!.home_saved,
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.settings),
+          label: AppLocalizations.of(context)!.settings_title,
         ),
       ],
     ),
