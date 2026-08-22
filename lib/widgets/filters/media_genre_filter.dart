@@ -16,45 +16,48 @@ class MediaGenreFilter extends StatelessWidget {
   final ValueChanged<List<int>> onChanged;
 
   @override
-  Widget build(BuildContext context) => Stack(
-    clipBehavior: .none,
-    children: [
-      Pill(
-        onTap: () => _showGenres(context),
-        borderRadius: .circular(20),
-        padding: const .symmetric(horizontal: 12, vertical: 4),
-        child: Text(
-          AppLocalizations.of(context)!.filter_genres,
-          style: Theme.of(context).textTheme.bodyLarge,
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
+    return Stack(
+      clipBehavior: .none,
+      children: [
+        Pill(
+          onTap: () => _showGenres(context),
+          borderRadius: .circular(20),
+          padding: const .symmetric(horizontal: 12, vertical: 4),
+          child: Text(l10n.filter_genres, style: theme.textTheme.bodyLarge),
         ),
-      ),
-      if (selectedGenres.isNotEmpty)
-        Positioned(
-          top: -6,
-          right: -6,
-          child: Material(
-            color: Theme.of(context).colorScheme.primary,
-            shape: const CircleBorder(),
-            elevation: 4,
-            child: SizedBox(
-              width: 20,
-              height: 20,
-              child: Center(
-                child: Text(
-                  '${selectedGenres.length}',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
+        if (selectedGenres.isNotEmpty)
+          Positioned(
+            top: -6,
+            right: -6,
+            child: Material(
+              color: theme.colorScheme.primary,
+              shape: const CircleBorder(),
+              elevation: 4,
+              child: SizedBox(
+                width: 20,
+                height: 20,
+                child: Center(
+                  child: Text(
+                    '${selectedGenres.length}',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: theme.colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-        ),
-    ],
-  );
+      ],
+    );
+  }
 
   void _showGenres(BuildContext context) {
     var selected = [...selectedGenres];
+    final l10n = AppLocalizations.of(context)!;
 
     showModalBottomSheet(
       context: context,
@@ -68,7 +71,7 @@ class MediaGenreFilter extends StatelessWidget {
                   mainAxisAlignment: .spaceBetween,
                   children: [
                     Text(
-                      AppLocalizations.of(context)!.filter_choose_genres,
+                      l10n.filter_choose_genres,
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -78,7 +81,7 @@ class MediaGenreFilter extends StatelessWidget {
                       onPressed: () {
                         setState(selected.clear);
                       },
-                      child: Text(AppLocalizations.of(context)!.filter_reset),
+                      child: Text(l10n.filter_reset),
                     ),
                   ],
                 ),
@@ -116,7 +119,7 @@ class MediaGenreFilter extends StatelessWidget {
                       onChanged(selected);
                       Navigator.pop(context);
                     },
-                    child: Text(AppLocalizations.of(context)!.filter_apply),
+                    child: Text(l10n.filter_apply),
                   ),
                 ),
               ),

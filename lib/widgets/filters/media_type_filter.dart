@@ -14,48 +14,54 @@ class MediaTypeFilter extends StatelessWidget {
   final ValueChanged<MediaContentType> onChanged;
 
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: .min,
-    children: [
-      Pill(
-        onTap: () => onChanged(.movie),
-        borderRadius: const .only(
-          topLeft: .circular(20),
-          bottomLeft: .circular(20),
-        ),
-        padding: const .symmetric(horizontal: 12, vertical: 4),
-        color: selectedType == .movie
-            ? Theme.of(context).colorScheme.primary
-            : null,
-        child: Text(
-          AppLocalizations.of(context)!.media_type_movies,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: selectedType == .movie
-                ? Theme.of(context).colorScheme.onPrimary
-                : null,
-          ),
-        ),
-      ),
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
-      Pill(
-        onTap: () => onChanged(.tvShow),
-        borderRadius: const .only(
-          topRight: .circular(20),
-          bottomRight: .circular(20),
-        ),
-        padding: const .symmetric(horizontal: 12, vertical: 4),
-        color: selectedType == .tvShow
-            ? Theme.of(context).colorScheme.primary
-            : null,
-        child: Text(
-          AppLocalizations.of(context)!.media_type_tv_shows,
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: selectedType == .tvShow
-                ? Theme.of(context).colorScheme.onPrimary
-                : null,
+    return Row(
+      children: [
+        Expanded(
+          child: Pill(
+            onTap: () => onChanged(.movie),
+            borderRadius: const .only(
+              topLeft: .circular(20),
+              bottomLeft: .circular(20),
+            ),
+            padding: const .symmetric(horizontal: 12, vertical: 4),
+            color: selectedType == .movie ? theme.colorScheme.primary : null,
+            child: Text(
+              textAlign: .center,
+              l10n.media_type_movies,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: selectedType == .movie
+                    ? theme.colorScheme.onPrimary
+                    : null,
+              ),
+            ),
           ),
         ),
-      ),
-    ],
-  );
+
+        Expanded(
+          child: Pill(
+            onTap: () => onChanged(.tvShow),
+            borderRadius: const .only(
+              topRight: .circular(20),
+              bottomRight: .circular(20),
+            ),
+            padding: const .symmetric(horizontal: 12, vertical: 4),
+            color: selectedType == .tvShow ? theme.colorScheme.primary : null,
+            child: Text(
+              l10n.media_type_tv_shows,
+              textAlign: .center,
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: selectedType == .tvShow
+                    ? theme.colorScheme.onPrimary
+                    : null,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }

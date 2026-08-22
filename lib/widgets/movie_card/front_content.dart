@@ -25,39 +25,42 @@ class MovieCardFront extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final movieYear = movie.releaseDate.substring(0, 4);
+    final movieYear = movie.releaseDate.length >= 4
+        ? movie.releaseDate.substring(0, 4)
+        : '—';
+    final l10n = AppLocalizations.of(context)!;
+    final runtime = movieDetails?.runtime;
+    final voteCount = movieDetails?.voteCount ?? 0;
 
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: .end,
+      crossAxisAlignment: .start,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: .spaceBetween,
           children: [
             Pill(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              borderRadius: BorderRadius.circular(20),
+              padding: const .symmetric(vertical: 4, horizontal: 12),
+              borderRadius: .circular(20),
               child: Row(
                 children: [
                   const Icon(Icons.access_time, size: 18),
                   const SizedBox(width: 6),
                   Text(
-                    movieDetails?.runtime == null
-                        ? '...'
-                        : formatRuntime(context, movieDetails!.runtime!),
+                    runtime == null ? '...' : formatRuntime(context, runtime),
                     style: theme.textTheme.bodyLarge?.copyWith(),
                   ),
                 ],
               ),
             ),
             Pill(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              borderRadius: BorderRadius.circular(20),
+              padding: const .symmetric(vertical: 4, horizontal: 12),
+              borderRadius: .circular(20),
               child: Row(
                 children: [
                   const Icon(Icons.calendar_today, size: 18),
                   const SizedBox(width: 6),
-                  Text(movieYear, style: theme.textTheme.bodyLarge?.copyWith()),
+                  Text(movieYear, style: theme.textTheme.bodyLarge),
                 ],
               ),
             ),
@@ -74,9 +77,9 @@ class MovieCardFront extends StatelessWidget {
               color: isSelected
                   ? theme.colorScheme.primary
                   : Colors.white.withAlpha(38),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: .circular(20),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                padding: const .symmetric(vertical: 4, horizontal: 8),
                 child: Text(
                   genre.name,
                   style: theme.textTheme.bodyMedium?.copyWith(
@@ -104,7 +107,7 @@ class MovieCardFront extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
             Text(
-              ' · ${formatCount(context, movieDetails?.voteCount ?? 0)} ${AppLocalizations.of(context)!.ratings_label}',
+              ' · ${formatCount(context, voteCount)} ${l10n.ratings_label}',
               style: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
             ),
           ],

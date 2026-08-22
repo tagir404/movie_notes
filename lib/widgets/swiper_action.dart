@@ -4,62 +4,46 @@ class SwiperAction extends StatelessWidget {
   const SwiperAction({
     required this.text,
     required this.isActive,
-    required this.iconOnRight,
+    required this.iconAfterText,
     super.key,
   });
 
   final String text;
   final bool isActive;
-  final bool iconOnRight;
+  final bool iconAfterText;
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+
+    final children = [
+      Text(
+        text,
+        style: theme.textTheme.bodyMedium?.copyWith(
+          color: isActive
+              ? theme.colorScheme.onPrimary
+              : theme.colorScheme.onSurface,
+        ),
+      ),
+      Icon(
+        iconAfterText ? Icons.swipe_right : Icons.swipe_left,
+        size: 16,
+        color: isActive
+            ? theme.colorScheme.onPrimary
+            : theme.colorScheme.onSurface,
+      ),
+    ];
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: const .symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
-        color: isActive ? colorScheme.primary : Colors.transparent,
-        borderRadius: BorderRadius.circular(20),
+        color: isActive ? theme.colorScheme.primary : Colors.transparent,
+        borderRadius: .circular(20),
       ),
       child: Row(
         spacing: 8,
-        children: iconOnRight
-            ? [
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isActive
-                        ? colorScheme.onPrimary
-                        : colorScheme.onSurface,
-                  ),
-                ),
-                Icon(
-                  Icons.swipe_right,
-                  size: 16,
-                  color: isActive
-                      ? colorScheme.onPrimary
-                      : colorScheme.onSurface,
-                ),
-              ]
-            : [
-                Icon(
-                  Icons.swipe_left,
-                  size: 16,
-                  color: isActive
-                      ? colorScheme.onPrimary
-                      : colorScheme.onSurface,
-                ),
-                Text(
-                  text,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: isActive
-                        ? colorScheme.onPrimary
-                        : colorScheme.onSurface,
-                  ),
-                ),
-              ],
+        children: iconAfterText ? children : children.reversed.toList(),
       ),
     );
   }

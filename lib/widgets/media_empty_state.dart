@@ -9,6 +9,7 @@ class MediaEmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
     return Center(
       child: Padding(
@@ -19,17 +20,19 @@ class MediaEmptyState extends StatelessWidget {
             Text(
               l10n.media_empty,
               textAlign: .center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: theme.textTheme.titleMedium,
             ),
 
             const SizedBox(height: 8),
+
             Text(
               l10n.media_empty_filtered_hint,
               textAlign: .center,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: theme.textTheme.bodyMedium,
             ),
 
             const SizedBox(height: 16),
+
             FilledButton(
               onPressed: onReset,
               child: Text(l10n.filter_reset_all),

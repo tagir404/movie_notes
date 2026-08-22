@@ -73,10 +73,11 @@ class _MovieCardState extends State<MovieCard>
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.network(
-                  'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
-                  fit: BoxFit.cover,
-                ),
+                if (isFront)
+                  Image.network(
+                    'https://image.tmdb.org/t/p/w500${widget.movie.posterPath}',
+                    fit: BoxFit.cover,
+                  ),
 
                 DecoratedBox(
                   decoration: isFront

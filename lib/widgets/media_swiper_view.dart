@@ -102,12 +102,12 @@ class MediaSwiperViewState extends State<MediaSwiperView> {
           SwiperAction(
             text: widget.leftActionText,
             isActive: _swipeDirection == .left,
-            iconOnRight: false,
+            iconAfterText: false,
           ),
           SwiperAction(
             text: widget.rightActionText,
             isActive: _swipeDirection == .right,
-            iconOnRight: true,
+            iconAfterText: true,
           ),
         ],
       ),

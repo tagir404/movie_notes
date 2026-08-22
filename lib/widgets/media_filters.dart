@@ -14,8 +14,6 @@ class MediaFilters extends StatelessWidget {
     required this.selectedGenres,
     required this.onGenresChanged,
     required this.onSortChanged,
-    // required this.selectedCountry,
-    // required this.onCountryChanged,
     super.key,
   });
 
@@ -25,8 +23,6 @@ class MediaFilters extends StatelessWidget {
   final ValueChanged<List<int>> onGenresChanged;
   final MediaSortOption selectedSort;
   final ValueChanged<MediaSortOption> onSortChanged;
-  // final String? selectedCountry;
-  // final ValueChanged<String?> onCountryChanged;
 
   @override
   Widget build(BuildContext context) => Wrap(
@@ -41,12 +37,6 @@ class MediaFilters extends StatelessWidget {
         onChanged: onGenresChanged,
       ),
       MediaTypeFilter(selectedType: selectedType, onChanged: onTypeChanged),
-      // Фильтр по странам
-      // MediaCountryFilter(
-      //   countries: AppScope.of(context).mediaRepository.countries,
-      //   selectedCountry: _selectedCountry,
-      //   onChanged: _handleCountryChanged,
-      // ),
     ],
   );
 }

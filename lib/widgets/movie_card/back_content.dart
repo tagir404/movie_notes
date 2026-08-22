@@ -33,6 +33,8 @@ class _MovieCardBackState extends State<MovieCardBack> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final countries = widget.movieDetails?.originCountry ?? [];
+    final tagline = widget.movieDetails?.tagline;
 
     return DefaultTextStyle(
       style: theme.textTheme.bodyLarge!,
@@ -42,12 +44,9 @@ class _MovieCardBackState extends State<MovieCardBack> {
         children: [
           Text(widget.movie.title, style: theme.textTheme.headlineMedium),
 
-          if ((widget.movieDetails?.tagline ?? '').isNotEmpty) ...[
+          if ((tagline?.isNotEmpty ?? false)) ...[
             const SizedBox(height: 8),
-            Text(
-              widget.movieDetails!.tagline!,
-              style: const TextStyle(fontStyle: FontStyle.italic),
-            ),
+            Text(tagline!, style: const TextStyle(fontStyle: FontStyle.italic)),
           ],
 
           const SizedBox(height: 12),
@@ -81,8 +80,8 @@ class _MovieCardBackState extends State<MovieCardBack> {
                           begin: .bottomCenter,
                           end: .topCenter,
                           colors: [
-                            Theme.of(context).colorScheme.surface,
-                            Theme.of(context).colorScheme.surface.withAlpha(0),
+                            theme.colorScheme.surface,
+                            theme.colorScheme.surface.withAlpha(0),
                           ],
                         ),
                       ),
@@ -98,22 +97,21 @@ class _MovieCardBackState extends State<MovieCardBack> {
           Row(
             mainAxisAlignment: .spaceBetween,
             children: [
-              if (widget.movieDetails?.originCountry != null &&
-                  widget.movieDetails!.originCountry!.isNotEmpty)
+              if (countries.isNotEmpty)
                 Row(
                   spacing: 8,
-                  children: [
-                    ...widget.movieDetails!.originCountry!.map(
-                      (countryCode) => CountryFlag.fromCountryCode(
-                        countryCode,
-                        theme: const ImageTheme(
-                          width: 30,
-                          height: 20,
-                          shape: RoundedRectangle(4),
+                  children: countries
+                      .map(
+                        (countryCode) => CountryFlag.fromCountryCode(
+                          countryCode,
+                          theme: const ImageTheme(
+                            width: 30,
+                            height: 20,
+                            shape: RoundedRectangle(4),
+                          ),
                         ),
-                      ),
-                    ),
-                  ],
+                      )
+                      .toList(),
                 ),
               Row(
                 spacing: 8,
@@ -125,28 +123,29 @@ class _MovieCardBackState extends State<MovieCardBack> {
                         builder: (_) => MovieCastScreen(movie: widget.movie),
                       ),
                     ),
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                     padding: const .all(12),
                     shape: const CircleBorder(),
                     child: Icon(
                       Icons.people,
                       size: 22,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                   Pill(
-                    onTap: () => showDialog<void>(
-                      context: context,
-                      builder: (context) =>
-                          MovieVideoScreen(movie: widget.movie),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => MovieVideoScreen(movie: widget.movie),
+                      ),
                     ),
-                    color: Theme.of(context).colorScheme.primary,
+                    color: theme.colorScheme.primary,
                     padding: const .all(12),
                     shape: const CircleBorder(),
                     child: Icon(
                       Icons.videocam,
                       size: 22,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                      color: theme.colorScheme.onPrimary,
                     ),
                   ),
                 ],

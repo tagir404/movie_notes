@@ -14,11 +14,11 @@ class Pill extends StatelessWidget {
          'Cannot provide both shape and borderRadius.',
        );
 
+  final Widget child;
   final ShapeBorder? shape;
   final BorderRadius? borderRadius;
   final EdgeInsetsGeometry? padding;
   final Color? color;
-  final Widget child;
   final VoidCallback? onTap;
 
   @override
@@ -31,18 +31,7 @@ class Pill extends StatelessWidget {
     clipBehavior: .antiAlias,
     child: InkWell(
       onTap: onTap,
-      child: Padding(padding: padding ?? const .all(0), child: child),
+      child: Padding(padding: padding ?? .zero, child: child),
     ),
   );
-
-  // @override
-  // Widget build(BuildContext context) => Material(
-  //   elevation: 2,
-  //   shadowColor: Theme.of(context).colorScheme.onSurface,
-  //   color: color,
-  //   shape: shape,
-  //   borderRadius: borderRadius,
-  //   clipBehavior: .antiAlias,
-  //   child: Padding(padding: padding ?? const .all(0), child: child),
-  // );
 }
