@@ -1,4 +1,5 @@
 import 'package:material_ui/material_ui.dart';
+import 'package:movie_match/screens/ai_search_screen.dart';
 import 'package:movie_match/screens/favorites_screen.dart';
 import 'package:movie_match/screens/media_screen.dart';
 import 'package:movie_match/screens/settings_screen.dart';
@@ -14,7 +15,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  static const _screens = [MediaScreen(), FavoritesScreen(), SettingsScreen()];
+  static const _screens = [
+    MediaScreen(),
+    FavoritesScreen(),
+    AiSearchScreen(),
+    SettingsScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -36,6 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
         NavigationDestination(
           icon: const Icon(Icons.bookmarks),
           label: AppLocalizations.of(context)!.home_saved,
+        ),
+        NavigationDestination(
+          icon: const Icon(Icons.auto_awesome),
+          label: AppLocalizations.of(context)!.home_ai_search,
         ),
         NavigationDestination(
           icon: const Icon(Icons.settings),

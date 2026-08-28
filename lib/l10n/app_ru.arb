@@ -64,5 +64,12 @@
     "settings_language_title": "Язык",
     "language_system": "Системный",
     "language_en": "English",
-    "language_ru": "Русский"
+    "language_ru": "Русский",
+    "home_ai_search": "ИИ-поиск",
+    "ai_search_title": "ИИ-поиск",
+    "ai_search_hint": "Опишите, что хотите посмотреть, например «лёгкая комедия 90-х про дружбу»",
+    "ai_search_button": "Найти",
+    "ai_search_empty": "Опишите фильм и нажмите «Найти», чтобы получить рекомендации от ИИ",
+    "ai_search_no_results": "По вашему описанию ничего не найдено",
+    "ai_search_error": "Не удалось получить рекомендации. Попробуйте ещё раз."
 }

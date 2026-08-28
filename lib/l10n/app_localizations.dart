@@ -427,6 +427,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Русский'**
   String get language_ru;
+
+  /// No description provided for @home_ai_search.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Search'**
+  String get home_ai_search;
+
+  /// No description provided for @ai_search_title.
+  ///
+  /// In en, this message translates to:
+  /// **'AI Search'**
+  String get ai_search_title;
+
+  /// No description provided for @ai_search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe what you want to watch, e.g. \"a lighthearted 90s comedy about friendship\"'**
+  String get ai_search_hint;
+
+  /// No description provided for @ai_search_button.
+  ///
+  /// In en, this message translates to:
+  /// **'Find'**
+  String get ai_search_button;
+
+  /// No description provided for @ai_search_empty.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe a movie and tap Find to get AI suggestions'**
+  String get ai_search_empty;
+
+  /// No description provided for @ai_search_no_results.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing matched your description'**
+  String get ai_search_no_results;
+
+  /// No description provided for @ai_search_error.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get suggestions. Please try again.'**
+  String get ai_search_error;
 }
 
 class _AppLocalizationsDelegate

@@ -1,7 +1,7 @@
 name: movie_match
 description: "A new Flutter project."
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.1.0+2
 
 environment:
   sdk: ^3.11.4
@@ -24,6 +24,9 @@ dependencies:
 
   material_ui: any
   flutter_launcher_icons: ^0.14.4
+  genkit: ^0.15.1
+  schemantic: any
+  uuid: ^4.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -34,3 +37,4 @@ flutter:
   uses-material-design: true
   assets:
     - .env
+    - assets/certificates/russian_trusted_root_ca.pem

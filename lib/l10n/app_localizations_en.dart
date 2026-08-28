@@ -187,4 +187,27 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get language_ru => 'Русский';
+
+  @override
+  String get home_ai_search => 'AI Search';
+
+  @override
+  String get ai_search_title => 'AI Search';
+
+  @override
+  String get ai_search_hint =>
+      'Describe what you want to watch, e.g. \"a lighthearted 90s comedy about friendship\"';
+
+  @override
+  String get ai_search_button => 'Find';
+
+  @override
+  String get ai_search_empty =>
+      'Describe a movie and tap Find to get AI suggestions';
+
+  @override
+  String get ai_search_no_results => 'Nothing matched your description';
+
+  @override
+  String get ai_search_error => 'Failed to get suggestions. Please try again.';
 }

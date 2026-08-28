@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:movie_match/repositories/favorites_repository.dart';
 import 'package:movie_match/repositories/media_repository.dart';
 import 'package:movie_match/repositories/skipped_media_repository.dart';
+import 'package:movie_match/services/ai_search_service.dart';
 import 'package:movie_match/services/media_api_service.dart';
 import 'package:movie_match/theme/theme_mode_controller.dart';
 import 'package:movie_match/theme/locale_controller.dart';
@@ -12,6 +13,7 @@ class AppScope extends InheritedWidget {
     required this.mediaRepository,
     required this.favoritesRepository,
     required this.skippedMediaRepository,
+    required this.aiSearchService,
     required this.themeController,
     required this.localeController,
     required super.child,
@@ -22,6 +24,7 @@ class AppScope extends InheritedWidget {
   final MediaRepository mediaRepository;
   final FavoritesRepository favoritesRepository;
   final SkippedMediaRepository skippedMediaRepository;
+  final AiSearchService aiSearchService;
   final ThemeModeController themeController;
   final LocaleController localeController;
 

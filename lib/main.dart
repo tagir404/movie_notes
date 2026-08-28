@@ -11,6 +11,7 @@ import 'package:movie_match/repositories/favorites_repository.dart';
 import 'package:movie_match/repositories/media_repository.dart';
 import 'package:movie_match/repositories/skipped_media_repository.dart';
 import 'package:movie_match/screens/home_screen.dart';
+import 'package:movie_match/services/ai_search_service.dart';
 import 'package:movie_match/services/media_api_service.dart';
 import 'package:movie_match/theme/theme_mode_controller.dart';
 import 'package:movie_match/theme/locale_controller.dart';
@@ -35,6 +36,8 @@ Future<void> main() async {
   final skippedMediaRepository = SkippedMediaRepository(
     SkippedMediaLocalDatasource(await AppDatabase.database),
   );
+  final aiSearchService = await AiSearchService.create();
+
   final themeController = ThemeModeController();
   await themeController.load();
 
@@ -52,6 +55,7 @@ Future<void> main() async {
       mediaRepository: repository,
       favoritesRepository: favoritesRepository,
       skippedMediaRepository: skippedMediaRepository,
+      aiSearchService: aiSearchService,
       themeController: themeController,
       localeController: localeController,
       child: const MainApp(),

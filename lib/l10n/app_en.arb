@@ -119,5 +119,19 @@
     "language_en": "English",
     "@language_en": {},
     "language_ru": "Русский",
-    "@language_ru": {}
+    "@language_ru": {},
+    "home_ai_search": "AI Search",
+    "@home_ai_search": {},
+    "ai_search_title": "AI Search",
+    "@ai_search_title": {},
+    "ai_search_hint": "Describe what you want to watch, e.g. \"a lighthearted 90s comedy about friendship\"",
+    "@ai_search_hint": {},
+    "ai_search_button": "Find",
+    "@ai_search_button": {},
+    "ai_search_empty": "Describe a movie and tap Find to get AI suggestions",
+    "@ai_search_empty": {},
+    "ai_search_no_results": "Nothing matched your description",
+    "@ai_search_no_results": {},
+    "ai_search_error": "Failed to get suggestions. Please try again.",
+    "@ai_search_error": {}
 }
