@@ -24,9 +24,6 @@ dependencies:
 
   material_ui: any
   flutter_launcher_icons: ^0.14.4
-  genkit: ^0.15.1
-  schemantic: any
-  uuid: ^4.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

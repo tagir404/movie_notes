@@ -36,7 +36,7 @@ Future<void> main() async {
   final skippedMediaRepository = SkippedMediaRepository(
     SkippedMediaLocalDatasource(await AppDatabase.database),
   );
-  final aiSearchService = await AiSearchService.create();
+  final aiSearchService = await AiSearchService.create(apiService);
 
   final themeController = ThemeModeController();
   await themeController.load();

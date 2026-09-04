@@ -86,6 +86,22 @@ class MediaApiService {
     );
   }
 
+  Future<List<Movie>> searchMedia({
+    required String query,
+    required MediaContentType type,
+  }) async {
+    final endpoint = type == .movie ? '/search/movie' : '/search/tv';
+
+    final json = await _get(
+      endpoint,
+      queryParameters: {'query': query, 'include_adult': 'false'},
+    );
+
+    return (json['results'] as List)
+        .map((item) => Movie.fromJson(item, type))
+        .toList();
+  }
+
   Future<MovieDetails> fetchMediaDetails(int id, MediaContentType type) async {
     final endpoint = type == .movie ? '/movie/$id' : '/tv/$id';
 
