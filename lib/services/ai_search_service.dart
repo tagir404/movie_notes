@@ -33,16 +33,18 @@ class AiSearchService {
       limit: limit,
     );
 
+    final resultsByTitle = await Future.wait(
+      titles.map(
+        (title) =>
+            _mediaApiService.searchMedia(query: title, type: contentType),
+      ),
+    );
+
     final movies = <Movie>[];
     final seenIds = <int>{};
 
-    for (final title in titles) {
+    for (final results in resultsByTitle) {
       if (movies.length >= limit) break;
-
-      final results = await _mediaApiService.searchMedia(
-        query: title,
-        type: contentType,
-      );
       if (results.isEmpty) continue;
 
       final match = results.first;

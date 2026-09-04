@@ -133,5 +133,11 @@
     "ai_search_no_results": "Nothing matched your description",
     "@ai_search_no_results": {},
     "ai_search_error": "Failed to get suggestions. Please try again.",
-    "@ai_search_error": {}
+    "@ai_search_error": {},
+    "ai_search_view_results": "View results",
+    "@ai_search_view_results": {},
+    "ai_search_results_title": "Results",
+    "@ai_search_results_title": {},
+    "ai_search_movie_details_title": "Details",
+    "@ai_search_movie_details_title": {}
 }

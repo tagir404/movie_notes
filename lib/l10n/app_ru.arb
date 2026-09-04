@@ -65,11 +65,14 @@
     "language_system": "Системный",
     "language_en": "English",
     "language_ru": "Русский",
-    "home_ai_search": "ИИ-поиск",
-    "ai_search_title": "ИИ-поиск",
+    "home_ai_search": "Умный поиск",
+    "ai_search_title": "Умный поиск",
     "ai_search_hint": "Опишите, что хотите посмотреть, например «лёгкая комедия 90-х про дружбу»",
     "ai_search_button": "Найти",
     "ai_search_empty": "Опишите фильм и нажмите «Найти», чтобы получить рекомендации от ИИ",
     "ai_search_no_results": "По вашему описанию ничего не найдено",
-    "ai_search_error": "Не удалось получить рекомендации. Попробуйте ещё раз."
+    "ai_search_error": "Не удалось получить рекомендации. Попробуйте ещё раз.",
+    "ai_search_view_results": "Посмотреть результаты",
+    "ai_search_results_title": "Результаты",
+    "ai_search_movie_details_title": "Подробности"
 }

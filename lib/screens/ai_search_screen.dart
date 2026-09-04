@@ -1,5 +1,6 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:movie_match/models/movie.dart';
+import 'package:movie_match/screens/ai_search_movie_details_screen.dart';
 import 'package:movie_match/services/ai_search_service.dart';
 import 'package:movie_match/widgets/app_scope.dart';
 import '../l10n/app_localizations.dart';
@@ -74,36 +75,38 @@ class _AiSearchScreenState extends State<AiSearchScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.ai_search_title)),
+      appBar: AppBar(
+        title: Text(l10n.ai_search_title),
+        scrolledUnderElevation: 0,
+      ),
       body: Column(
         children: [
           Padding(
             padding: const .all(16),
-            child: Row(
-              spacing: 8,
+            child: Column(
+              spacing: 12,
               children: [
-                Expanded(
-                  child: TextField(
-                    controller: _controller,
-                    minLines: 1,
-                    maxLines: 3,
-                    textInputAction: .search,
-                    onSubmitted: (_) => _search(),
-                    decoration: InputDecoration(
-                      hintText: l10n.ai_search_hint,
-                      border: const OutlineInputBorder(),
-                    ),
+                TextField(
+                  controller: _controller,
+                  minLines: 1,
+                  maxLines: 3,
+                  textInputAction: .search,
+                  onSubmitted: (_) => _search(),
+                  decoration: InputDecoration(
+                    hintText: l10n.ai_search_hint,
+                    border: const OutlineInputBorder(),
                   ),
                 ),
-                FilledButton(
-                  onPressed: _isLoading ? null : _search,
-                  child: _isLoading
-                      ? const SizedBox(
-                          width: 18,
-                          height: 18,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : Text(l10n.ai_search_button),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: _isLoading ? null : _search,
+                    style: FilledButton.styleFrom(
+                      shape: const StadiumBorder(),
+                      padding: const .symmetric(vertical: 12),
+                    ),
+                    child: Text(l10n.ai_search_button),
+                  ),
                 ),
               ],
             ),
@@ -148,15 +151,37 @@ class _AiSearchScreenState extends State<AiSearchScreen> {
       padding: const .all(16),
       itemCount: _results.length,
       separatorBuilder: (_, _) => const SizedBox(height: 12),
-      itemBuilder: (context, index) => _MovieResultTile(movie: _results[index]),
+      itemBuilder: (context, index) {
+        final movie = _results[index];
+
+        return _MovieResultTile(
+          movie: movie,
+          onTap: () async {
+            final savedMovie = await Navigator.of(context).push<Movie>(
+              MaterialPageRoute(
+                builder: (_) => AiSearchMovieDetailsScreen(movie: movie),
+              ),
+            );
+
+            if (savedMovie == null || !mounted) return;
+
+            setState(() {
+              _results = _results
+                  .where((result) => result.id != savedMovie.id)
+                  .toList();
+            });
+          },
+        );
+      },
     );
   }
 }
 
 class _MovieResultTile extends StatelessWidget {
-  const _MovieResultTile({required this.movie});
+  const _MovieResultTile({required this.movie, required this.onTap});
 
   final Movie movie;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -164,44 +189,47 @@ class _MovieResultTile extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const .all(12),
-        child: Row(
-          crossAxisAlignment: .start,
-          spacing: 12,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: movie.posterPath == null
-                  ? Container(
-                      width: 60,
-                      height: 90,
-                      color: theme.colorScheme.surfaceContainerHighest,
-                      child: const Icon(Icons.movie),
-                    )
-                  : Image.network(
-                      'https://image.tmdb.org/t/p/w200${movie.posterPath}',
-                      width: 60,
-                      height: 90,
-                      fit: BoxFit.cover,
-                    ),
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: .start,
-                children: [
-                  Text(movie.title, style: theme.textTheme.titleMedium),
-                  const SizedBox(height: 4),
-                  Text(
-                    movie.overview,
-                    style: theme.textTheme.bodySmall,
-                    maxLines: 3,
-                    overflow: .ellipsis,
-                  ),
-                ],
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const .all(12),
+          child: Row(
+            crossAxisAlignment: .start,
+            spacing: 12,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(8),
+                child: movie.posterPath == null
+                    ? Container(
+                        width: 60,
+                        height: 90,
+                        color: theme.colorScheme.surfaceContainerHighest,
+                        child: const Icon(Icons.movie),
+                      )
+                    : Image.network(
+                        'https://image.tmdb.org/t/p/w200${movie.posterPath}',
+                        width: 60,
+                        height: 90,
+                        fit: BoxFit.cover,
+                      ),
               ),
-            ),
-          ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: .start,
+                  children: [
+                    Text(movie.title, style: theme.textTheme.titleMedium),
+                    const SizedBox(height: 4),
+                    Text(
+                      movie.overview,
+                      style: theme.textTheme.bodySmall,
+                      maxLines: 3,
+                      overflow: .ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

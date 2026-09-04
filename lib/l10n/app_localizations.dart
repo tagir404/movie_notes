@@ -469,6 +469,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to get suggestions. Please try again.'**
   String get ai_search_error;
+
+  /// No description provided for @ai_search_view_results.
+  ///
+  /// In en, this message translates to:
+  /// **'View results'**
+  String get ai_search_view_results;
+
+  /// No description provided for @ai_search_results_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Results'**
+  String get ai_search_results_title;
+
+  /// No description provided for @ai_search_movie_details_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Details'**
+  String get ai_search_movie_details_title;
 }
 
 class _AppLocalizationsDelegate

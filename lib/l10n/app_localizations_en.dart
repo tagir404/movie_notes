@@ -210,4 +210,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ai_search_error => 'Failed to get suggestions. Please try again.';
+
+  @override
+  String get ai_search_view_results => 'View results';
+
+  @override
+  String get ai_search_results_title => 'Results';
+
+  @override
+  String get ai_search_movie_details_title => 'Details';
 }

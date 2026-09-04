@@ -189,10 +189,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get language_ru => 'Русский';
 
   @override
-  String get home_ai_search => 'ИИ-поиск';
+  String get home_ai_search => 'Умный поиск';
 
   @override
-  String get ai_search_title => 'ИИ-поиск';
+  String get ai_search_title => 'Умный поиск';
 
   @override
   String get ai_search_hint =>
@@ -211,4 +211,13 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get ai_search_error =>
       'Не удалось получить рекомендации. Попробуйте ещё раз.';
+
+  @override
+  String get ai_search_view_results => 'Посмотреть результаты';
+
+  @override
+  String get ai_search_results_title => 'Результаты';
+
+  @override
+  String get ai_search_movie_details_title => 'Подробности';
 }
